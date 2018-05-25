@@ -92,4 +92,6 @@ public class ErrorCodes {
 	public static final String PRODUCT_WEIGHT_ILLEGAL = "50005";
 
 	public static final String FREIGHT_ILLEGAL = "50006";
+
+	public static final String SEARCH_KEYWORD_ILLEGAL = "50007";
 }

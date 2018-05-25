@@ -42,8 +42,8 @@
 
     <select id="selectAgentMonthRebate" parameterType="map" resultType="com.nzgreens.common.model.console.UserOrderPriceSumModel">
         SELECT
-            o.user_id,
-            sum(o.price)
+            o.user_id userId,
+            sum(o.price) price
         FROM
             user_order o,users u
         WHERE

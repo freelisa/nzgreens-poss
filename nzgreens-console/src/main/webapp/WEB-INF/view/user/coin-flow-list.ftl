@@ -141,9 +141,9 @@
                 {#if $T.t.type == ${e.value}}${e.text}{#/if}
             </#list>
             </td>
-            <td>{$T.t.before}</td>
-            <td>{$T.t.amount}</td>
-            <td>{$T.t.after}</td>
+            <td>{Fen2Yuan($T.t.before)}</td>
+            <td>{Fen2Yuan($T.t.amount)}</td>
+            <td>{Fen2Yuan($T.t.after)}</td>
             <td>{new Date($T.t.createTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
         </tr>
     {#else}

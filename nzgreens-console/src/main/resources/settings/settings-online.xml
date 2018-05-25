@@ -3,12 +3,15 @@
 <properties>
 
     <!--################## 数据库配置 ##################-->
-    <entry key="db.url">jdbc:mysql://127.0.0.1:3306/instao-test?autoReconnect=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false</entry>
+    <entry key="db.url">jdbc:mysql://47.98.120.220:3306/nz_greens?autoReconnect=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false</entry>
     <entry key="db.username">root</entry>
-    <entry key="db.password">root</entry>
+    <entry key="db.password">Root.123</entry>
     <entry key="db.filters">slf4j,stat</entry>
 
     <!--########## 图片配置 ##################-->
-    <entry key="images.host">http://localhost:8080/</entry>
-    <entry key="images.template.mail.path">images/template/mail</entry>
+    <entry key="images.host">https://nzgreens.com/statics/</entry>
+    <entry key="images.upload.path">/data/upload</entry>
+    <entry key="images.product.icon.path">product/icon</entry>
+    <entry key="images.product.detail.path">product/detail</entry>
+    <entry key="images.user.order.cert.path">user/order/cert</entry>
 </properties>

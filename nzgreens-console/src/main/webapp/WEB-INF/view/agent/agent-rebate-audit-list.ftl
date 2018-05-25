@@ -58,7 +58,7 @@
                                         <select class="form-control" name="status" id="status">
                                             <option value="">全部</option>
                                         <#list AgentRebateAuditStatusEnum?values as e>
-                                            <option value="${e.value}">${e.text}</option>
+                                            <option value="${e.value}" <#if e.value == 0>selected="selected"</#if>>${e.text}</option>
                                         </#list>
                                         </select>
                                     </div>

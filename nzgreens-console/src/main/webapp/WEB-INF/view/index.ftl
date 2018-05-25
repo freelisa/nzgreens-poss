@@ -116,6 +116,9 @@
                             <@sec.any name="PRODUCT_FREIGHT_MANAGE">
                                 <li><@s.a href="${ctx}product/freight/to-list" class="J_menuItem">商品运费设置</@s.a></li>
                             </@sec.any>
+                            <@sec.any name="SEARCH_KEYWORD_MANAGE">
+                                <li><@s.a href="${ctx}search/keyword/to-list" class="J_menuItem">关键字设置</@s.a></li>
+                            </@sec.any>
                         </ul>
                     </li>
                 </@sec.any>

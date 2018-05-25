@@ -55,8 +55,9 @@
 
         <!--<table schema="" tableName="coin_setting" domainObjectName="CoinSetting"/>-->
 <!--        <table schema="" tableName="users" domainObjectName="Users"/>-->
-        <table schema="" tableName="product_brand" domainObjectName="ProductBrand">
+        <!--<table schema="" tableName="product_brand" domainObjectName="ProductBrand">
             <columnOverride column="is_valid" javaType="Integer"></columnOverride>
-        </table>
+        </table>-->
+        <table schema="" tableName="search_keyword" domainObjectName="SearchKeyword"/>
    </context>
 </generatorConfiguration>
