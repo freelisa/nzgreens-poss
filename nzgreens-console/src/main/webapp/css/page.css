@@ -1,0 +1,61 @@
+.page {
+  float: right;
+  text-align: right;
+}
+
+.btn {
+  font-size: 12px;
+  line-height: 20px;
+  padding: 3px 12px;
+  border-radius: 2px;
+}
+
+.btn-white {
+  background-clip: padding-box;
+  background-color: #FFFFFF;
+  border-color: rgba(150, 160, 180, 0.3);
+  box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.05) inset;
+}
+
+.btn-white:hover, .btn-white:focus, .btn-white:active, .btn-white.active {
+  background-color: #ECEEEF;
+  border-color: #ccc;
+  color: #000;
+}
+
+.btn:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+/* 房源分页样式 */
+.page-item {
+  float: right;
+  font-size: 12px;
+  color: #000;
+  line-height: 28px;
+}
+
+.page-item .curr-page {
+  color: #0275D8;
+  border-color: #0275D8;
+}
+
+.page-item input {
+  width: 34px;
+  margin: 0 3px;
+  text-align: center;
+  line-height: inherit;
+  border: 1px solid #ccc;
+  vertical-align: middle;
+}
+
+.page-item button {
+  padding: 3px 10px;
+  border: 1px solid #ccc;
+}
+
+.curr-page {
+  color: #0275D8;
+  border-color: #0275D8;
+}

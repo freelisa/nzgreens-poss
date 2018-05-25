@@ -1,0 +1,92 @@
+package com.nzgreens.console.web.controller;
+
+import com.github.pagehelper.PageInfo;
+import com.nzgreens.common.form.console.ProductAddForm;
+import com.nzgreens.common.form.console.ProductForm;
+import com.nzgreens.common.model.ResultModel;
+import com.nzgreens.common.utils.CurrencyUtil;
+import com.nzgreens.console.annotations.Auth;
+import com.nzgreens.console.service.IProductService;
+import com.nzgreens.dal.user.example.Products;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * @Author:helizheng
+ * @Date: Created in 2018/4/21 15:21
+ */
+@Controller
+@RequestMapping("product")
+public class ProductController extends BaseController {
+    @Resource
+    private IProductService productService;
+
+    @RequestMapping("to-list")
+    @Auth("PRODUCT_MANAGE")
+    public String toList(Model model) throws Exception{
+        model.addAttribute("categoryList", productService.selectProductCategory());
+        model.addAttribute("brandList", productService.selectProductBrand());
+        return "product/product-list";
+    }
+
+    @RequestMapping("search-list")
+    @ResponseBody
+    @Auth("PRODUCT_MANAGE")
+    public ResultModel searchList(ProductForm form) throws Exception{
+        ResultModel<PageInfo<Products>> resultModel = new ResultModel<>();
+        List<Products> products = productService.selectProductForPage(form);
+        PageInfo<Products> pageInfo = new PageInfo<>(products);
+        resultModel.setData(pageInfo);
+        return resultModel;
+    }
+
+    @RequestMapping("search-detail")
+    @ResponseBody
+    @Auth("PRODUCT_MANAGE")
+    public ResultModel searchDetail(Long id) throws Exception{
+        ResultModel<ProductAddForm> resultModel = new ResultModel<>();
+        ProductAddForm products = productService.selectProductDetail(id);
+        resultModel.setData(products);
+        return resultModel;
+    }
+
+    @RequestMapping("insert")
+    @ResponseBody
+    @Auth("PRODUCT_UPDATE")
+    public ResultModel insert(ProductAddForm form) throws Exception{
+        productService.insert(form);
+        return new ResultModel();
+    }
+
+    @RequestMapping("update")
+    @ResponseBody
+    @Auth("PRODUCT_UPDATE")
+    public ResultModel update(ProductAddForm form) throws Exception{
+        productService.update(form);
+        return new ResultModel();
+    }
+
+    @RequestMapping("delete")
+    @ResponseBody
+    @Auth("PRODUCT_UPDATE")
+    public ResultModel delete(Long id) throws Exception{
+        productService.delete(id);
+        return new ResultModel();
+    }
+
+    @RequestMapping(value = "upload")
+    @ResponseBody
+    @Auth("PRODUCT_UPDATE")
+    public ResultModel<String> upload(@RequestParam(value = "file") MultipartFile multiFile) throws Exception{
+        ResultModel<String> resultModel = new ResultModel<>();
+        resultModel.setData(productService.uploadImg(multiFile));
+        return resultModel;
+    }
+}

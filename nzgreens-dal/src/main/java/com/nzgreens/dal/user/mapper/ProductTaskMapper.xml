@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nzgreens.dal.user.mapper.ProductTaskMapper">
+    <!-- 查询抓取的数据是否已经添加到产品表 -->
+    <select id="queryProductIsExists" resultType="com.nzgreens.dal.user.example.ProductsCrawl">
+        SELECT
+            id,
+            product_id productId,
+            reptile_product_id reptileProductId,
+            brand_id brandId,
+            title,
+            image,
+            selling_price sellingPrice,
+            category_id categoryId,
+            detail,
+            weight,
+            parent_category_id parentCategoryId
+        FROM
+          products_crawl c
+        WHERE NOT EXISTS (SELECT 1 FROM products p WHERE c.product_id = p.id) and c.state=0
+    </select>
+</mapper>

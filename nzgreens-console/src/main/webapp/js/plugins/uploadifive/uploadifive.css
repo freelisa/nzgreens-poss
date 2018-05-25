@@ -1,0 +1,101 @@
+/*
+UploadiFive
+Copyright (c) 2012 Reactive Apps, Ronnie Garcia
+*/
+
+.uploadifive-button {
+	background-color: #EAEAEA;
+	/*background-image: linear-gradient(bottom, #505050 0%, #707070 100%);
+	background-image: -o-linear-gradient(bottom, #505050 0%, #707070 100%);
+	background-image: -moz-linear-gradient(bottom, #505050 0%, #707070 100%);
+	background-image: -webkit-linear-gradient(bottom, #505050 0%, #707070 100%);
+	background-image: -ms-linear-gradient(bottom, #505050 0%, #707070 100%);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #505050),
+		color-stop(1, #707070)
+	);
+	background-position: center top;
+	background-repeat: no-repeat;*/
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	border: 1px solid #A5A5A5;
+	color: #333;
+	text-align: center;
+	width: 100%;
+}
+.uploadifive-button:hover {
+	background-color: #EAEAEA;
+	/*background-image: linear-gradient(top, #606060 0%, #808080 100%);
+	background-image: -o-linear-gradient(top, #606060 0%, #808080 100%);
+	background-image: -moz-linear-gradient(top, #606060 0%, #808080 100%);
+	background-image: -webkit-linear-gradient(top, #606060 0%, #808080 100%);
+	background-image: -ms-linear-gradient(top, #606060 0%, #808080 100%);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #606060),
+		color-stop(1, #808080)
+	);
+	background-position: center bottom;*/
+}
+.uploadifive-queue-item {
+	background-color: #fff;
+	border-bottom: 1px dotted #fff;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	margin-top: 0px;
+	padding:4px 15px;
+}
+.uploadifive-queue-item >div{ margin-bottom:5px;}
+.uploadifive-queue-item .close {
+	background: url('uploadifive-cancel.png') 3px 3px no-repeat;
+	display: block;
+	float: right;
+	height: 16px;
+	text-indent: -9999px;
+	width: 16px;
+}
+.uploadifive-queue-item .close:after{
+	content:"ɾ��"
+}
+.uploadifive-queue-item .progress {
+	border: 1px solid #D0D0D0;
+	height: 10px;
+	margin: 0 5px;
+	width: 100%;
+}
+.uploadifive-queue-item .progress-bar {
+	background-color: #5CB85C;
+	height: 8px;
+	width: 0;
+	line-height:8px;
+	border-radius:10px;
+}
+.uploadifive-button{ width:84px!important; height:28px!important; line-height:28px!important;}
+.queue{
+	position: absolute;
+    z-index: 9997;
+    top: 0px;
+    left: 0;
+    width: 500px;
+    }
+
+.moreupload .uploadifive-button, .moreupload .uploadifive-button:active, .moreupload .uploadifive-button.active{ 
+	float:left;
+    background-color: #0275D8;
+    border-color: #0275D8;
+    color: #FFFFFF;
+}
+.moreupload .uploadifive-button input{ cursor:pointer;}
+.moreupload .uploadifive-button:hover, .moreupload .uploadifive-button:focus{
+    background-color: #0057A7;
+    border-color: #0057A7;
+    color: #FFFFFF;
+}
+.moreupload .uploadifive-queue-item{ padding-top:10px;}

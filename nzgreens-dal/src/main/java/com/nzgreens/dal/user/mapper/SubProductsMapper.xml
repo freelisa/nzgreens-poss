@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nzgreens.dal.user.mapper.SubProductsMapper">
+    <!-- 查询产品列表 -->
+    <select id="selectProductForPage" parameterType="com.nzgreens.common.form.console.ProductForm" resultType="com.nzgreens.dal.user.example.Products">
+        SELECT
+        id,
+        title,
+        brand_id brandId,
+        weight,
+        image,
+        cost_price costPrice,
+        selling_price sellingPrice,
+        category_id categoryId,
+        detail,
+        stock,
+        score,
+        sales_volume salesVolume,
+        is_valid isValid,
+        create_time createTime,
+        update_time updateTime
+        FROM
+        products
+        where 1=1
+        <if test="title != null and title != ''">
+            and MATCH (title) AGAINST(#{title} IN BOOLEAN MODE)
+        </if>
+        <if test="brandId != null">
+            and brand_id = #{brandId}
+        </if>
+        <if test="parentCategoryId != null">
+            and parent_category_id = #{parentCategoryId}
+        </if>
+        <if test="categoryId != null">
+            and category_id = #{categoryId}
+        </if>
+        <if test="isValid != null">
+            and is_valid = #{isValid}
+        </if>
+        order by id desc
+    </select>
+
+    <select id="selectAgentMonthRebate" parameterType="map" resultType="com.nzgreens.common.model.console.UserOrderPriceSumModel">
+        SELECT
+            o.user_id,
+            sum(o.price)
+        FROM
+            user_order o,users u
+        WHERE
+            o.type = 2 and o.user_id=u.id and u.type=2
+        AND o.create_time BETWEEN #{startTime} AND #{endTime}
+        GROUP BY
+            o.user_id
+    </select>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nzgreens.dal.user.mapper.CoinFlowMapper">
+    <!-- 查询流水 -->
+    <select id="selectCoinFlowForPage" parameterType="com.nzgreens.common.form.console.CoinFlowForm" resultType="com.nzgreens.common.model.console.CoinFlowModel">
+        SELECT
+        l.id,
+        IFNULL(l.record_id,'') recordId,
+        l.user_id userId,
+        u.telephone,
+        l.type,
+        l.`before`,
+        l.amount,
+        l.`after`,
+        l.create_time createTime
+        FROM
+        account_logs l,
+        users u
+        WHERE
+        l.user_id = u.id
+        <if test="userType != null">
+            <if test="userType == 1">
+                and l.user_id != #{userId}
+            </if>
+            <if test="userType == 0">
+                and l.user_id = #{userId}
+            </if>
+        </if>
+        <if test="telephone != null and telephone != ''">
+            and u.telephone = #{telephone}
+        </if>
+        <if test="type != null">
+            and l.type = #{type}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and l.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and l.create_time &lt;= #{endTime}
+        </if>
+        order by l.id desc
+    </select>
+</mapper>

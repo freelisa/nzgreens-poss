@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nzgreens.dal.user.mapper.SubAgentRebateAuditMapper">
+    <!-- 查询返佣审核列表 -->
+    <select id="selectAgentRebateAuditForPage" parameterType="com.nzgreens.common.form.console.AgentRebateAuditForm" resultType="com.nzgreens.common.model.console.AgentRebateAuditModel">
+        SELECT
+        r.id,
+        r.agent_user_id agentUserId,
+        r.user_order_id userOrderId,
+        u.telephone mobile,
+        o.order_number orderNumber,
+        r.type,r.rebate_price rebatePrice,
+        r.actual_rebate_price actualRebatePrice,
+        r.`status`,
+        r.create_time createTime,
+        r.update_time updateTime
+        FROM
+        agent_rebate_audit r,
+        users u,
+        user_order o
+        WHERE
+        r.agent_user_id = u.id
+        AND r.user_order_id = o.id
+        <if test="mobile != null and mobile != ''">
+            and u.telephone = #{mobile}
+        </if>
+        <if test="orderNumber != null and orderNumber != ''">
+            and o.order_number = #{orderNumber}
+        </if>
+        <if test="type != null">
+            and r.type = #{type}
+        </if>
+        <if test="status != null">
+            and r.status = #{status}
+        </if>
+        order by r.id desc
+    </select>
+
+
+    <select id="selectAgentRebateAuditDetail" parameterType="java.lang.Long" resultType="com.nzgreens.common.model.console.AgentRebateAuditModel">
+        SELECT
+        r.id,
+        r.agent_user_id agentUserId,
+        r.user_order_id userOrderId,
+        u.telephone mobile,
+        o.order_number orderNumber,
+        r.type,r.rebate_price rebatePrice,
+        r.actual_rebate_price actualRebatePrice,
+        r.`status`,
+        r.create_time createTime
+        FROM
+        agent_rebate_audit r,
+        users u,
+        user_order o
+        WHERE
+        r.agent_user_id = u.id
+        AND r.user_order_id = o.id
+        <if test="id != null">
+            and r.id = #{id}
+        </if>
+    </select>
+</mapper>

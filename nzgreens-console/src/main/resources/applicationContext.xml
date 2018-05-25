@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+	<context:component-scan base-package="com.nzgreens.*"/>
+
+	<import resource="spring-shiro.xml" />
+	<import resource="spring-mvc.xml" />
+
+	<import resource="classpath*:application-mybatis-context.xml"/>
+	<import resource="classpath:application-service-context.xml"/>
+
+	<bean id="messageSource"
+		  class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="useCodeAsDefaultMessage" value="true"/>
+		<property name="basenames">
+			<list>
+				<value>i18n/error</value>
+				<value>i18n/message</value>
+				<value>i18n/errorconsole</value>
+			</list>
+		</property>
+	</bean>
+
+	<beans profile="default">
+		<context:property-placeholder location="classpath:settings/settings-dev.xml" ignore-resource-not-found="false"/>
+	</beans>
+
+	<beans profile="test">
+		<context:property-placeholder location="classpath:settings/settings-test.xml" ignore-resource-not-found="false"/>
+	</beans>
+
+	<beans profile="online">
+		<context:property-placeholder location="classpath:settings/settings-online.xml" ignore-resource-not-found="false"/>
+	</beans>
+
+</beans>

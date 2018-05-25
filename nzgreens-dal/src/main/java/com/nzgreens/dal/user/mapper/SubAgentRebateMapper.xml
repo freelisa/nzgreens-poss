@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nzgreens.dal.user.mapper.SubAgentRebateMapper">
+    <!-- 查询代理返佣设置列表 -->
+    <select id="selectForPage" parameterType="com.nzgreens.common.form.console.AgentRebateForm" resultType="com.nzgreens.common.model.console.AgentRebateModel">
+        SELECT
+        r.id,
+        r.agent_user_id userId,
+        u.telephone mobile,
+        r.order_rebate orderRebate,
+        r.month_rebate monthRebate,
+        r.create_time createTime,
+        r.update_time updateTime
+        FROM
+        agent_rebate r,
+        users u
+        WHERE
+        r.agent_user_id = u.id
+        <if test="userId != null">
+            and r.agent_user_id = #{userId}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            and u.telephone = #{mobile}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+    <classPathEntry location="mybatisgenerator/mysql-connector-java-5.1.35-bin.jar" />
+    <context id="context1" >
+        <plugin type="com.nzgreens.dal.ModelExampleLimitPlugin" />
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer true，把JDBC DECIMAL 和
+
+           NUMERIC 类型解析为java.math.BigDecimal -->
+        <!--       <javaTypeResolver>
+                  <property name="forceBigDecimals" value="false" />
+              </javaTypeResolver> -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://47.98.120.220:3306/nz_greens?characterEncoding=utf8" userId="root" password="Root.123" />
+
+        <javaModelGenerator targetPackage="com.nzgreens.dal.user.example"  targetProject="src/main/java" />
+        <sqlMapGenerator targetPackage="com.nzgreens.dal.user.mapper"  targetProject="src/main/java" />
+        <javaClientGenerator targetPackage="com.nzgreens.dal.user.mapper"  targetProject="src/main/java" type="XMLMAPPER" />
+       <!-- <table schema="" tableName="account_logs" domainObjectName="AccountLogs"/>-->
+        <!--<table schema="" tableName="agent_products" domainObjectName="AgentProducts"/>
+        <table schema="" tableName="agent_rebate" domainObjectName="AgentRebate"/>
+        <table schema="" tableName="agent_rebate_audit" domainObjectName="AgentRebateAudit"/>
+        <table schema="" tableName="agent_user_shop" domainObjectName="AgentUserShop"/>
+        <table schema="" tableName="charge_record" domainObjectName="ChargeRecord"/>
+        <table schema="" tableName="order_certificate" domainObjectName="OrderCertificate"/>
+        <table schema="" tableName="orders" domainObjectName="Orders"/>
+        <table schema="" tableName="product_brand" domainObjectName="ProductBrand"/>
+        <table schema="" tableName="product_category" domainObjectName="ProductCategory"/>
+        <table schema="" tableName="product_comment" domainObjectName="ProductComment"/>
+        <table schema="" tableName="product_freight" domainObjectName="ProductFreight"/>
+        <table schema="" tableName="products" domainObjectName="Products"/>
+        <table schema="" tableName="products_crawl" domainObjectName="ProductsCrawl"/>
+        <table schema="" tableName="shopping_cart" domainObjectName="ShoppingCart"/>
+        <table schema="" tableName="user_address" domainObjectName="UserAddress"/>
+        <table schema="" tableName="user_agent" domainObjectName="UserAgent"/>
+        <table schema="" tableName="user_order" domainObjectName="UserOrder"/>
+        <table schema="" tableName="user_token" domainObjectName="UserToken"/>
+        <table schema="" tableName="users" domainObjectName="Users"/>
+        <table schema="" tableName="withdraw_record" domainObjectName="WithdrawRecord"/>-->
+       <!-- <table schema="" tableName="products_crawl" domainObjectName="ProductsCrawl"/>-->
+<!--        <table schema="" tableName="products" domainObjectName="Products"/>
+        <table schema="" tableName="products_crawl" domainObjectName="ProductsCrawl"/>-->
+<!--        <table schema="" tableName="users" domainObjectName="Users"/>-->
+        <!--<table schema="" tableName="user_order" domainObjectName="UserOrder">
+            <columnOverride column="delivery_mode" javaType="Integer"></columnOverride>
+            <columnOverride column="type" javaType="Integer"></columnOverride>
+            <columnOverride column="status" javaType="Integer"></columnOverride>
+        </table>-->
+    <!--    <table schema="" tableName="order_certificate" domainObjectName="OrderCertificate"/>-->
+
+        <!--<table schema="" tableName="coin_setting" domainObjectName="CoinSetting"/>-->
+<!--        <table schema="" tableName="users" domainObjectName="Users"/>-->
+        <table schema="" tableName="product_brand" domainObjectName="ProductBrand">
+            <columnOverride column="is_valid" javaType="Integer"></columnOverride>
+        </table>
+   </context>
+</generatorConfiguration>

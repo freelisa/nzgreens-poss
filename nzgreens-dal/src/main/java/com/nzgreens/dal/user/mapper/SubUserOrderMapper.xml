@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nzgreens.dal.user.mapper.SubUserOrderMapper">
+    <!-- 查询用戶訂單列表 -->
+    <select id="selectUserOrderForPage" parameterType="com.nzgreens.common.form.console.UserOrderForm" resultType="com.nzgreens.common.model.console.UserOrderModel">
+        SELECT
+        o.id,
+        o.user_id userId,
+        u.telephone mobile,
+        o.order_number orderNumber,
+        o.delivery_mode deliveryMode,
+        o.address,
+        o.contact,
+        o.telephone addressMobile,
+        o.product_price productPrice,
+        o.freight,
+        o.price,
+        o.type,
+        o.`status`,
+        o.create_time createTime,
+        o.update_time updateTime
+        FROM
+        user_order o,
+        users u
+        WHERE
+        o.user_id = u.id
+        <if test="userId != null">
+            and o.user_id = #{userId}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            and u.telephone = #{mobile}
+        </if>
+        <if test="orderNumber != null">
+            and o.order_number = #{orderNumber}
+        </if>
+        <if test="deliveryMode != null">
+            and o.delivery_mode = #{deliveryMode}
+        </if>
+        <if test="type != null">
+            and o.type = #{type}
+        </if>
+        <if test="status != null">
+            and o.status = #{status}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and o.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and o.create_time &lt;= #{endTime}
+        </if>
+        order by o.id desc
+    </select>
+</mapper>

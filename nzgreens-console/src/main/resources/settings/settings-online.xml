@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+    <!--################## 数据库配置 ##################-->
+    <entry key="db.url">jdbc:mysql://127.0.0.1:3306/instao-test?autoReconnect=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false</entry>
+    <entry key="db.username">root</entry>
+    <entry key="db.password">root</entry>
+    <entry key="db.filters">slf4j,stat</entry>
+
+    <!--########## 图片配置 ##################-->
+    <entry key="images.host">http://localhost:8080/</entry>
+    <entry key="images.template.mail.path">images/template/mail</entry>
+</properties>
