@@ -143,7 +143,7 @@ public class UserService extends BaseService implements IUserService {
         //查询系统
         Users systemUser = selectSystemUser();
 
-        Integer balances = CurrencyUtil.convertYuanToFenResInt(balance);
+        Integer balances = Integer.valueOf(balance);
         if(balances < 0){
             int balanceAbs = Math.abs(balances);
             if(balanceAbs > u.getBalance()){

@@ -144,7 +144,7 @@
         <tr>
             <td>{$T.agent.id}</td>
             <td>{$T.agent.productWeight}</td>
-            <td>{Fen2Yuan($T.agent.freight)}</td>
+            <td>{$T.agent.freight}</td>
             <td>{new Date($T.agent.createTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>{new Date($T.agent.updateTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>

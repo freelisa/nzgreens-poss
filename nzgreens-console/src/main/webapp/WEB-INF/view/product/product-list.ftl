@@ -415,8 +415,8 @@
                  <img src="{$T.appCon.image}" width="60px" height="60px">
                 {#/if}
             </td>
-            <td>{Fen2Yuan($T.appCon.costPrice)}</td>
-            <td>{Fen2Yuan($T.appCon.sellingPrice)}</td>
+            <td>{$T.appCon.costPrice}</td>
+            <td>{$T.appCon.sellingPrice}</td>
              <td>
              <#list categoryList as c>
                  {#if $T.appCon.categoryId=="${c.id}"}${c.name}{#/if}

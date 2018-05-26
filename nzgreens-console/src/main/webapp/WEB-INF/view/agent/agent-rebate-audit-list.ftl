@@ -205,8 +205,8 @@
                     {#if $T.agent.type == ${e.value}}${e.text}{#/if}
                 </#list>
             </td>
-            <td>{Fen2Yuan($T.agent.rebatePrice)}</td>
-            <td>{Fen2Yuan($T.agent.actualRebatePrice)}</td>
+            <td>{$T.agent.rebatePrice}</td>
+            <td>{$T.agent.actualRebatePrice}</td>
             <td>
                 <#list AgentRebateAuditStatusEnum?values as e>
                     {#if $T.agent.status == ${e.value}}${e.text}{#/if}
@@ -216,7 +216,9 @@
             <td>{new Date($T.agent.updateTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>
                 <@sec.any name="AGENT_REBATE_AUDIT_UPDATE">
-                <button type="button" agentId="{$T.agent.id}" class="btn btn-primary btnDetail">审核</button>
+                    {#if $T.agent.status == 0}
+                     <button type="button" agentId="{$T.agent.id}" class="btn btn-primary btnDetail">审核</button>
+                    {#/if}
                 </@sec.any>
             </td>
         </tr>

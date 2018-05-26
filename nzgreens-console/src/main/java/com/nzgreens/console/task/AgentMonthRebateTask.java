@@ -42,6 +42,7 @@ public class AgentMonthRebateTask extends AbstractScheduleTask {
     private static final BigDecimal HUNDRED = new BigDecimal("100");
 
     @Scheduled(cron = "${AgentMonthRebateTask.cron:0 0 1 1 * ?}")
+    //@Scheduled(cron = "${AgentMonthRebateTask.cron:0 1 23 * * ?}")
     public void handle() {
         doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
             @Override
@@ -58,7 +59,9 @@ public class AgentMonthRebateTask extends AbstractScheduleTask {
                     String endTime = DateUtil.format(calendar2.getTime());
                     endTime += " 23:59:59";
                     List<UserOrderPriceSumModel> userOrderPriceSumModels = subProductsMapper.selectAgentMonthRebate(startTime, endTime);
-
+                    if(CollectionUtils.isEmpty(userOrderPriceSumModels)){
+                        return;
+                    }
                     for(UserOrderPriceSumModel model : userOrderPriceSumModels){
                         AgentRebateExample example = new AgentRebateExample();
                         example.createCriteria().andAgentUserIdEqualTo(model.getUserId());

@@ -74,7 +74,8 @@ public class SettingProductTask extends AbstractScheduleTask {
 						}
 
 						BigDecimal sell = new BigDecimal(crawl.getSellingPrice());
-						BigDecimal sellBig = sell.divide(new BigDecimal(money)).setScale(0, BigDecimal.ROUND_UP);
+						BigDecimal sellBig = sell.divide(new BigDecimal(money)).multiply(new BigDecimal(coinSettings.get(0).getCoin()))
+								.setScale(0, BigDecimal.ROUND_UP);
 						pro.setCostPrice(sellBig.longValue());
 						pro.setSellingPrice(sellBig.longValue());
 						StringBuilder buff = new StringBuilder();

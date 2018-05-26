@@ -81,7 +81,7 @@
             <td>{$T.t.mobile}</td>
             <td>{$T.t.nickName}</td>
             <td>{$T.t.userId}</td>
-            <td>{Fen2Yuan($T.t.amount)}</td>
+            <td>{$T.t.amount}</td>
             <td>{new Date($T.t.createTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
         </tr>
     {#else}

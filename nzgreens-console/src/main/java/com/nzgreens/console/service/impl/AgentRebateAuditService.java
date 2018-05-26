@@ -73,7 +73,7 @@ public class AgentRebateAuditService extends BaseService implements IAgentRebate
 
         AgentRebateAudit audit = new AgentRebateAudit();
         audit.setStatus(status.byteValue());
-        audit.setActualRebatePrice(CurrencyUtil.convertYuanToFens(amount));
+        audit.setActualRebatePrice(Long.valueOf(amount));
         if(agentRebateAuditMapper.updateByExampleSelective(audit,example) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
         }

@@ -77,8 +77,8 @@ public class ProductService extends BaseService implements IProductService {
         Products products = productsMapper.selectByPrimaryKey(id);
         ProductAddForm form = new ProductAddForm();
         BeanUtils.copyProperties(products,form);
-        form.setCostPrice(CurrencyUtil.convertFenToYuan(products.getCostPrice()));
-        form.setSellingPrice(CurrencyUtil.convertFenToYuan(products.getSellingPrice()));
+        form.setCostPrice(String.valueOf(products.getCostPrice()));
+        form.setSellingPrice(String.valueOf(products.getSellingPrice()));
         form.setImage(imageHost + imageProductIconPath + "/" + form.getImage());
         return form;
     }
@@ -120,8 +120,8 @@ public class ProductService extends BaseService implements IProductService {
         form.setImage(form.getImage().substring(form.getImage().lastIndexOf("/") + 1));
         Products products = new Products();
         BeanUtils.copyProperties(form,products);
-        products.setCostPrice(CurrencyUtil.convertYuanToFens(form.getCostPrice()));
-        products.setSellingPrice(CurrencyUtil.convertYuanToFens(form.getSellingPrice()));
+        products.setCostPrice(Long.valueOf(form.getCostPrice()));
+        products.setSellingPrice(Long.valueOf(form.getSellingPrice()));
         if (productsMapper.insertSelective(products) < 1) {
             thrown("update.error");
         }
@@ -158,8 +158,8 @@ public class ProductService extends BaseService implements IProductService {
         }
         Products products = new Products();
         BeanUtils.copyProperties(form,products);
-        products.setCostPrice(CurrencyUtil.convertYuanToFens(form.getCostPrice()));
-        products.setSellingPrice(CurrencyUtil.convertYuanToFens(form.getSellingPrice()));
+        products.setCostPrice(Long.valueOf(form.getCostPrice()));
+        products.setSellingPrice(Long.valueOf(form.getSellingPrice()));
         if (productsMapper.updateByPrimaryKeySelective(products) < 1) {
             thrown("update.error");
         }

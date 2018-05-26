@@ -37,7 +37,7 @@ function searchDetail(agentId) {
         $("#modalDetail").modal();
 
         $("#status").val(result.data.status);
-        $("#rebatePrice").html(Fen2Yuan(result.data.rebatePrice));
+        $("#rebatePrice").html(result.data.rebatePrice);
     });
 }
 

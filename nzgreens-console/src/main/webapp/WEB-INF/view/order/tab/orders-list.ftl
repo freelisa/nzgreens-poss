@@ -6,7 +6,7 @@
             <td>{$T.user.orderNumber}</td>
             <td>{$T.user.productId}</td>
             <td>{$T.user.productNumber}</td>
-            <td>{Fen2Yuan($T.user.price)}</td>
+            <td>{$T.user.price}</td>
             <td>
             <#list OrderStatusEnum?values as e>
                 {#if $T.user.status == ${e.value}}${e.text}{#/if}

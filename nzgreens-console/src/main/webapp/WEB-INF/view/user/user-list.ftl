@@ -290,7 +290,7 @@
                 {#if $T.user.type == ${e.value}}${e.text}{#/if}
             </#list>
             </td>
-            <td>{Fen2Yuan($T.user.balance)}</td>
+            <td>{$T.user.balance}</td>
             <td>
             <#list IsValidEnum?values as e>
                 {#if $T.user.isValid == ${e.value}}${e.text}{#/if}
