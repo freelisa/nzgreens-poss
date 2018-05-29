@@ -166,13 +166,20 @@
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
-                    <#--<div class="form-group">
-                        <label class="col-sm-4 control-label" style="text-align: left; width:20%">余额</label>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; width:20%">代理</label>
                         <div class="col-sm-6">
-                            <input type="text" name="balance" class="form-control" id="addBalance">
+                            <select class="form-control" name="agentUserId" id="addAgentUserId">
+                                <option value="">请选择</option>
+                                <#if agentList?? && agentList?size gt 0>
+                                    <#list agentList as b>
+                                        <option value="${b.id}">${b.telephone}</option>
+                                    </#list>
+                                </#if>
+                            </select>
                         </div>
                     </div>
-                    <div class="hr-line-dashed"></div>-->
+                    <div class="hr-line-dashed"></div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -226,6 +233,20 @@
                 <#list UserTypeEnum?values as b>
                     <option value="${b.value}">${b.text}</option>
                 </#list>
+                </select>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" style="text-align: left; width:20%">代理</label>
+            <div class="col-sm-6">
+                <select class="form-control" name="agentUserId" id="updateAgentUserId">
+                    <option value="">请选择</option>
+                    <#if agentList?? && agentList?size gt 0>
+                        <#list agentList as b>
+                            <option value="${b.id}">${b.telephone}</option>
+                        </#list>
+                    </#if>
                 </select>
             </div>
         </div>

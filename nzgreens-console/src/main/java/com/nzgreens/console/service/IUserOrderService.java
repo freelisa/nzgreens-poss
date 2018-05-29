@@ -27,6 +27,8 @@ public interface IUserOrderService {
 
     void updateOrderStatus(Long orderId,Integer status) throws Exception;
 
+    void updateLogisticsNumber(Long orderId,String logisticsNumber) throws Exception;
+
     void deleteOrderCert(Long id) throws Exception;
 
     String uploadImg(MultipartFile[] multiFile,String orderNumer) throws Exception;

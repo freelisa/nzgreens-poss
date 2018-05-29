@@ -8,9 +8,11 @@ public class UserOrder implements Serializable {
 
     private Long userId;
 
+    private String userOrderNumber;
+
     private String orderNumber;
 
-    private Integer deliveryMode;
+    private Byte deliveryMode;
 
     private String address;
 
@@ -24,9 +26,11 @@ public class UserOrder implements Serializable {
 
     private Long price;
 
-    private Integer type;
+    private Byte type;
 
-    private Integer status;
+    private String logisticsNumber;
+
+    private Byte status;
 
     private Date createTime;
 
@@ -50,6 +54,14 @@ public class UserOrder implements Serializable {
         this.userId = userId;
     }
 
+    public String getUserOrderNumber() {
+        return userOrderNumber;
+    }
+
+    public void setUserOrderNumber(String userOrderNumber) {
+        this.userOrderNumber = userOrderNumber;
+    }
+
     public String getOrderNumber() {
         return orderNumber;
     }
@@ -58,11 +70,11 @@ public class UserOrder implements Serializable {
         this.orderNumber = orderNumber;
     }
 
-    public Integer getDeliveryMode() {
+    public Byte getDeliveryMode() {
         return deliveryMode;
     }
 
-    public void setDeliveryMode(Integer deliveryMode) {
+    public void setDeliveryMode(Byte deliveryMode) {
         this.deliveryMode = deliveryMode;
     }
 
@@ -114,19 +126,27 @@ public class UserOrder implements Serializable {
         this.price = price;
     }
 
-    public Integer getType() {
+    public Byte getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(Byte type) {
         this.type = type;
     }
 
-    public Integer getStatus() {
+    public String getLogisticsNumber() {
+        return logisticsNumber;
+    }
+
+    public void setLogisticsNumber(String logisticsNumber) {
+        this.logisticsNumber = logisticsNumber;
+    }
+
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 

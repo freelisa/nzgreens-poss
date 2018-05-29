@@ -858,6 +858,66 @@ public class ProductsExample {
             return (Criteria) this;
         }
 
+        public Criteria andGelinProductIdIsNull() {
+            addCriterion("gelin_product_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGelinProductIdIsNotNull() {
+            addCriterion("gelin_product_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGelinProductIdEqualTo(Long value) {
+            addCriterion("gelin_product_id =", value, "gelinProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGelinProductIdNotEqualTo(Long value) {
+            addCriterion("gelin_product_id <>", value, "gelinProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGelinProductIdGreaterThan(Long value) {
+            addCriterion("gelin_product_id >", value, "gelinProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGelinProductIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("gelin_product_id >=", value, "gelinProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGelinProductIdLessThan(Long value) {
+            addCriterion("gelin_product_id <", value, "gelinProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGelinProductIdLessThanOrEqualTo(Long value) {
+            addCriterion("gelin_product_id <=", value, "gelinProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGelinProductIdIn(List<Long> values) {
+            addCriterion("gelin_product_id in", values, "gelinProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGelinProductIdNotIn(List<Long> values) {
+            addCriterion("gelin_product_id not in", values, "gelinProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGelinProductIdBetween(Long value1, Long value2) {
+            addCriterion("gelin_product_id between", value1, value2, "gelinProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGelinProductIdNotBetween(Long value1, Long value2) {
+            addCriterion("gelin_product_id not between", value1, value2, "gelinProductId");
+            return (Criteria) this;
+        }
+
         public Criteria andIsValidIsNull() {
             addCriterion("is_valid is null");
             return (Criteria) this;

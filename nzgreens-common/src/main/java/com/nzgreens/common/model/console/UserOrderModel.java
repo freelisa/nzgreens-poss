@@ -38,6 +38,8 @@ public class UserOrderModel implements Serializable {
 
     private Integer status;
 
+    private String logisticsNumber;
+
     private Date createTime;
 
     private Date updateTime;
@@ -162,5 +164,13 @@ public class UserOrderModel implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getLogisticsNumber() {
+        return logisticsNumber;
+    }
+
+    public void setLogisticsNumber(String logisticsNumber) {
+        this.logisticsNumber = logisticsNumber;
     }
 }

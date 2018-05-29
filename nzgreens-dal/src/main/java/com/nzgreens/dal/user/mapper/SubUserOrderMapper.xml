@@ -18,7 +18,8 @@
         o.type,
         o.`status`,
         o.create_time createTime,
-        o.update_time updateTime
+        o.update_time updateTime,
+        o.logistics_number logisticsNumber
         FROM
         user_order o,
         users u

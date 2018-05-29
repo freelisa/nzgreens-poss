@@ -14,6 +14,12 @@
         update products set sales_volume = ifnull(sales_volume,0)+#{number} where id = #{productId}
     </update>
 
+    <update id="batchUpdateProductNumber" parameterType="java.util.List">
+        <foreach close="" collection="list" index="index" item="item" open="" separator=";">
+            update products set stock = ifnull(stock,0)+#{item.productNumber} where id = #{item.productId}
+        </foreach>
+    </update>
+
     <select id="selectChargeRecordForPage" parameterType="com.nzgreens.common.form.console.ChargeRecordForm" resultType="com.nzgreens.common.model.console.ChargeRecordModel">
         SELECT
         r.id,

@@ -29,6 +29,8 @@ public class Products implements Serializable {
 
     private Long salesVolume;
 
+    private Long gelinProductId;
+
     private Integer isValid;
 
     private Date createTime;
@@ -133,6 +135,14 @@ public class Products implements Serializable {
 
     public void setSalesVolume(Long salesVolume) {
         this.salesVolume = salesVolume;
+    }
+
+    public Long getGelinProductId() {
+        return gelinProductId;
+    }
+
+    public void setGelinProductId(Long gelinProductId) {
+        this.gelinProductId = gelinProductId;
     }
 
     public Integer getIsValid() {

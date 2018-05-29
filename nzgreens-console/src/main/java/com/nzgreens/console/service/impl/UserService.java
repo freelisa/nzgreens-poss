@@ -3,10 +3,12 @@ package com.nzgreens.console.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.nzgreens.common.enums.AccountLogsTypeEnum;
 import com.nzgreens.common.enums.IsValidEnum;
+import com.nzgreens.common.enums.UserOrderStatusEnum;
 import com.nzgreens.common.enums.UserTypeEnum;
 import com.nzgreens.common.exception.ErrorCodes;
 import com.nzgreens.common.form.console.UserAddForm;
 import com.nzgreens.common.form.console.UserForm;
+import com.nzgreens.common.model.console.UsersModel;
 import com.nzgreens.common.utils.CurrencyUtil;
 import com.nzgreens.common.utils.RandomUtil;
 import com.nzgreens.common.utils.StringUtil;
@@ -39,6 +41,10 @@ public class UserService extends BaseService implements IUserService {
     private WithdrawRecordMapper withdrawRecordMapper;
     @Resource
     private AccountLogsMapper accountLogsMapper;
+    @Resource
+    private UserAgentMapper userAgentMapper;
+    @Resource
+    private UserOrderMapper userOrderMapper;
 
     @Override
     public List<Users> selectUserForPage(UserForm form) throws Exception {
@@ -70,8 +76,19 @@ public class UserService extends BaseService implements IUserService {
     }
 
     @Override
-    public Users selectUserDetail(Long userId) throws Exception {
-        return usersMapper.selectByPrimaryKey(userId);
+    public UsersModel selectUserDetail(Long userId) throws Exception {
+        Users users = usersMapper.selectByPrimaryKey(userId);
+
+        UsersModel model = new UsersModel();
+        BeanUtils.copyProperties(users,model);
+
+        UserAgentExample example = new UserAgentExample();
+        example.createCriteria().andUserIdEqualTo(userId);
+        List<UserAgent> userAgents = userAgentMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(userAgents)){
+            model.setAgentUserId(userAgents.get(0).getAgentUserId());
+        }
+        return model;
     }
 
     @Override
@@ -85,12 +102,26 @@ public class UserService extends BaseService implements IUserService {
     @Override
     public void insertUser(UserAddForm users) throws Exception {
         checkUserForm(users);
+        if(users.getType().intValue() == UserTypeEnum._AGENT.getValue() && users.getAgentUserId() != null){
+            thrown(ErrorCodes.USER_AGENT_SETTING_ERROR);
+        }else if(users.getType().intValue() == UserTypeEnum._USER.getValue() && users.getAgentUserId() == null){
+            thrown(ErrorCodes.USER_AGENT_NOT_NULL);
+        }
         users.setPassword(StringUtil.md5(users.getTelephone()));
         Users user = new Users();
         BeanUtils.copyProperties(users,user);
         user.setNickname(RandomUtil.generateInt(8));
         if(usersMapper.insertSelective(user) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
+        }
+
+        if(users.getType().intValue() == UserTypeEnum._USER.getValue()){
+            UserAgent agent = new UserAgent();
+            agent.setAgentUserId(users.getAgentUserId());
+            agent.setUserId(user.getId());
+            if(userAgentMapper.insertSelective(agent) < 1){
+                thrown(ErrorCodes.UPDATE_ERROR);
+            }
         }
     }
 
@@ -113,14 +144,64 @@ public class UserService extends BaseService implements IUserService {
 
     @Override
     public void updateUser(UserAddForm users) throws Exception {
-        checkUserForm(users);
+        if(users == null){
+            thrown(ErrorCodes.ILLEGAL_PARAM);
+        }
         if(users.getId() == null){
             thrown(ErrorCodes.ID_ILLEGAL);
+        }
+        if(users.getType() == null){
+            thrown(ErrorCodes.USER_TYPE_ILLEGAL);
+        }
+        if(users.getBalance() != null && !NumberUtils.isNumber(users.getBalance())){
+            thrown(ErrorCodes.USER_BALANCE_ILLEGAL);
+        }
+        if(users.getType().intValue() == UserTypeEnum._AGENT.getValue() && users.getAgentUserId() != null){
+            thrown(ErrorCodes.USER_AGENT_SETTING_ERROR);
+        }else if(users.getType().intValue() == UserTypeEnum._USER.getValue() && users.getAgentUserId() == null){
+            thrown(ErrorCodes.USER_AGENT_NOT_NULL);
         }
         Users user = new Users();
         BeanUtils.copyProperties(users,user);
         if(usersMapper.updateByPrimaryKeySelective(user) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
+        }
+
+        //查询用户当前类型
+        Users usersQuery = usersMapper.selectByPrimaryKey(users.getId());
+        if(usersQuery.getType().intValue() == UserTypeEnum._AGENT.getValue() && users.getAgentUserId() != null){
+            if(users.getAgentUserId() != UserTypeEnum._AGENT.getValue()){
+                thrown(ErrorCodes.USER_AGENT_NOT_UPDATE_TYPE);
+            }
+        }
+        if(usersQuery.getType().intValue() == UserTypeEnum._USER.getValue()){
+            //查询该用户是否更换了代理
+            UserAgentExample example = new UserAgentExample();
+            example.createCriteria().andUserIdEqualTo(users.getId());
+            List<UserAgent> userAgents = userAgentMapper.selectByExample(example);
+            if(CollectionUtils.isNotEmpty(userAgents)){
+                UserAgent oldAgent = userAgents.get(0);
+                //没有更换
+                if(oldAgent.getAgentUserId().intValue() == users.getAgentUserId().intValue()){
+                    return;
+                }
+
+                //更换了代理，如果有未处理的订单不让更换
+                UserOrderExample orderExample = new UserOrderExample();
+                orderExample.createCriteria().andUserIdEqualTo(usersQuery.getId())
+                        .andStatusEqualTo((byte) UserOrderStatusEnum._PENDING.getValue());
+                if(userOrderMapper.countByExample(orderExample) > 0){
+                    thrown(ErrorCodes.USER_ORDER_STATUS_ERROR);
+                }
+            }
+
+            //修改代理关系
+            UserAgent agent = new UserAgent();
+            agent.setAgentUserId(users.getAgentUserId());
+
+            if(userAgentMapper.updateByExampleSelective(agent,example) < 1){
+                thrown(ErrorCodes.UPDATE_ERROR);
+            }
         }
     }
 
@@ -166,10 +247,29 @@ public class UserService extends BaseService implements IUserService {
             rebateLog.setType((byte) AccountLogsTypeEnum._WITHDRAW.getValue());
             rebateLog.setRecordId(record.getId());
             rebateLog.setBefore(u.getBalance());
-            rebateLog.setAmount(record.getAmount());
-            rebateLog.setAfter(u.getBalance() + record.getAmount());
+            rebateLog.setAmount(-record.getAmount());
+            rebateLog.setAfter(u.getBalance() - record.getAmount());
             rebateLog.setTriggerUserId(systemUser.getId());
             if(accountLogsMapper.insertSelective(rebateLog) < 1){
+                thrown(ErrorCodes.UPDATE_ERROR);
+            }
+
+            //系统加币
+            int row = subUserMapper.reduceBalance(systemUser.getId(), balances);
+            if(row < 1){
+                thrown(ErrorCodes.SYSTEM_BALANCE_NOT_ENOUGH);
+            }
+
+            //系统加币日志
+            AccountLogs systemLog = new AccountLogs();
+            systemLog.setUserId(systemUser.getId());
+            systemLog.setType((byte) AccountLogsTypeEnum._WITHDRAW.getValue());
+            systemLog.setRecordId(record.getId());
+            systemLog.setBefore(systemUser.getBalance());
+            systemLog.setAmount(record.getAmount());
+            systemLog.setAfter(systemUser.getBalance() + record.getAmount());
+            systemLog.setTriggerUserId(systemUser.getId());
+            if(accountLogsMapper.insertSelective(systemLog) < 1){
                 thrown(ErrorCodes.UPDATE_ERROR);
             }
         }else{
@@ -190,6 +290,25 @@ public class UserService extends BaseService implements IUserService {
             rebateLog.setAfter(u.getBalance() + record.getAmount());
             rebateLog.setTriggerUserId(systemUser.getId());
             if(accountLogsMapper.insertSelective(rebateLog) < 1){
+                thrown(ErrorCodes.UPDATE_ERROR);
+            }
+
+            //系统减币
+            int row = subUserMapper.reduceBalance(systemUser.getId(), balances);
+            if(row < 1){
+                thrown(ErrorCodes.SYSTEM_BALANCE_NOT_ENOUGH);
+            }
+
+            //系统减币日志
+            AccountLogs systemLog = new AccountLogs();
+            systemLog.setUserId(systemUser.getId());
+            systemLog.setType((byte) AccountLogsTypeEnum._CHARGE.getValue());
+            systemLog.setRecordId(record.getId());
+            systemLog.setBefore(systemUser.getBalance());
+            systemLog.setAmount(-record.getAmount());
+            systemLog.setAfter(systemUser.getBalance() - record.getAmount());
+            systemLog.setTriggerUserId(systemUser.getId());
+            if(accountLogsMapper.insertSelective(systemLog) < 1){
                 thrown(ErrorCodes.UPDATE_ERROR);
             }
         }

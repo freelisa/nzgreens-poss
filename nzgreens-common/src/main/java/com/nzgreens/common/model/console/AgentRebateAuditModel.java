@@ -16,7 +16,7 @@ public class AgentRebateAuditModel {
 
     private Long userOrderId;
 
-    private Long orderNumber;
+    private String orderNumber;
 
     private Byte type;
 
@@ -64,11 +64,11 @@ public class AgentRebateAuditModel {
         this.userOrderId = userOrderId;
     }
 
-    public Long getOrderNumber() {
+    public String getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(Long orderNumber) {
+    public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
     }
 

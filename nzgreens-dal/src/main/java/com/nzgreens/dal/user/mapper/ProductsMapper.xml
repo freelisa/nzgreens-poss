@@ -14,6 +14,7 @@
     <result column="stock" property="stock" jdbcType="BIGINT" />
     <result column="score" property="score" jdbcType="DECIMAL" />
     <result column="sales_volume" property="salesVolume" jdbcType="BIGINT" />
+    <result column="gelin_product_id" property="gelinProductId" jdbcType="BIGINT" />
     <result column="is_valid" property="isValid" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
@@ -81,7 +82,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, title, brand_id, weight, image, cost_price, selling_price, parent_category_id, 
-    category_id, stock, score, sales_volume, is_valid, create_time, update_time
+    category_id, stock, score, sales_volume, gelin_product_id, is_valid, create_time, 
+    update_time
   </sql>
   <sql id="Blob_Column_List" >
     detail
@@ -145,14 +147,14 @@
       weight, image, cost_price, 
       selling_price, parent_category_id, category_id, 
       stock, score, sales_volume, 
-      is_valid, create_time, update_time, 
-      detail)
+      gelin_product_id, is_valid, create_time, 
+      update_time, detail)
     values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{brandId,jdbcType=BIGINT}, 
       #{weight,jdbcType=BIGINT}, #{image,jdbcType=VARCHAR}, #{costPrice,jdbcType=BIGINT}, 
       #{sellingPrice,jdbcType=BIGINT}, #{parentCategoryId,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, 
       #{stock,jdbcType=BIGINT}, #{score,jdbcType=DECIMAL}, #{salesVolume,jdbcType=BIGINT}, 
-      #{isValid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{detail,jdbcType=LONGVARCHAR})
+      #{gelinProductId,jdbcType=BIGINT}, #{isValid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{detail,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.nzgreens.dal.user.example.Products" useGeneratedKeys="true" keyProperty="id">
     insert into products
@@ -192,6 +194,9 @@
       </if>
       <if test="salesVolume != null" >
         sales_volume,
+      </if>
+      <if test="gelinProductId != null" >
+        gelin_product_id,
       </if>
       <if test="isValid != null" >
         is_valid,
@@ -242,6 +247,9 @@
       </if>
       <if test="salesVolume != null" >
         #{salesVolume,jdbcType=BIGINT},
+      </if>
+      <if test="gelinProductId != null" >
+        #{gelinProductId,jdbcType=BIGINT},
       </if>
       <if test="isValid != null" >
         #{isValid,jdbcType=INTEGER},
@@ -302,6 +310,9 @@
       <if test="record.salesVolume != null" >
         sales_volume = #{record.salesVolume,jdbcType=BIGINT},
       </if>
+      <if test="record.gelinProductId != null" >
+        gelin_product_id = #{record.gelinProductId,jdbcType=BIGINT},
+      </if>
       <if test="record.isValid != null" >
         is_valid = #{record.isValid,jdbcType=INTEGER},
       </if>
@@ -333,6 +344,7 @@
       stock = #{record.stock,jdbcType=BIGINT},
       score = #{record.score,jdbcType=DECIMAL},
       sales_volume = #{record.salesVolume,jdbcType=BIGINT},
+      gelin_product_id = #{record.gelinProductId,jdbcType=BIGINT},
       is_valid = #{record.isValid,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -355,6 +367,7 @@
       stock = #{record.stock,jdbcType=BIGINT},
       score = #{record.score,jdbcType=DECIMAL},
       sales_volume = #{record.salesVolume,jdbcType=BIGINT},
+      gelin_product_id = #{record.gelinProductId,jdbcType=BIGINT},
       is_valid = #{record.isValid,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
@@ -398,6 +411,9 @@
       <if test="salesVolume != null" >
         sales_volume = #{salesVolume,jdbcType=BIGINT},
       </if>
+      <if test="gelinProductId != null" >
+        gelin_product_id = #{gelinProductId,jdbcType=BIGINT},
+      </if>
       <if test="isValid != null" >
         is_valid = #{isValid,jdbcType=INTEGER},
       </if>
@@ -426,6 +442,7 @@
       stock = #{stock,jdbcType=BIGINT},
       score = #{score,jdbcType=DECIMAL},
       sales_volume = #{salesVolume,jdbcType=BIGINT},
+      gelin_product_id = #{gelinProductId,jdbcType=BIGINT},
       is_valid = #{isValid,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -445,6 +462,7 @@
       stock = #{stock,jdbcType=BIGINT},
       score = #{score,jdbcType=DECIMAL},
       sales_volume = #{salesVolume,jdbcType=BIGINT},
+      gelin_product_id = #{gelinProductId,jdbcType=BIGINT},
       is_valid = #{isValid,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}

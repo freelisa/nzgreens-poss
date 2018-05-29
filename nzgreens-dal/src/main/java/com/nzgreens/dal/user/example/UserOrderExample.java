@@ -237,6 +237,76 @@ public class UserOrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserOrderNumberIsNull() {
+            addCriterion("user_order_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserOrderNumberIsNotNull() {
+            addCriterion("user_order_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserOrderNumberEqualTo(String value) {
+            addCriterion("user_order_number =", value, "userOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserOrderNumberNotEqualTo(String value) {
+            addCriterion("user_order_number <>", value, "userOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserOrderNumberGreaterThan(String value) {
+            addCriterion("user_order_number >", value, "userOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserOrderNumberGreaterThanOrEqualTo(String value) {
+            addCriterion("user_order_number >=", value, "userOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserOrderNumberLessThan(String value) {
+            addCriterion("user_order_number <", value, "userOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserOrderNumberLessThanOrEqualTo(String value) {
+            addCriterion("user_order_number <=", value, "userOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserOrderNumberLike(String value) {
+            addCriterion("user_order_number like", value, "userOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserOrderNumberNotLike(String value) {
+            addCriterion("user_order_number not like", value, "userOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserOrderNumberIn(List<String> values) {
+            addCriterion("user_order_number in", values, "userOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserOrderNumberNotIn(List<String> values) {
+            addCriterion("user_order_number not in", values, "userOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserOrderNumberBetween(String value1, String value2) {
+            addCriterion("user_order_number between", value1, value2, "userOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserOrderNumberNotBetween(String value1, String value2) {
+            addCriterion("user_order_number not between", value1, value2, "userOrderNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andOrderNumberIsNull() {
             addCriterion("order_number is null");
             return (Criteria) this;
@@ -317,52 +387,52 @@ public class UserOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryModeEqualTo(Integer value) {
+        public Criteria andDeliveryModeEqualTo(Byte value) {
             addCriterion("delivery_mode =", value, "deliveryMode");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryModeNotEqualTo(Integer value) {
+        public Criteria andDeliveryModeNotEqualTo(Byte value) {
             addCriterion("delivery_mode <>", value, "deliveryMode");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryModeGreaterThan(Integer value) {
+        public Criteria andDeliveryModeGreaterThan(Byte value) {
             addCriterion("delivery_mode >", value, "deliveryMode");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryModeGreaterThanOrEqualTo(Integer value) {
+        public Criteria andDeliveryModeGreaterThanOrEqualTo(Byte value) {
             addCriterion("delivery_mode >=", value, "deliveryMode");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryModeLessThan(Integer value) {
+        public Criteria andDeliveryModeLessThan(Byte value) {
             addCriterion("delivery_mode <", value, "deliveryMode");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryModeLessThanOrEqualTo(Integer value) {
+        public Criteria andDeliveryModeLessThanOrEqualTo(Byte value) {
             addCriterion("delivery_mode <=", value, "deliveryMode");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryModeIn(List<Integer> values) {
+        public Criteria andDeliveryModeIn(List<Byte> values) {
             addCriterion("delivery_mode in", values, "deliveryMode");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryModeNotIn(List<Integer> values) {
+        public Criteria andDeliveryModeNotIn(List<Byte> values) {
             addCriterion("delivery_mode not in", values, "deliveryMode");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryModeBetween(Integer value1, Integer value2) {
+        public Criteria andDeliveryModeBetween(Byte value1, Byte value2) {
             addCriterion("delivery_mode between", value1, value2, "deliveryMode");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryModeNotBetween(Integer value1, Integer value2) {
+        public Criteria andDeliveryModeNotBetween(Byte value1, Byte value2) {
             addCriterion("delivery_mode not between", value1, value2, "deliveryMode");
             return (Criteria) this;
         }
@@ -767,53 +837,123 @@ public class UserOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(Integer value) {
+        public Criteria andTypeEqualTo(Byte value) {
             addCriterion("type =", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(Integer value) {
+        public Criteria andTypeNotEqualTo(Byte value) {
             addCriterion("type <>", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(Integer value) {
+        public Criteria andTypeGreaterThan(Byte value) {
             addCriterion("type >", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+        public Criteria andTypeGreaterThanOrEqualTo(Byte value) {
             addCriterion("type >=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(Integer value) {
+        public Criteria andTypeLessThan(Byte value) {
             addCriterion("type <", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+        public Criteria andTypeLessThanOrEqualTo(Byte value) {
             addCriterion("type <=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<Integer> values) {
+        public Criteria andTypeIn(List<Byte> values) {
             addCriterion("type in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<Integer> values) {
+        public Criteria andTypeNotIn(List<Byte> values) {
             addCriterion("type not in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
+        public Criteria andTypeBetween(Byte value1, Byte value2) {
             addCriterion("type between", value1, value2, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+        public Criteria andTypeNotBetween(Byte value1, Byte value2) {
             addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberIsNull() {
+            addCriterion("logistics_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberIsNotNull() {
+            addCriterion("logistics_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberEqualTo(String value) {
+            addCriterion("logistics_number =", value, "logisticsNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberNotEqualTo(String value) {
+            addCriterion("logistics_number <>", value, "logisticsNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberGreaterThan(String value) {
+            addCriterion("logistics_number >", value, "logisticsNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberGreaterThanOrEqualTo(String value) {
+            addCriterion("logistics_number >=", value, "logisticsNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberLessThan(String value) {
+            addCriterion("logistics_number <", value, "logisticsNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberLessThanOrEqualTo(String value) {
+            addCriterion("logistics_number <=", value, "logisticsNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberLike(String value) {
+            addCriterion("logistics_number like", value, "logisticsNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberNotLike(String value) {
+            addCriterion("logistics_number not like", value, "logisticsNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberIn(List<String> values) {
+            addCriterion("logistics_number in", values, "logisticsNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberNotIn(List<String> values) {
+            addCriterion("logistics_number not in", values, "logisticsNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberBetween(String value1, String value2) {
+            addCriterion("logistics_number between", value1, value2, "logisticsNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogisticsNumberNotBetween(String value1, String value2) {
+            addCriterion("logistics_number not between", value1, value2, "logisticsNumber");
             return (Criteria) this;
         }
 
@@ -827,52 +967,52 @@ public class UserOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(Integer value) {
+        public Criteria andStatusEqualTo(Byte value) {
             addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(Integer value) {
+        public Criteria andStatusNotEqualTo(Byte value) {
             addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(Integer value) {
+        public Criteria andStatusGreaterThan(Byte value) {
             addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
+        public Criteria andStatusGreaterThanOrEqualTo(Byte value) {
             addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(Integer value) {
+        public Criteria andStatusLessThan(Byte value) {
             addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(Integer value) {
+        public Criteria andStatusLessThanOrEqualTo(Byte value) {
             addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<Integer> values) {
+        public Criteria andStatusIn(List<Byte> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<Integer> values) {
+        public Criteria andStatusNotIn(List<Byte> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(Integer value1, Integer value2) {
+        public Criteria andStatusBetween(Byte value1, Byte value2) {
             addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
+        public Criteria andStatusNotBetween(Byte value1, Byte value2) {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }

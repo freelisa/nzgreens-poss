@@ -96,7 +96,8 @@ public class SettingProductTask extends AbstractScheduleTask {
 							String[] split = crawl.getWeight().split("\\.");
 							pro.setWeight(Long.valueOf(split[0]));
 						}
-						pro.setStock(999l);
+						pro.setStock(9999l);
+						pro.setGelinProductId(Long.valueOf(crawl.getReptileProductId()));
 						productsMapper.insertSelective(pro);
 
 						crawl.setProductId(pro.getId());

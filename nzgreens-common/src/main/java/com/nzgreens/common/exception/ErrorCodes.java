@@ -50,6 +50,14 @@ public class ErrorCodes {
 
 	public static final String USER_MOBILE_ERROR = "20006";
 
+	public static final String USER_AGENT_SETTING_ERROR = "20007";
+
+	public static final String USER_AGENT_NOT_NULL = "20008";
+
+	public static final String USER_AGENT_NOT_UPDATE_TYPE = "20009";
+
+	public static final String USER_ORDER_STATUS_ERROR = "20010";
+
 	/**
 	 * =============== 代理返佣异常 ==================
 	 */
@@ -75,6 +83,8 @@ public class ErrorCodes {
 	public static final String ORDER_STATUS_ILLEGAL = "40002";
 
 	public static final String ORDER_TYPE_ILLEGAL = "40003";
+
+	public static final String LOGISTICS_NUMBER_ILLEGAL = "40004";
 
 	/**
 	 * =============== 产品分类 ==================

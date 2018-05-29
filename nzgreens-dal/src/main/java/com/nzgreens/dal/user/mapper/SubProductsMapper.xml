@@ -17,6 +17,7 @@
         score,
         sales_volume salesVolume,
         is_valid isValid,
+        gelin_product_id gelinProductId,
         create_time createTime,
         update_time updateTime
         FROM

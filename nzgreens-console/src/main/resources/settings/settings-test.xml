@@ -3,7 +3,7 @@
 <properties>
 
     <!--################## 数据库配置 ##################-->
-    <entry key="db.url">jdbc:mysql://47.98.120.220:3306/nz_greens?autoReconnect=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false</entry>
+    <entry key="db.url">jdbc:mysql://47.98.120.220:3306/nz_greens?autoReconnect=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;allowMultiQueries=true</entry>
     <entry key="db.username">root</entry>
     <entry key="db.password">Root.123</entry>
     <entry key="db.filters">slf4j,stat</entry>

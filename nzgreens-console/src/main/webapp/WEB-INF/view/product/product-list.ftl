@@ -113,6 +113,7 @@
                             <thead>
                                 <tr>
                                     <th>序号</th>
+                                    <th>格林商品ID</th>
                                     <th>发布内容</th>
                                     <th>品牌</th>
                                     <th>商品重量(单位：克)</th>
@@ -294,6 +295,18 @@
     <form id="detailForm" method="post" class="form-horizontal">
         <input type="hidden" class="form-control" value="{$T.data.id}" id="productId">
         <div class="form-group">
+            <label class="col-sm-4 control-label" style="text-align: left; width: 10%">商品ID</label>
+            <div class="col-sm-6">
+                 <p class="form-control-static">{$T.data.id}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" style="text-align: left; width: 10%">格林商品ID</label>
+            <div class="col-sm-6">
+                <p class="form-control-static">{$T.data.gelinProductId}</p>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-4 control-label" style="text-align: left; width: 7%">标题</label>
             <div class="col-sm-6" id="detailTextarea">
 
@@ -403,6 +416,7 @@
         {#foreach $T.data.list as appCon}
         <tr>
             <td>{$T.appCon.id}</td>
+            <td>{$T.appCon.gelinProductId}</td>
             <td>{$T.appCon.title}</td>
             <td>
             <#list brandList as b>

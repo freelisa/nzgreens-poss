@@ -58,7 +58,11 @@ public class UserOrderService extends BaseService implements IUserOrderService {
     @Override
     public List<UserOrderModel> selectUserOrderForPage(UserOrderForm form) throws Exception {
         PageHelper.startPage(form.getPageNum(),form.getPageSize());
-        return subUserOrderMapper.selectUserOrderForPage(form);
+        List<UserOrderModel> userOrderModels = subUserOrderMapper.selectUserOrderForPage(form);
+        for(UserOrderModel model : userOrderModels){
+            model.setAddress(model.getAddress().replace("$",""));
+        }
+        return userOrderModels;
     }
 
     @Override
@@ -86,6 +90,10 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         UserOrderModel orderModel = new UserOrderModel();
         UserOrder userOrder = userOrderMapper.selectByPrimaryKey(id);
         BeanUtils.copyProperties(userOrder,orderModel);
+        orderModel.setDeliveryMode(userOrder.getDeliveryMode().intValue());
+        orderModel.setStatus(userOrder.getStatus().intValue());
+        orderModel.setType(userOrder.getType().intValue());
+        orderModel.setAddress(orderModel.getAddress().replace("$",""));
         return orderModel;
     }
 
@@ -121,7 +129,7 @@ public class UserOrderService extends BaseService implements IUserOrderService {
             if(oldUserOrder.getStatus() == UserOrderStatusEnum._PENDING.getValue()){
                 UserOrder userOrder = new UserOrder();
                 userOrder.setId(oldUserOrder.getId());
-                userOrder.setStatus(UserOrderStatusEnum._DONE.getValue());
+                userOrder.setStatus((byte) UserOrderStatusEnum._DONE.getValue());
                 if(userOrderMapper.updateByPrimaryKeySelective(userOrder) < 1){
                     thrown(ErrorCodes.UPDATE_ERROR);
                 }
@@ -159,7 +167,7 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         }
         UserOrder userOrder = new UserOrder();
         userOrder.setId(orderId);
-        userOrder.setStatus(status);
+        userOrder.setStatus(status.byteValue());
         if(userOrderMapper.updateByPrimaryKeySelective(userOrder) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
         }
@@ -172,6 +180,27 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         }
         //处理订单
         handlerOrder(status,order);
+    }
+
+    @Override
+    public void updateLogisticsNumber(Long orderId, String logisticsNumber) throws Exception {
+        if(orderId == null){
+            thrown(ErrorCodes.ID_ILLEGAL);
+        }
+        if(StringUtils.isBlank(logisticsNumber)){
+            thrown(ErrorCodes.LOGISTICS_NUMBER_ILLEGAL);
+        }
+        String number = logisticsNumber;
+        if(logisticsNumber.contains("\n")){
+            number = logisticsNumber.replace("\r", "");
+            number = number.replace("\n", ",");
+        }
+        UserOrder userOrder = new UserOrder();
+        userOrder.setId(orderId);
+        userOrder.setLogisticsNumber(number);
+        if(userOrderMapper.updateByPrimaryKeySelective(userOrder) < 1){
+            thrown(ErrorCodes.UPDATE_ERROR);
+        }
     }
 
     @Override
@@ -223,6 +252,14 @@ public class UserOrderService extends BaseService implements IUserOrderService {
             rebateLog.setTriggerUserId(systemUser.getId());
             if(accountLogsMapper.insertSelective(systemLog) < 1){
                 thrown(ErrorCodes.UPDATE_ERROR);
+            }
+
+            //库存处理
+            OrdersExample ordersExample = new OrdersExample();
+            ordersExample.createCriteria().andOrderNumberEqualTo(order.getOrderNumber());
+            List<Orders> orders = ordersMapper.selectByExample(ordersExample);
+            if(CollectionUtils.isNotEmpty(orders)){
+                subUserMapper.batchUpdateProductNumber(orders);
             }
         } else if(orderStatus == UserOrderStatusEnum._PROCESSED.getValue()
                     || orderStatus == UserOrderStatusEnum._DONE.getValue()){

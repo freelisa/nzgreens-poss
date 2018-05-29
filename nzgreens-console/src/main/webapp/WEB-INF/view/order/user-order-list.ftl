@@ -156,6 +156,37 @@
     </div>
 </div>
 
+<div class="modal inmodal" id="modalUserNumberModify" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" style="width: 500px;">
+        <form id="userOrderNumberUpdateForm" method="post" class="form-horizontal">
+            <input type="hidden" name="orderId" value="${orderId}" id="numberOrderId">
+            <input type="hidden" name="orderNumber" value="${orderNumber}" id="numberOrderNumber">
+            <div class="modal-content animated fadeIn" >
+                <div class="modal-header" style="height: 20px;">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                            class="sr-only">Close</span></button>
+                    <h4 class="modal-title" style="font-size: 22px;">修改物流订单号</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <textarea name="logisticsNumber" class="form-control" rows="8" cols="60" id="addLogisticsNumber"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-1">
+                            <button id="btnNumberCancel" class="btn btn-white" type="button">取消</button>
+                        </div>
+                        <div class="col-sm-4 col-sm-offset-1">
+                            <button id="btnNumberSave" class="btn btn-success" type="button">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <textarea id="userTr-template" style="display: none;">
     {#if $T.data.total>0}
         {#foreach $T.data.list as user}
@@ -191,6 +222,7 @@
                 {#if $T.user.type == 2}
                     <button type="button" user-order-id="{$T.user.id}" user-order-number="{$T.user.orderNumber}" class="btn btn-primary btnUserUpdate">详情</button>
                 {#/if}
+                <button type="button" user-order-id="{$T.user.id}" user-order-number="{$T.user.orderNumber}" class="btn btn-primary btnUserUpdateNumber">修改物流订单号</button>
             </@sec.any>
             </td>
         </tr>

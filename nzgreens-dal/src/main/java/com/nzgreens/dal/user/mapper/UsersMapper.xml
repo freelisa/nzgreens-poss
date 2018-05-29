@@ -108,7 +108,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.nzgreens.dal.user.example.Users" >
+  <insert id="insert" parameterType="com.nzgreens.dal.user.example.Users" useGeneratedKeys="true" keyProperty="id">
     insert into users (id, telephone, password, 
       nickname, avatar, type, 
       balance, is_valid, create_time, 
@@ -118,7 +118,7 @@
       #{balance,jdbcType=BIGINT}, #{isValid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.nzgreens.dal.user.example.Users" >
+  <insert id="insertSelective" parameterType="com.nzgreens.dal.user.example.Users" useGeneratedKeys="true" keyProperty="id">
     insert into users
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

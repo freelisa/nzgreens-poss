@@ -58,6 +58,8 @@
         <!--<table schema="" tableName="product_brand" domainObjectName="ProductBrand">
             <columnOverride column="is_valid" javaType="Integer"></columnOverride>
         </table>-->
-        <table schema="" tableName="search_keyword" domainObjectName="SearchKeyword"/>
+        <!--<table schema="" tableName="search_keyword" domainObjectName="SearchKeyword"/>-->
+        <!--<table schema="" tableName="user_order" domainObjectName="UserOrder"/>-->
+        <table schema="" tableName="products" domainObjectName="Products"/>
    </context>
 </generatorConfiguration>

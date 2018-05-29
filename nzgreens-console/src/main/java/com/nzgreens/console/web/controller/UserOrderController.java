@@ -94,6 +94,14 @@ public class UserOrderController extends BaseController {
         return new ResultModel();
     }
 
+    @RequestMapping("update/logisticsNumber")
+    @ResponseBody
+    @Auth("USER_ORDER_UPDATE")
+    public ResultModel updateUserLogisticsNumber(Long orderId,String logisticsNumber) throws Exception{
+        userOrderService.updateLogisticsNumber(orderId,logisticsNumber);
+        return new ResultModel();
+    }
+
     @RequestMapping("insert/cert")
     @ResponseBody
     @Auth("USER_ORDER_UPDATE")

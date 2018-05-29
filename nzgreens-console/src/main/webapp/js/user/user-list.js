@@ -28,7 +28,7 @@ $(document).ready(function () {
             var params = {
                 "telephone": $("#addMobile").val(),
                 "type": $("#addType").val(),
-                //"balance": $("#addBalance").val()
+                "agentUserId": $("#addAgentUserId").val()
             }
 
             post(_rootPath + "user/insert", params, function (result) {
@@ -115,6 +115,7 @@ function searchUserDetail(userId) {
         $("#modalDetail").modal();
         $("#detailType").val(result.data.type);
         $("#detailStatus").val(result.data.isValid);
+        $("#updateAgentUserId").val(result.data.agentUserId);
     });
 }
 
@@ -124,7 +125,8 @@ function saveUpdate() {
         "id": $("#userId").val(),
         "telephone": $("#detailMobile").val(),
         "type": $("#detailType").val(),
-        "isValid": $("#detailStatus").val()
+        "isValid": $("#detailStatus").val(),
+        "agentUserId": $("#updateAgentUserId").val()
     }
     post(_rootPath + "user/update", params, function (result) {
         if (result.success == true) {

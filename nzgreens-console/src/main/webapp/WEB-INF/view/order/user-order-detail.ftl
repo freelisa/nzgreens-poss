@@ -144,6 +144,10 @@
                             {#if $T.data.createTime!=null}{new Date($T.data.createTime).Format('yyyy-MM-dd hh:mm:ss')}{#else}--{#/if}
                         </p>
                     </div>
+                    <label class="col-sm-4 control-label">物流订单号: </label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static">{$T.data.logisticsNumber}</p>
+                    </div>
                 </div>
             </div>
             <!-- 右边 -->
@@ -181,6 +185,12 @@
                     <div class="col-sm-8">
                         <p class="form-control-static">
                             {#if $T.data.updateTime!=null}{new Date($T.data.updateTime).Format('yyyy-MM-dd hh:mm:ss')}{#else}--{#/if}
+                        </p>
+                    </div>
+                    <label class="col-sm-4 control-label"></label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static">
+
                         </p>
                     </div>
                     <div class="col-sm-4">

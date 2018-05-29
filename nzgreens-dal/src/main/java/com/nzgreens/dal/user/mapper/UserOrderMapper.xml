@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.nzgreens.dal.user.example.UserOrder" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_order_number" property="userOrderNumber" jdbcType="VARCHAR" />
     <result column="order_number" property="orderNumber" jdbcType="VARCHAR" />
     <result column="delivery_mode" property="deliveryMode" jdbcType="TINYINT" />
     <result column="address" property="address" jdbcType="VARCHAR" />
@@ -13,6 +14,7 @@
     <result column="freight" property="freight" jdbcType="BIGINT" />
     <result column="price" property="price" jdbcType="BIGINT" />
     <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="logistics_number" property="logisticsNumber" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
@@ -76,8 +78,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, user_id, order_number, delivery_mode, address, contact, telephone, product_price, 
-    freight, price, type, status, create_time, update_time
+    id, user_id, user_order_number, order_number, delivery_mode, address, contact, telephone, 
+    product_price, freight, price, type, logistics_number, status, create_time, update_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.nzgreens.dal.user.example.UserOrderExample" >
     select
@@ -113,16 +115,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.nzgreens.dal.user.example.UserOrder" >
-    insert into user_order (id, user_id, order_number, 
-      delivery_mode, address, contact, 
-      telephone, product_price, freight, 
-      price, type, status, 
-      create_time, update_time)
-    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{orderNumber,jdbcType=VARCHAR}, 
-      #{deliveryMode,jdbcType=TINYINT}, #{address,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
-      #{telephone,jdbcType=VARCHAR}, #{productPrice,jdbcType=BIGINT}, #{freight,jdbcType=BIGINT}, 
-      #{price,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    insert into user_order (id, user_id, user_order_number, 
+      order_number, delivery_mode, address, 
+      contact, telephone, product_price, 
+      freight, price, type, 
+      logistics_number, status, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{userOrderNumber,jdbcType=VARCHAR}, 
+      #{orderNumber,jdbcType=VARCHAR}, #{deliveryMode,jdbcType=TINYINT}, #{address,jdbcType=VARCHAR}, 
+      #{contact,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{productPrice,jdbcType=BIGINT}, 
+      #{freight,jdbcType=BIGINT}, #{price,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, 
+      #{logisticsNumber,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.nzgreens.dal.user.example.UserOrder" >
     insert into user_order
@@ -132,6 +136,9 @@
       </if>
       <if test="userId != null" >
         user_id,
+      </if>
+      <if test="userOrderNumber != null" >
+        user_order_number,
       </if>
       <if test="orderNumber != null" >
         order_number,
@@ -160,6 +167,9 @@
       <if test="type != null" >
         type,
       </if>
+      <if test="logisticsNumber != null" >
+        logistics_number,
+      </if>
       <if test="status != null" >
         status,
       </if>
@@ -176,6 +186,9 @@
       </if>
       <if test="userId != null" >
         #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userOrderNumber != null" >
+        #{userOrderNumber,jdbcType=VARCHAR},
       </if>
       <if test="orderNumber != null" >
         #{orderNumber,jdbcType=VARCHAR},
@@ -204,6 +217,9 @@
       <if test="type != null" >
         #{type,jdbcType=TINYINT},
       </if>
+      <if test="logisticsNumber != null" >
+        #{logisticsNumber,jdbcType=VARCHAR},
+      </if>
       <if test="status != null" >
         #{status,jdbcType=TINYINT},
       </if>
@@ -229,6 +245,9 @@
       </if>
       <if test="record.userId != null" >
         user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userOrderNumber != null" >
+        user_order_number = #{record.userOrderNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.orderNumber != null" >
         order_number = #{record.orderNumber,jdbcType=VARCHAR},
@@ -257,6 +276,9 @@
       <if test="record.type != null" >
         type = #{record.type,jdbcType=TINYINT},
       </if>
+      <if test="record.logisticsNumber != null" >
+        logistics_number = #{record.logisticsNumber,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=TINYINT},
       </if>
@@ -275,6 +297,7 @@
     update user_order
     set id = #{record.id,jdbcType=BIGINT},
       user_id = #{record.userId,jdbcType=BIGINT},
+      user_order_number = #{record.userOrderNumber,jdbcType=VARCHAR},
       order_number = #{record.orderNumber,jdbcType=VARCHAR},
       delivery_mode = #{record.deliveryMode,jdbcType=TINYINT},
       address = #{record.address,jdbcType=VARCHAR},
@@ -284,6 +307,7 @@
       freight = #{record.freight,jdbcType=BIGINT},
       price = #{record.price,jdbcType=BIGINT},
       type = #{record.type,jdbcType=TINYINT},
+      logistics_number = #{record.logisticsNumber,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=TINYINT},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
@@ -296,6 +320,9 @@
     <set >
       <if test="userId != null" >
         user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userOrderNumber != null" >
+        user_order_number = #{userOrderNumber,jdbcType=VARCHAR},
       </if>
       <if test="orderNumber != null" >
         order_number = #{orderNumber,jdbcType=VARCHAR},
@@ -324,6 +351,9 @@
       <if test="type != null" >
         type = #{type,jdbcType=TINYINT},
       </if>
+      <if test="logisticsNumber != null" >
+        logistics_number = #{logisticsNumber,jdbcType=VARCHAR},
+      </if>
       <if test="status != null" >
         status = #{status,jdbcType=TINYINT},
       </if>
@@ -339,6 +369,7 @@
   <update id="updateByPrimaryKey" parameterType="com.nzgreens.dal.user.example.UserOrder" >
     update user_order
     set user_id = #{userId,jdbcType=BIGINT},
+      user_order_number = #{userOrderNumber,jdbcType=VARCHAR},
       order_number = #{orderNumber,jdbcType=VARCHAR},
       delivery_mode = #{deliveryMode,jdbcType=TINYINT},
       address = #{address,jdbcType=VARCHAR},
@@ -348,6 +379,7 @@
       freight = #{freight,jdbcType=BIGINT},
       price = #{price,jdbcType=BIGINT},
       type = #{type,jdbcType=TINYINT},
+      logistics_number = #{logisticsNumber,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}

@@ -1,22 +1,26 @@
-package com.nzgreens.common.form.console;
+package com.nzgreens.common.model.console;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserAddForm implements Serializable {
+public class UsersModel implements Serializable {
     private Long id;
 
     private String telephone;
 
     private String password;
 
+    private String nickname;
+
+    private String avatar;
+
     private Integer type;
 
-    private String balance;
-
-    private Integer isValid;
+    private Long balance;
 
     private Long agentUserId;
+
+    private Integer isValid;
 
     private Date createTime;
 
@@ -48,6 +52,22 @@ public class UserAddForm implements Serializable {
         this.password = password;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public Integer getType() {
         return type;
     }
@@ -56,11 +76,11 @@ public class UserAddForm implements Serializable {
         this.type = type;
     }
 
-    public String getBalance() {
+    public Long getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(Long balance) {
         this.balance = balance;
     }
 

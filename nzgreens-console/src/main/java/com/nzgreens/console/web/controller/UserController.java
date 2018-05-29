@@ -4,10 +4,12 @@ import com.github.pagehelper.PageInfo;
 import com.nzgreens.common.form.console.UserAddForm;
 import com.nzgreens.common.form.console.UserForm;
 import com.nzgreens.common.model.ResultModel;
+import com.nzgreens.common.model.console.UsersModel;
 import com.nzgreens.console.annotations.Auth;
 import com.nzgreens.console.service.IUserService;
 import com.nzgreens.dal.user.example.Users;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,7 +28,8 @@ public class UserController extends BaseController {
 
     @RequestMapping("to-list")
     @Auth("USER_MANAGE")
-    public String toList() throws Exception{
+    public String toList(Model model) throws Exception{
+        model.addAttribute("agentList",userService.searchAgentList());
         return "user/user-list";
     }
 
@@ -45,8 +48,8 @@ public class UserController extends BaseController {
     @ResponseBody
     @Auth("USER_MANAGE")
     public ResultModel searchDetail(Long userId) throws Exception{
-        ResultModel<Users> resultModel = new ResultModel<>();
-        Users users = userService.selectUserDetail(userId);
+        ResultModel<UsersModel> resultModel = new ResultModel<>();
+        UsersModel users = userService.selectUserDetail(userId);
         resultModel.setData(users);
         return resultModel;
     }

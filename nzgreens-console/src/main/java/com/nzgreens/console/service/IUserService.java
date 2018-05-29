@@ -2,6 +2,7 @@ package com.nzgreens.console.service;
 
 import com.nzgreens.common.form.console.UserAddForm;
 import com.nzgreens.common.form.console.UserForm;
+import com.nzgreens.common.model.console.UsersModel;
 import com.nzgreens.dal.user.example.Users;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface IUserService {
     List<Users> selectUserForPage(UserForm form) throws Exception;
 
-    Users selectUserDetail(Long userId) throws Exception;
+    UsersModel selectUserDetail(Long userId) throws Exception;
 
     List<Users> searchAgentList() throws Exception;
 

@@ -29,6 +29,8 @@ public class ProductAddForm implements Serializable {
 
     private Integer isValid;
 
+    private Long gelinProductId;
+
     private Date createTime;
 
     private Date updateTime;
@@ -155,5 +157,13 @@ public class ProductAddForm implements Serializable {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public Long getGelinProductId() {
+        return gelinProductId;
+    }
+
+    public void setGelinProductId(Long gelinProductId) {
+        this.gelinProductId = gelinProductId;
     }
 }
