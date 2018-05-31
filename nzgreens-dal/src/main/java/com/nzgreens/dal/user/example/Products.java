@@ -19,6 +19,8 @@ public class Products implements Serializable {
 
     private Long sellingPrice;
 
+    private Long crawlSellingPrice;
+
     private Long parentCategoryId;
 
     private Long categoryId;
@@ -95,6 +97,14 @@ public class Products implements Serializable {
 
     public void setSellingPrice(Long sellingPrice) {
         this.sellingPrice = sellingPrice;
+    }
+
+    public Long getCrawlSellingPrice() {
+        return crawlSellingPrice;
+    }
+
+    public void setCrawlSellingPrice(Long crawlSellingPrice) {
+        this.crawlSellingPrice = crawlSellingPrice;
     }
 
     public Long getParentCategoryId() {

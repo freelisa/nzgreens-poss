@@ -104,4 +104,6 @@ public class ErrorCodes {
 	public static final String FREIGHT_ILLEGAL = "50006";
 
 	public static final String SEARCH_KEYWORD_ILLEGAL = "50007";
+
+	public static final String PRODUCTS_STATUS_ILLEGAL = "50008";
 }

@@ -558,6 +558,66 @@ public class ProductsExample {
             return (Criteria) this;
         }
 
+        public Criteria andCrawlSellingPriceIsNull() {
+            addCriterion("crawl_selling_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrawlSellingPriceIsNotNull() {
+            addCriterion("crawl_selling_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrawlSellingPriceEqualTo(Long value) {
+            addCriterion("crawl_selling_price =", value, "crawlSellingPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrawlSellingPriceNotEqualTo(Long value) {
+            addCriterion("crawl_selling_price <>", value, "crawlSellingPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrawlSellingPriceGreaterThan(Long value) {
+            addCriterion("crawl_selling_price >", value, "crawlSellingPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrawlSellingPriceGreaterThanOrEqualTo(Long value) {
+            addCriterion("crawl_selling_price >=", value, "crawlSellingPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrawlSellingPriceLessThan(Long value) {
+            addCriterion("crawl_selling_price <", value, "crawlSellingPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrawlSellingPriceLessThanOrEqualTo(Long value) {
+            addCriterion("crawl_selling_price <=", value, "crawlSellingPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrawlSellingPriceIn(List<Long> values) {
+            addCriterion("crawl_selling_price in", values, "crawlSellingPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrawlSellingPriceNotIn(List<Long> values) {
+            addCriterion("crawl_selling_price not in", values, "crawlSellingPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrawlSellingPriceBetween(Long value1, Long value2) {
+            addCriterion("crawl_selling_price between", value1, value2, "crawlSellingPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrawlSellingPriceNotBetween(Long value1, Long value2) {
+            addCriterion("crawl_selling_price not between", value1, value2, "crawlSellingPrice");
+            return (Criteria) this;
+        }
+
         public Criteria andParentCategoryIdIsNull() {
             addCriterion("parent_category_id is null");
             return (Criteria) this;

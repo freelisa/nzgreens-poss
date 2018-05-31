@@ -9,6 +9,7 @@
     <result column="image" property="image" jdbcType="VARCHAR" />
     <result column="cost_price" property="costPrice" jdbcType="BIGINT" />
     <result column="selling_price" property="sellingPrice" jdbcType="BIGINT" />
+    <result column="crawl_selling_price" property="crawlSellingPrice" jdbcType="BIGINT" />
     <result column="parent_category_id" property="parentCategoryId" jdbcType="BIGINT" />
     <result column="category_id" property="categoryId" jdbcType="BIGINT" />
     <result column="stock" property="stock" jdbcType="BIGINT" />
@@ -81,9 +82,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, title, brand_id, weight, image, cost_price, selling_price, parent_category_id, 
-    category_id, stock, score, sales_volume, gelin_product_id, is_valid, create_time, 
-    update_time
+    id, title, brand_id, weight, image, cost_price, selling_price, crawl_selling_price, 
+    parent_category_id, category_id, stock, score, sales_volume, gelin_product_id, is_valid, 
+    create_time, update_time
   </sql>
   <sql id="Blob_Column_List" >
     detail
@@ -145,16 +146,18 @@
   <insert id="insert" parameterType="com.nzgreens.dal.user.example.Products" useGeneratedKeys="true" keyProperty="id">
     insert into products (id, title, brand_id, 
       weight, image, cost_price, 
-      selling_price, parent_category_id, category_id, 
-      stock, score, sales_volume, 
-      gelin_product_id, is_valid, create_time, 
-      update_time, detail)
+      selling_price, crawl_selling_price, parent_category_id, 
+      category_id, stock, score, 
+      sales_volume, gelin_product_id, is_valid, 
+      create_time, update_time, detail
+      )
     values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{brandId,jdbcType=BIGINT}, 
       #{weight,jdbcType=BIGINT}, #{image,jdbcType=VARCHAR}, #{costPrice,jdbcType=BIGINT}, 
-      #{sellingPrice,jdbcType=BIGINT}, #{parentCategoryId,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, 
-      #{stock,jdbcType=BIGINT}, #{score,jdbcType=DECIMAL}, #{salesVolume,jdbcType=BIGINT}, 
-      #{gelinProductId,jdbcType=BIGINT}, #{isValid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{detail,jdbcType=LONGVARCHAR})
+      #{sellingPrice,jdbcType=BIGINT}, #{crawlSellingPrice,jdbcType=BIGINT}, #{parentCategoryId,jdbcType=BIGINT}, 
+      #{categoryId,jdbcType=BIGINT}, #{stock,jdbcType=BIGINT}, #{score,jdbcType=DECIMAL}, 
+      #{salesVolume,jdbcType=BIGINT}, #{gelinProductId,jdbcType=BIGINT}, #{isValid,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{detail,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.nzgreens.dal.user.example.Products" useGeneratedKeys="true" keyProperty="id">
     insert into products
@@ -179,6 +182,9 @@
       </if>
       <if test="sellingPrice != null" >
         selling_price,
+      </if>
+      <if test="crawlSellingPrice != null" >
+        crawl_selling_price,
       </if>
       <if test="parentCategoryId != null" >
         parent_category_id,
@@ -232,6 +238,9 @@
       </if>
       <if test="sellingPrice != null" >
         #{sellingPrice,jdbcType=BIGINT},
+      </if>
+      <if test="crawlSellingPrice != null" >
+        #{crawlSellingPrice,jdbcType=BIGINT},
       </if>
       <if test="parentCategoryId != null" >
         #{parentCategoryId,jdbcType=BIGINT},
@@ -295,6 +304,9 @@
       <if test="record.sellingPrice != null" >
         selling_price = #{record.sellingPrice,jdbcType=BIGINT},
       </if>
+      <if test="record.crawlSellingPrice != null" >
+        crawl_selling_price = #{record.crawlSellingPrice,jdbcType=BIGINT},
+      </if>
       <if test="record.parentCategoryId != null" >
         parent_category_id = #{record.parentCategoryId,jdbcType=BIGINT},
       </if>
@@ -339,6 +351,7 @@
       image = #{record.image,jdbcType=VARCHAR},
       cost_price = #{record.costPrice,jdbcType=BIGINT},
       selling_price = #{record.sellingPrice,jdbcType=BIGINT},
+      crawl_selling_price = #{record.crawlSellingPrice,jdbcType=BIGINT},
       parent_category_id = #{record.parentCategoryId,jdbcType=BIGINT},
       category_id = #{record.categoryId,jdbcType=BIGINT},
       stock = #{record.stock,jdbcType=BIGINT},
@@ -362,6 +375,7 @@
       image = #{record.image,jdbcType=VARCHAR},
       cost_price = #{record.costPrice,jdbcType=BIGINT},
       selling_price = #{record.sellingPrice,jdbcType=BIGINT},
+      crawl_selling_price = #{record.crawlSellingPrice,jdbcType=BIGINT},
       parent_category_id = #{record.parentCategoryId,jdbcType=BIGINT},
       category_id = #{record.categoryId,jdbcType=BIGINT},
       stock = #{record.stock,jdbcType=BIGINT},
@@ -395,6 +409,9 @@
       </if>
       <if test="sellingPrice != null" >
         selling_price = #{sellingPrice,jdbcType=BIGINT},
+      </if>
+      <if test="crawlSellingPrice != null" >
+        crawl_selling_price = #{crawlSellingPrice,jdbcType=BIGINT},
       </if>
       <if test="parentCategoryId != null" >
         parent_category_id = #{parentCategoryId,jdbcType=BIGINT},
@@ -437,6 +454,7 @@
       image = #{image,jdbcType=VARCHAR},
       cost_price = #{costPrice,jdbcType=BIGINT},
       selling_price = #{sellingPrice,jdbcType=BIGINT},
+      crawl_selling_price = #{crawlSellingPrice,jdbcType=BIGINT},
       parent_category_id = #{parentCategoryId,jdbcType=BIGINT},
       category_id = #{categoryId,jdbcType=BIGINT},
       stock = #{stock,jdbcType=BIGINT},
@@ -457,6 +475,7 @@
       image = #{image,jdbcType=VARCHAR},
       cost_price = #{costPrice,jdbcType=BIGINT},
       selling_price = #{sellingPrice,jdbcType=BIGINT},
+      crawl_selling_price = #{crawlSellingPrice,jdbcType=BIGINT},
       parent_category_id = #{parentCategoryId,jdbcType=BIGINT},
       category_id = #{categoryId,jdbcType=BIGINT},
       stock = #{stock,jdbcType=BIGINT},

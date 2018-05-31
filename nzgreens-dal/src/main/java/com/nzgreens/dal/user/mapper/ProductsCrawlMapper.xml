@@ -10,15 +10,18 @@
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="weight" property="weight" jdbcType="VARCHAR" />
     <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="cost_price" property="costPrice" jdbcType="BIGINT" />
     <result column="selling_price" property="sellingPrice" jdbcType="BIGINT" />
     <result column="parent_category_id" property="parentCategoryId" jdbcType="VARCHAR" />
     <result column="category_id" property="categoryId" jdbcType="VARCHAR" />
     <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
-    <result column="detail" property="detail" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="is_valid" property="isValid" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.nzgreens.dal.user.example.ProductsCrawl" extends="BaseResultMap" >
+    <result column="detail" property="detail" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -79,10 +82,32 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, product_id, reptile_product_id, brand_id, brand_name, title, weight, image, selling_price, 
-    parent_category_id, category_id, category_name, detail, state, is_valid, create_time, 
+    id, product_id, reptile_product_id, brand_id, brand_name, title, weight, image, cost_price, 
+    selling_price, parent_category_id, category_id, category_name, state, is_valid, create_time, 
     update_time
   </sql>
+  <sql id="Blob_Column_List" >
+    detail
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.nzgreens.dal.user.example.ProductsCrawlExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from products_crawl
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null" >
+      limit #{limit.start},#{limit.maxRows}
+    </if>
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.nzgreens.dal.user.example.ProductsCrawlExample" >
     select
     <if test="distinct" >
@@ -100,9 +125,11 @@
       limit #{limit.start},#{limit.maxRows}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from products_crawl
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -116,21 +143,23 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.nzgreens.dal.user.example.ProductsCrawl" useGeneratedKeys="true" keyProperty="">
+  <insert id="insert" parameterType="com.nzgreens.dal.user.example.ProductsCrawl" useGeneratedKeys="true" keyProperty="id">
     insert into products_crawl (id, product_id, reptile_product_id, 
       brand_id, brand_name, title, 
-      weight, image, selling_price, 
-      parent_category_id, category_id, category_name, 
-      detail, state, is_valid, 
-      create_time, update_time)
+      weight, image, cost_price, 
+      selling_price, parent_category_id, category_id, 
+      category_name, state, is_valid, 
+      create_time, update_time, detail
+      )
     values (#{id,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{reptileProductId,jdbcType=VARCHAR}, 
       #{brandId,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
-      #{weight,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{sellingPrice,jdbcType=BIGINT}, 
-      #{parentCategoryId,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, 
-      #{detail,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{isValid,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      #{weight,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{costPrice,jdbcType=BIGINT}, 
+      #{sellingPrice,jdbcType=BIGINT}, #{parentCategoryId,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, 
+      #{categoryName,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{isValid,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{detail,jdbcType=LONGVARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.nzgreens.dal.user.example.ProductsCrawl" >
+  <insert id="insertSelective" parameterType="com.nzgreens.dal.user.example.ProductsCrawl" useGeneratedKeys="true" keyProperty="id">
     insert into products_crawl
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -157,6 +186,9 @@
       <if test="image != null" >
         image,
       </if>
+      <if test="costPrice != null" >
+        cost_price,
+      </if>
       <if test="sellingPrice != null" >
         selling_price,
       </if>
@@ -169,9 +201,6 @@
       <if test="categoryName != null" >
         category_name,
       </if>
-      <if test="detail != null" >
-        detail,
-      </if>
       <if test="state != null" >
         state,
       </if>
@@ -183,6 +212,9 @@
       </if>
       <if test="updateTime != null" >
         update_time,
+      </if>
+      <if test="detail != null" >
+        detail,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -210,6 +242,9 @@
       <if test="image != null" >
         #{image,jdbcType=VARCHAR},
       </if>
+      <if test="costPrice != null" >
+        #{costPrice,jdbcType=BIGINT},
+      </if>
       <if test="sellingPrice != null" >
         #{sellingPrice,jdbcType=BIGINT},
       </if>
@@ -222,9 +257,6 @@
       <if test="categoryName != null" >
         #{categoryName,jdbcType=VARCHAR},
       </if>
-      <if test="detail != null" >
-        #{detail,jdbcType=VARCHAR},
-      </if>
       <if test="state != null" >
         #{state,jdbcType=INTEGER},
       </if>
@@ -236,6 +268,9 @@
       </if>
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="detail != null" >
+        #{detail,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -272,6 +307,9 @@
       <if test="record.image != null" >
         image = #{record.image,jdbcType=VARCHAR},
       </if>
+      <if test="record.costPrice != null" >
+        cost_price = #{record.costPrice,jdbcType=BIGINT},
+      </if>
       <if test="record.sellingPrice != null" >
         selling_price = #{record.sellingPrice,jdbcType=BIGINT},
       </if>
@@ -283,9 +321,6 @@
       </if>
       <if test="record.categoryName != null" >
         category_name = #{record.categoryName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.detail != null" >
-        detail = #{record.detail,jdbcType=VARCHAR},
       </if>
       <if test="record.state != null" >
         state = #{record.state,jdbcType=INTEGER},
@@ -299,7 +334,34 @@
       <if test="record.updateTime != null" >
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.detail != null" >
+        detail = #{record.detail,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update products_crawl
+    set id = #{record.id,jdbcType=BIGINT},
+      product_id = #{record.productId,jdbcType=BIGINT},
+      reptile_product_id = #{record.reptileProductId,jdbcType=VARCHAR},
+      brand_id = #{record.brandId,jdbcType=VARCHAR},
+      brand_name = #{record.brandName,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      weight = #{record.weight,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      cost_price = #{record.costPrice,jdbcType=BIGINT},
+      selling_price = #{record.sellingPrice,jdbcType=BIGINT},
+      parent_category_id = #{record.parentCategoryId,jdbcType=VARCHAR},
+      category_id = #{record.categoryId,jdbcType=VARCHAR},
+      category_name = #{record.categoryName,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      is_valid = #{record.isValid,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      detail = #{record.detail,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -314,11 +376,11 @@
       title = #{record.title,jdbcType=VARCHAR},
       weight = #{record.weight,jdbcType=VARCHAR},
       image = #{record.image,jdbcType=VARCHAR},
+      cost_price = #{record.costPrice,jdbcType=BIGINT},
       selling_price = #{record.sellingPrice,jdbcType=BIGINT},
       parent_category_id = #{record.parentCategoryId,jdbcType=VARCHAR},
       category_id = #{record.categoryId,jdbcType=VARCHAR},
       category_name = #{record.categoryName,jdbcType=VARCHAR},
-      detail = #{record.detail,jdbcType=VARCHAR},
       state = #{record.state,jdbcType=INTEGER},
       is_valid = #{record.isValid,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -351,6 +413,9 @@
       <if test="image != null" >
         image = #{image,jdbcType=VARCHAR},
       </if>
+      <if test="costPrice != null" >
+        cost_price = #{costPrice,jdbcType=BIGINT},
+      </if>
       <if test="sellingPrice != null" >
         selling_price = #{sellingPrice,jdbcType=BIGINT},
       </if>
@@ -362,9 +427,6 @@
       </if>
       <if test="categoryName != null" >
         category_name = #{categoryName,jdbcType=VARCHAR},
-      </if>
-      <if test="detail != null" >
-        detail = #{detail,jdbcType=VARCHAR},
       </if>
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
@@ -378,7 +440,31 @@
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="detail != null" >
+        detail = #{detail,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.nzgreens.dal.user.example.ProductsCrawl" >
+    update products_crawl
+    set product_id = #{productId,jdbcType=BIGINT},
+      reptile_product_id = #{reptileProductId,jdbcType=VARCHAR},
+      brand_id = #{brandId,jdbcType=VARCHAR},
+      brand_name = #{brandName,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      cost_price = #{costPrice,jdbcType=BIGINT},
+      selling_price = #{sellingPrice,jdbcType=BIGINT},
+      parent_category_id = #{parentCategoryId,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=VARCHAR},
+      category_name = #{categoryName,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      detail = #{detail,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.nzgreens.dal.user.example.ProductsCrawl" >
@@ -390,11 +476,11 @@
       title = #{title,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=VARCHAR},
       image = #{image,jdbcType=VARCHAR},
+      cost_price = #{costPrice,jdbcType=BIGINT},
       selling_price = #{sellingPrice,jdbcType=BIGINT},
       parent_category_id = #{parentCategoryId,jdbcType=VARCHAR},
       category_id = #{categoryId,jdbcType=VARCHAR},
       category_name = #{categoryName,jdbcType=VARCHAR},
-      detail = #{detail,jdbcType=VARCHAR},
       state = #{state,jdbcType=INTEGER},
       is_valid = #{isValid,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},

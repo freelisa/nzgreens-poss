@@ -104,6 +104,9 @@
                             <@sec.any name="PRODUCT_MANAGE">
                                 <li><@s.a href="${ctx}product/to-list" class="J_menuItem">产品管理</@s.a></li>
                             </@sec.any>
+                            <@sec.any name="PRODUCT_CRAWL_MANAGE">
+                                <li><@s.a href="${ctx}product/crawl/to-list" class="J_menuItem">产品审核管理</@s.a></li>
+                            </@sec.any>
                             <@sec.any name="PRODUCT_BRAND_MANAGE">
                                 <li><@s.a href="${ctx}product/brand/to-list" class="J_menuItem">品牌管理</@s.a></li>
                             </@sec.any>
@@ -118,6 +121,9 @@
                             </@sec.any>
                             <@sec.any name="SEARCH_KEYWORD_MANAGE">
                                 <li><@s.a href="${ctx}search/keyword/to-list" class="J_menuItem">关键字设置</@s.a></li>
+                            </@sec.any>
+                            <@sec.any name="PRODUCT_PRICE_CHANGE_MANAGE">
+                                <li><@s.a href="${ctx}product/change/to-list" class="J_menuItem">产品价格变更记录</@s.a></li>
                             </@sec.any>
                         </ul>
                     </li>
@@ -146,6 +152,7 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header" style="width: 97%"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+
                     <div class="dropdown profile-element" style="float: right">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
                                 <span class="clear">
@@ -153,6 +160,7 @@
                                 <span class="text-muted text-xs block">${currentUser.realName}<b class="caret"></b></span>
                                 </span>
                         </a>
+
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                            <#-- <li><a class="J_menuItem" href="form_avatar.html" data-index="0">修改头像</a>
                             </li>
@@ -168,7 +176,26 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="dropdown profile-element" style="float: right">
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-bell"></i> <span class="label label-primary" id="productChange"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-alerts">
+                                    <li>
+                                        <a href="${ctx}product/change/to-list" class="J_menuItem">
+                                            <div>
+                                                <i class="fa fa-envelope fa-fw"></i> 有商品的价格变更
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+
             </nav>
         </div>
         <div class="row content-tabs">
@@ -271,6 +298,10 @@
             });
         });
     })
+
+    post(_rootPath+"product/change/count",null,function (result) {
+        $("#productChange").html(result.data);
+    });
 </script>
 </body>
 

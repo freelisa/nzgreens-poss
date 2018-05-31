@@ -23,6 +23,9 @@
         FROM
         products
         where 1=1
+        <if test="productId != null">
+            and id = #{productId}
+        </if>
         <if test="title != null and title != ''">
             and MATCH (title) AGAINST(#{title} IN BOOLEAN MODE)
         </if>
@@ -39,6 +42,23 @@
             and is_valid = #{isValid}
         </if>
         order by id desc
+    </select>
+
+    <!-- 查询产品变更的列表 -->
+    <select id="selectProductChangeForPage" resultType="com.nzgreens.common.model.console.ProductsPriceChangeModel">
+        SELECT
+            c.product_id productId,
+            c.old_sell_price oldSellPrice,
+            c.new_sell_price newSellPrice,
+            p.create_time createTime,
+            p.title,
+            p.image
+        FROM
+            products_price_change c,
+            products p
+        WHERE
+            c.product_id = p.id
+        ORDER BY c.create_time desc
     </select>
 
     <select id="selectAgentMonthRebate" parameterType="map" resultType="com.nzgreens.common.model.console.UserOrderPriceSumModel">

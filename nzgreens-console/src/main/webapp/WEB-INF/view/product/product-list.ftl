@@ -34,6 +34,14 @@
                         <div class="form-group">
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    <label class="col-sm-4 control-label">商品ID：</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" name="productId" class="form-control" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
                                     <label class="col-sm-4 control-label">标题：</label>
                                     <div class="col-sm-6">
                                         <input type="text" name="title" class="form-control" placeholder="">

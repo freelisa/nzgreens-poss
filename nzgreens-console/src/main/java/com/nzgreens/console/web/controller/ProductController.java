@@ -1,13 +1,16 @@
 package com.nzgreens.console.web.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.nzgreens.common.form.console.PageSearchForm;
 import com.nzgreens.common.form.console.ProductAddForm;
 import com.nzgreens.common.form.console.ProductForm;
 import com.nzgreens.common.model.ResultModel;
+import com.nzgreens.common.model.console.ProductsPriceChangeModel;
 import com.nzgreens.common.utils.CurrencyUtil;
 import com.nzgreens.console.annotations.Auth;
 import com.nzgreens.console.service.IProductService;
 import com.nzgreens.dal.user.example.Products;
+import com.nzgreens.dal.user.example.ProductsPriceChange;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +47,32 @@ public class ProductController extends BaseController {
         List<Products> products = productService.selectProductForPage(form);
         PageInfo<Products> pageInfo = new PageInfo<>(products);
         resultModel.setData(pageInfo);
+        return resultModel;
+    }
+
+    @RequestMapping("change/to-list")
+    @Auth("PRODUCT_PRICE_CHANGE_MANAGE")
+    public String toChangeList(Model model) throws Exception{
+        return "product/product-price-change-list";
+    }
+
+    @RequestMapping("change/search-list")
+    @ResponseBody
+    @Auth("PRODUCT_PRICE_CHANGE_MANAGE")
+    public ResultModel searchChangeList(PageSearchForm form) throws Exception{
+        ResultModel<PageInfo<ProductsPriceChangeModel>> resultModel = new ResultModel<>();
+        List<ProductsPriceChangeModel> products = productService.updateProductChangeForPage(form);
+        PageInfo<ProductsPriceChangeModel> pageInfo = new PageInfo<>(products);
+        resultModel.setData(pageInfo);
+        return resultModel;
+    }
+
+    @RequestMapping("change/count")
+    @ResponseBody
+    @Auth("PRODUCT_PRICE_CHANGE_MANAGE")
+    public ResultModel searchChangeCount() throws Exception{
+        ResultModel resultModel = new ResultModel<>();
+        resultModel.setData( productService.selectProductChangeCount());
         return resultModel;
     }
 

@@ -16,15 +16,21 @@ public interface ProductsCrawlMapper {
 
     int insertSelective(ProductsCrawl record);
 
+    List<ProductsCrawl> selectByExampleWithBLOBs(ProductsCrawlExample example);
+
     List<ProductsCrawl> selectByExample(ProductsCrawlExample example);
 
     ProductsCrawl selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") ProductsCrawl record, @Param("example") ProductsCrawlExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") ProductsCrawl record, @Param("example") ProductsCrawlExample example);
+
     int updateByExample(@Param("record") ProductsCrawl record, @Param("example") ProductsCrawlExample example);
 
     int updateByPrimaryKeySelective(ProductsCrawl record);
+
+    int updateByPrimaryKeyWithBLOBs(ProductsCrawl record);
 
     int updateByPrimaryKey(ProductsCrawl record);
 }

@@ -1,12 +1,11 @@
 package com.nzgreens.console.task;
 
+import com.nzgreens.common.enums.ProductsPriceChangeStatusEnum;
 import com.nzgreens.common.utils.CurrencyUtil;
 import com.nzgreens.console.util.ConvertUrlToMapUtil;
 import com.nzgreens.console.web.common.HttpRequestUtil;
 import com.nzgreens.dal.user.example.*;
-import com.nzgreens.dal.user.mapper.ProductBrandMapper;
-import com.nzgreens.dal.user.mapper.ProductCategoryMapper;
-import com.nzgreens.dal.user.mapper.ProductsCrawlMapper;
+import com.nzgreens.dal.user.mapper.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
@@ -42,6 +41,10 @@ public class CrawlProductTask extends AbstractScheduleTask {
     private ProductCategoryMapper productCategoryMapper;
     @Resource
     private ProductsCrawlMapper productsCrawlMapper;
+    @Resource
+    private ProductsMapper productsMapper;
+    @Resource
+    private ProductsPriceChangeMapper productsPriceChangeMapper;
     @Value("${images.host}")
     private String imagePath;
     @Value("${images.upload.path}")
@@ -102,9 +105,18 @@ public class CrawlProductTask extends AbstractScheduleTask {
                                     ProductCategory category = new ProductCategory();
                                     category.setId(Long.valueOf(categoryId));
                                     category.setName(theparent.html());
+                                    category.setCreateTime(new Date());
                                     productCategoryMapper.insertSelective(category);
 
                                     logger.info("---大分类：{}", theparent.html() + "," + hrefs[1]);
+                                }else{
+                                    if(!StringUtils.equals(theparent.html(),categoryModel.getName())){
+                                        ProductCategory category = new ProductCategory();
+                                        category.setId(Long.valueOf(categoryId));
+                                        category.setName(theparent.html());
+                                        category.setUpdateTime(new Date());
+                                        productCategoryMapper.updateByPrimaryKeySelective(category);
+                                    }
                                 }
 
                                 Elements childLevel = categoryDivChild.select("ul.child-level li a");
@@ -123,9 +135,19 @@ public class CrawlProductTask extends AbstractScheduleTask {
                                         categoryChild.setId(Long.valueOf(categoryChildId));
                                         categoryChild.setParentId(Long.valueOf(categoryId));
                                         categoryChild.setName(child.html());
+                                        categoryChild.setCreateTime(new Date());
                                         productCategoryMapper.insertSelective(categoryChild);
 
                                         logger.info("--------小分类：{}", child.html() + "," + childHrefs[1]);
+                                    }else{
+                                        if(!StringUtils.equals(child.html(),categoryChildModel.getName())){
+                                            ProductCategory categoryChild = new ProductCategory();
+                                            categoryChild.setId(Long.valueOf(categoryChildId));
+                                            categoryChild.setParentId(Long.valueOf(categoryId));
+                                            categoryChild.setName(child.html());
+                                            categoryChild.setUpdateTime(new Date());
+                                            productCategoryMapper.updateByPrimaryKeySelective(categoryChild);
+                                        }
                                     }
                                     //获取小分类
                                     Document temp = null;
@@ -162,12 +184,12 @@ public class CrawlProductTask extends AbstractScheduleTask {
                                             Map<String, String> map = ConvertUrlToMapUtil.URLRequest(linkHref);
 
                                             //查询商品是否存在
-                                            ProductsCrawlExample example = new ProductsCrawlExample();
-                                            example.createCriteria().andReptileProductIdEqualTo(map.get("product_id"));
-                                            int productCount = productsCrawlMapper.countByExample(example);
-                                            if (productCount > 0) {
-                                                continue;
-                                            }
+//                                            ProductsCrawlExample example = new ProductsCrawlExample();
+//                                            example.createCriteria().andReptileProductIdEqualTo(map.get("product_id"));
+//                                            int productCount = productsCrawlMapper.countByExample(example);
+//                                            if (productCount > 0) {
+//                                                continue;
+//                                            }
 
                                             //进入商品详情
                                             Document productDetail = null;
@@ -226,45 +248,94 @@ public class CrawlProductTask extends AbstractScheduleTask {
                                                 categoryParentId = categoryParentId.substring(index + 1);
                                                 categoryName = child.html();
                                             }
-                                            ProductsCrawl crawl = new ProductsCrawl();
-                                            crawl.setReptileProductId(map.get("product_id"));
-                                            crawl.setCategoryId(categoryParentId);
-                                            crawl.setCategoryName(categoryName);
-                                            crawl.setBrandId(brandLink.substring(brandLink.lastIndexOf("=") + 1));
-                                            crawl.setBrandName(brandHtml);
-                                            crawl.setSellingPrice(CurrencyUtil.convertYuanToFen(priceOld));
-                                            crawl.setTitle(productTitle);
-                                            //重量处理 重 量： 0.00 克
-                                            if (StringUtils.isNotBlank(weight)) {
-                                                weight = weight.substring(5, weight.length() - 2);
-                                            }
-                                            crawl.setWeight(weight);
-                                            crawl.setParentCategoryId(categoryId);
-                                            StringBuilder buff = new StringBuilder();
-                                            //产品详细图片描述
-                                            Elements detailImgs = productContent.select("div.item-content .tab-content img");
-                                            Iterator<Element> detailImgIter = detailImgs.iterator();
-                                            int detailIndex = 1;
-                                            while (detailImgIter.hasNext()) {
-                                                Element detailImg = detailImgIter.next();
-                                                String src = detailImg.attr("src");
-                                                if (StringUtils.isNotBlank(src)) {
-                                                    String suff = src.substring(src.lastIndexOf("."));
-                                                    String downloadImg = download(src, detailImagePath, map.get("product_id") +  "_" + detailIndex + suff);
-                                                    if(StringUtils.isNotEmpty(downloadImg)){
-                                                        buff.append(downloadImg);
-                                                        if (detailImgIter.hasNext()) {
-                                                            buff.append(",");
+                                            //查询产品是否存在，存在修改，不存在新增
+                                            ProductsCrawlExample crawlExample = new ProductsCrawlExample();
+                                            crawlExample.createCriteria().andReptileProductIdEqualTo(map.get("product_id"));
+                                            List<ProductsCrawl> productsCrawls = productsCrawlMapper.selectByExample(crawlExample);
+                                            if(CollectionUtils.isEmpty(productsCrawls)){
+                                                ProductsCrawl crawl = new ProductsCrawl();
+                                                crawl.setReptileProductId(map.get("product_id"));
+                                                crawl.setCategoryId(categoryParentId);
+                                                crawl.setCategoryName(categoryName);
+                                                crawl.setBrandId(brandLink.substring(brandLink.lastIndexOf("=") + 1));
+                                                crawl.setBrandName(brandHtml);
+                                                crawl.setCostPrice(CurrencyUtil.convertYuanToFen(priceOld));
+                                                crawl.setSellingPrice(CurrencyUtil.convertYuanToFen(priceNew));
+                                                crawl.setTitle(productTitle);
+                                                //重量处理 重 量： 0.00 克
+                                                if (StringUtils.isNotBlank(weight)) {
+                                                    weight = weight.substring(5, weight.length() - 2);
+                                                }
+                                                crawl.setWeight(weight);
+                                                crawl.setParentCategoryId(categoryId);
+                                                StringBuilder buff = new StringBuilder();
+                                                //产品详细图片描述
+                                                Elements detailImgs = productContent.select("div.item-content .tab-content img");
+                                                Iterator<Element> detailImgIter = detailImgs.iterator();
+                                                int detailIndex = 1;
+                                                while (detailImgIter.hasNext()) {
+                                                    Element detailImg = detailImgIter.next();
+                                                    String src = detailImg.attr("src");
+                                                    if (StringUtils.isNotBlank(src)) {
+                                                        String suff = src.substring(src.lastIndexOf("."));
+                                                        String downloadImg = download(src, detailImagePath, map.get("product_id") +  "_" + detailIndex + suff);
+                                                        if(StringUtils.isNotEmpty(downloadImg)){
+                                                            buff.append(downloadImg);
+                                                            if (detailImgIter.hasNext()) {
+                                                                buff.append(",");
+                                                            }
                                                         }
+                                                        detailIndex++;
                                                     }
-                                                    detailIndex++;
+                                                }
+                                                crawl.setDetail(buff.toString());
+                                                if(StringUtils.isNotEmpty(downloadImgMain)){
+                                                    crawl.setImage(downloadImgMain);
+                                                }
+                                                productsCrawlMapper.insertSelective(crawl);
+                                            }else{
+                                                //修改产品
+                                                ProductsCrawl productsCrawl = productsCrawls.get(0);
+                                                //标题、价格变动了
+                                                Long costPrice = CurrencyUtil.convertYuanToFen(priceOld);
+                                                Long sellPrice = CurrencyUtil.convertYuanToFen(priceNew);
+                                                if(!StringUtils.equals(productTitle,productsCrawl.getTitle())
+                                                        || !StringUtils.equals(String.valueOf(costPrice),String.valueOf(productsCrawl.getCostPrice()))
+                                                        || !StringUtils.equals(String.valueOf(sellPrice),String.valueOf(productsCrawl.getSellingPrice()))){
+
+                                                    ProductsCrawl crawl = new ProductsCrawl();
+                                                    crawl.setId(productsCrawl.getId());
+                                                    crawl.setTitle(productTitle);
+                                                    crawl.setCostPrice(costPrice);
+                                                    crawl.setSellingPrice(sellPrice);
+                                                    crawl.setUpdateTime(new Date());
+                                                    productsCrawlMapper.updateByPrimaryKeySelective(crawl);
+
+                                                    if(productsCrawl.getProductId() != null){
+                                                        Products products = new Products();
+                                                        products.setId(productsCrawl.getProductId());
+                                                        if(!StringUtils.equals(productTitle,productsCrawl.getTitle())){
+                                                            products.setTitle(productTitle);
+                                                        }
+                                                        if(!StringUtils.equals(String.valueOf(sellPrice),String.valueOf(productsCrawl.getSellingPrice()))){
+                                                            products.setCrawlSellingPrice(sellPrice);
+
+                                                            //价格变动，消息加入价格变动表
+                                                            ProductsPriceChange change = new ProductsPriceChange();
+                                                            change.setProductId(productsCrawl.getProductId());
+                                                            change.setOldSellPrice(productsCrawl.getSellingPrice());
+                                                            change.setNewSellPrice(sellPrice);
+                                                            change.setStatus(ProductsPriceChangeStatusEnum.NOT_READ.getValue());
+                                                            change.setCreateTime(new Date());
+                                                            change.setUpdateTime(new Date());
+                                                            productsPriceChangeMapper.insertSelective(change);
+                                                        }
+                                                        products.setUpdateTime(new Date());
+                                                        productsMapper.updateByPrimaryKeySelective(products);
+                                                    }
                                                 }
                                             }
-                                            crawl.setDetail(buff.toString());
-                                            if(StringUtils.isNotEmpty(downloadImgMain)){
-                                                crawl.setImage(downloadImgMain);
-                                            }
-                                            productsCrawlMapper.insertSelective(crawl);
+
 
                                             logger.info("-----------------------链接：{}", linkHref);
                                             logger.info("-----------------------标题：{}", productTitle);
@@ -289,16 +360,22 @@ public class CrawlProductTask extends AbstractScheduleTask {
                                 String brandPath = theparent.attr("href");
                                 String brandId = brandPath.substring(brandPath.lastIndexOf("=") + 1);
 
-                                ProductBrandExample example = new ProductBrandExample();
-                                example.createCriteria().andNameEqualTo(theparent.html());
-                                int count = productBrandMapper.countByExample(example);
-                                if (count == 0) {
+                                ProductBrand productBrand = productBrandMapper.selectByPrimaryKey(Long.valueOf(brandId));
+                                if (productBrand == null) {
                                     ProductBrand brand = new ProductBrand();
                                     brand.setId(Long.valueOf(brandId));
                                     brand.setName(theparent.html());
-
+                                    brand.setCreateTime(new Date());
                                     productBrandMapper.insertSelective(brand);
                                     logger.info("---大分类：{}",theparent.html() + "," + hrefs[1]);
+                                }else{
+                                    if(!StringUtils.equals(theparent.html(),productBrand.getName())){
+                                        ProductBrand brand = new ProductBrand();
+                                        brand.setId(Long.valueOf(brandId));
+                                        brand.setName(theparent.html());
+                                        brand.setUpdateTime(new Date());
+                                        productBrandMapper.updateByPrimaryKeySelective(brand);
+                                    }
                                 }
                             }
                         }

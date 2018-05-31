@@ -1,10 +1,13 @@
 package com.nzgreens.console.service;
 
+import com.nzgreens.common.form.console.PageSearchForm;
 import com.nzgreens.common.form.console.ProductAddForm;
 import com.nzgreens.common.form.console.ProductForm;
+import com.nzgreens.common.model.console.ProductsPriceChangeModel;
 import com.nzgreens.dal.user.example.ProductBrand;
 import com.nzgreens.dal.user.example.ProductCategory;
 import com.nzgreens.dal.user.example.Products;
+import com.nzgreens.dal.user.example.ProductsPriceChange;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -16,6 +19,10 @@ import java.util.List;
 
 public interface IProductService {
     List<Products> selectProductForPage(ProductForm form) throws Exception;
+
+    List<ProductsPriceChangeModel> updateProductChangeForPage(PageSearchForm form) throws Exception;
+
+    int selectProductChangeCount() throws Exception;
 
     ProductAddForm selectProductDetail(Long id) throws Exception;
 

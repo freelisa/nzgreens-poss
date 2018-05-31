@@ -6,11 +6,20 @@ package com.nzgreens.common.form.console;
  */
 
 public class ProductForm extends PageSearchForm{
+    private Long productId;
     private String title;
     private Long brandId;
     private Long categoryId;
     private Long parentCategoryId;
     private Integer isValid;
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
 
     public String getTitle() {
         return title;

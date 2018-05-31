@@ -2,21 +2,18 @@ package com.nzgreens.console.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.nzgreens.common.enums.IsValidEnum;
+import com.nzgreens.common.enums.ProductsPriceChangeStatusEnum;
 import com.nzgreens.common.exception.ErrorCodes;
+import com.nzgreens.common.form.console.PageSearchForm;
 import com.nzgreens.common.form.console.ProductAddForm;
 import com.nzgreens.common.form.console.ProductForm;
+import com.nzgreens.common.model.console.ProductsPriceChangeModel;
 import com.nzgreens.common.utils.CurrencyUtil;
 import com.nzgreens.console.service.BaseService;
 import com.nzgreens.console.service.IProductService;
 import com.nzgreens.console.web.common.UploadTempImageUtil;
-import com.nzgreens.dal.user.example.ProductBrand;
-import com.nzgreens.dal.user.example.ProductCategory;
-import com.nzgreens.dal.user.example.ProductCategoryExample;
-import com.nzgreens.dal.user.example.Products;
-import com.nzgreens.dal.user.mapper.ProductBrandMapper;
-import com.nzgreens.dal.user.mapper.ProductCategoryMapper;
-import com.nzgreens.dal.user.mapper.ProductsMapper;
-import com.nzgreens.dal.user.mapper.SubProductsMapper;
+import com.nzgreens.dal.user.example.*;
+import com.nzgreens.dal.user.mapper.*;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,6 +43,8 @@ public class ProductService extends BaseService implements IProductService {
     private ProductCategoryMapper productCategoryMapper;
     @Resource
     private ProductBrandMapper productBrandMapper;
+    @Resource
+    private ProductsPriceChangeMapper productsPriceChangeMapper;
     @Value("${images.host}")
     private String imageHost;
     @Value("${images.product.detail.path}")
@@ -70,6 +70,31 @@ public class ProductService extends BaseService implements IProductService {
             pro.setImage(imageHost + imageProductIconPath + "/" + pro.getImage());
         }
         return products;
+    }
+
+    @Override
+    public List<ProductsPriceChangeModel> updateProductChangeForPage(PageSearchForm form) throws Exception {
+        ProductsPriceChange change = new ProductsPriceChange();
+        change.setStatus(ProductsPriceChangeStatusEnum.READED.getValue());
+        change.setUpdateTime(new Date());
+
+        ProductsPriceChangeExample changeExample = new ProductsPriceChangeExample();
+        changeExample.createCriteria().andStatusEqualTo(ProductsPriceChangeStatusEnum.NOT_READ.getValue());
+        productsPriceChangeMapper.updateByExampleSelective(change,changeExample);
+        PageHelper.startPage(form.getPageNum(), form.getPageSize());
+        List<ProductsPriceChangeModel> changeModels = subProductsMapper.selectProductChangeForPage(form);
+        for(int i = 0,len = changeModels.size();i < len;i ++){
+            ProductsPriceChangeModel pro = changeModels.get(i);
+            pro.setImage(imageHost + imageProductIconPath + "/" + pro.getImage());
+        }
+        return changeModels;
+    }
+
+    @Override
+    public int selectProductChangeCount() throws Exception {
+        ProductsPriceChangeExample example = new ProductsPriceChangeExample();
+        example.createCriteria().andStatusEqualTo(ProductsPriceChangeStatusEnum.NOT_READ.getValue());
+        return productsPriceChangeMapper.countByExample(example);
     }
 
     @Override

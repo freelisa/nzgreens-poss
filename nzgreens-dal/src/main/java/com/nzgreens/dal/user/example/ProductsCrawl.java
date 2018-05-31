@@ -20,6 +20,8 @@ public class ProductsCrawl implements Serializable {
 
     private String image;
 
+    private Long costPrice;
+
     private Long sellingPrice;
 
     private String parentCategoryId;
@@ -28,8 +30,6 @@ public class ProductsCrawl implements Serializable {
 
     private String categoryName;
 
-    private String detail;
-
     private Integer state;
 
     private Integer isValid;
@@ -37,6 +37,8 @@ public class ProductsCrawl implements Serializable {
     private Date createTime;
 
     private Date updateTime;
+
+    private String detail;
 
     private static final long serialVersionUID = 1L;
 
@@ -104,6 +106,14 @@ public class ProductsCrawl implements Serializable {
         this.image = image;
     }
 
+    public Long getCostPrice() {
+        return costPrice;
+    }
+
+    public void setCostPrice(Long costPrice) {
+        this.costPrice = costPrice;
+    }
+
     public Long getSellingPrice() {
         return sellingPrice;
     }
@@ -136,14 +146,6 @@ public class ProductsCrawl implements Serializable {
         this.categoryName = categoryName;
     }
 
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
-
     public Integer getState() {
         return state;
     }
@@ -174,5 +176,13 @@ public class ProductsCrawl implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 }

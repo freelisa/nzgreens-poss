@@ -657,6 +657,66 @@ public class ProductsCrawlExample {
             return (Criteria) this;
         }
 
+        public Criteria andCostPriceIsNull() {
+            addCriterion("cost_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostPriceIsNotNull() {
+            addCriterion("cost_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostPriceEqualTo(Long value) {
+            addCriterion("cost_price =", value, "costPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostPriceNotEqualTo(Long value) {
+            addCriterion("cost_price <>", value, "costPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostPriceGreaterThan(Long value) {
+            addCriterion("cost_price >", value, "costPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostPriceGreaterThanOrEqualTo(Long value) {
+            addCriterion("cost_price >=", value, "costPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostPriceLessThan(Long value) {
+            addCriterion("cost_price <", value, "costPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostPriceLessThanOrEqualTo(Long value) {
+            addCriterion("cost_price <=", value, "costPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostPriceIn(List<Long> values) {
+            addCriterion("cost_price in", values, "costPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostPriceNotIn(List<Long> values) {
+            addCriterion("cost_price not in", values, "costPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostPriceBetween(Long value1, Long value2) {
+            addCriterion("cost_price between", value1, value2, "costPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostPriceNotBetween(Long value1, Long value2) {
+            addCriterion("cost_price not between", value1, value2, "costPrice");
+            return (Criteria) this;
+        }
+
         public Criteria andSellingPriceIsNull() {
             addCriterion("selling_price is null");
             return (Criteria) this;
@@ -924,76 +984,6 @@ public class ProductsCrawlExample {
 
         public Criteria andCategoryNameNotBetween(String value1, String value2) {
             addCriterion("category_name not between", value1, value2, "categoryName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailIsNull() {
-            addCriterion("detail is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailIsNotNull() {
-            addCriterion("detail is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailEqualTo(String value) {
-            addCriterion("detail =", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailNotEqualTo(String value) {
-            addCriterion("detail <>", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailGreaterThan(String value) {
-            addCriterion("detail >", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailGreaterThanOrEqualTo(String value) {
-            addCriterion("detail >=", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailLessThan(String value) {
-            addCriterion("detail <", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailLessThanOrEqualTo(String value) {
-            addCriterion("detail <=", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailLike(String value) {
-            addCriterion("detail like", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailNotLike(String value) {
-            addCriterion("detail not like", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailIn(List<String> values) {
-            addCriterion("detail in", values, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailNotIn(List<String> values) {
-            addCriterion("detail not in", values, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailBetween(String value1, String value2) {
-            addCriterion("detail between", value1, value2, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailNotBetween(String value1, String value2) {
-            addCriterion("detail not between", value1, value2, "detail");
             return (Criteria) this;
         }
 
