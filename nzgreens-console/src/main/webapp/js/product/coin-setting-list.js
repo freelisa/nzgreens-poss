@@ -66,6 +66,7 @@ function searchDetail(agentId) {
 
         $("#modalDetail").modal();
         $("#updateMoney").val(Fen2Yuan(result.data.money));
+        $("#updateCoin").val(Fen2Yuan(result.data.coin));
     });
 }
 

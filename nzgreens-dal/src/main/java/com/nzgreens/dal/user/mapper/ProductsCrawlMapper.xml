@@ -15,6 +15,7 @@
     <result column="parent_category_id" property="parentCategoryId" jdbcType="VARCHAR" />
     <result column="category_id" property="categoryId" jdbcType="VARCHAR" />
     <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="stock" property="stock" jdbcType="INTEGER" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="is_valid" property="isValid" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -83,8 +84,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, product_id, reptile_product_id, brand_id, brand_name, title, weight, image, cost_price, 
-    selling_price, parent_category_id, category_id, category_name, state, is_valid, create_time, 
-    update_time
+    selling_price, parent_category_id, category_id, category_name, stock, state, is_valid, 
+    create_time, update_time
   </sql>
   <sql id="Blob_Column_List" >
     detail
@@ -148,16 +149,16 @@
       brand_id, brand_name, title, 
       weight, image, cost_price, 
       selling_price, parent_category_id, category_id, 
-      category_name, state, is_valid, 
-      create_time, update_time, detail
-      )
+      category_name, stock, state, 
+      is_valid, create_time, update_time, 
+      detail)
     values (#{id,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{reptileProductId,jdbcType=VARCHAR}, 
       #{brandId,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
       #{weight,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{costPrice,jdbcType=BIGINT}, 
       #{sellingPrice,jdbcType=BIGINT}, #{parentCategoryId,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, 
-      #{categoryName,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{isValid,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{detail,jdbcType=LONGVARCHAR}
-      )
+      #{categoryName,jdbcType=VARCHAR}, #{stock,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
+      #{isValid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{detail,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.nzgreens.dal.user.example.ProductsCrawl" useGeneratedKeys="true" keyProperty="id">
     insert into products_crawl
@@ -200,6 +201,9 @@
       </if>
       <if test="categoryName != null" >
         category_name,
+      </if>
+      <if test="stock != null" >
+        stock,
       </if>
       <if test="state != null" >
         state,
@@ -256,6 +260,9 @@
       </if>
       <if test="categoryName != null" >
         #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="stock != null" >
+        #{stock,jdbcType=INTEGER},
       </if>
       <if test="state != null" >
         #{state,jdbcType=INTEGER},
@@ -322,6 +329,9 @@
       <if test="record.categoryName != null" >
         category_name = #{record.categoryName,jdbcType=VARCHAR},
       </if>
+      <if test="record.stock != null" >
+        stock = #{record.stock,jdbcType=INTEGER},
+      </if>
       <if test="record.state != null" >
         state = #{record.state,jdbcType=INTEGER},
       </if>
@@ -357,6 +367,7 @@
       parent_category_id = #{record.parentCategoryId,jdbcType=VARCHAR},
       category_id = #{record.categoryId,jdbcType=VARCHAR},
       category_name = #{record.categoryName,jdbcType=VARCHAR},
+      stock = #{record.stock,jdbcType=INTEGER},
       state = #{record.state,jdbcType=INTEGER},
       is_valid = #{record.isValid,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -381,6 +392,7 @@
       parent_category_id = #{record.parentCategoryId,jdbcType=VARCHAR},
       category_id = #{record.categoryId,jdbcType=VARCHAR},
       category_name = #{record.categoryName,jdbcType=VARCHAR},
+      stock = #{record.stock,jdbcType=INTEGER},
       state = #{record.state,jdbcType=INTEGER},
       is_valid = #{record.isValid,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -428,6 +440,9 @@
       <if test="categoryName != null" >
         category_name = #{categoryName,jdbcType=VARCHAR},
       </if>
+      <if test="stock != null" >
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
       </if>
@@ -460,6 +475,7 @@
       parent_category_id = #{parentCategoryId,jdbcType=VARCHAR},
       category_id = #{categoryId,jdbcType=VARCHAR},
       category_name = #{categoryName,jdbcType=VARCHAR},
+      stock = #{stock,jdbcType=INTEGER},
       state = #{state,jdbcType=INTEGER},
       is_valid = #{isValid,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -481,6 +497,7 @@
       parent_category_id = #{parentCategoryId,jdbcType=VARCHAR},
       category_id = #{categoryId,jdbcType=VARCHAR},
       category_name = #{categoryName,jdbcType=VARCHAR},
+      stock = #{stock,jdbcType=INTEGER},
       state = #{state,jdbcType=INTEGER},
       is_valid = #{isValid,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},

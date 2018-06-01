@@ -30,6 +30,8 @@ public class ProductsCrawl implements Serializable {
 
     private String categoryName;
 
+    private Integer stock;
+
     private Integer state;
 
     private Integer isValid;
@@ -144,6 +146,14 @@ public class ProductsCrawl implements Serializable {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 
     public Integer getState() {

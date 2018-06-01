@@ -26,8 +26,8 @@ import java.util.List;
  * @author helizheng
  * @create 2017-09-19 16:36
  **/
-//@Component
-//@Lazy(false)
+@Component
+@Lazy(false)
 public class SettingProductTask extends AbstractScheduleTask {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -45,7 +45,7 @@ public class SettingProductTask extends AbstractScheduleTask {
 	@Value("${images.product.detail.path}")
 	private String detailImagePath;
 
-	@Scheduled(cron = "${SettingProductTask.cron:0 10 18 * * ?}")
+	@Scheduled(cron = "${SettingProductTask.cron:0 56 4 * * ?}")
 	public void handle() {
 		doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
 			@Override
@@ -92,7 +92,7 @@ public class SettingProductTask extends AbstractScheduleTask {
 						}
 						pro.setCostPrice(costBig.longValue());
 						pro.setSellingPrice(sellBig.longValue());
-						pro.setCrawlSellingPrice(sellBig.longValue());
+						//pro.setCrawlSellingPrice(sellBig.longValue());
 
 						StringBuilder buff = new StringBuilder();
 						if(StringUtils.isNotEmpty(crawl.getDetail())){
@@ -108,19 +108,21 @@ public class SettingProductTask extends AbstractScheduleTask {
 						pro.setImage(crawl.getImage());
 						pro.setTitle(crawl.getTitle());
 						pro.setParentCategoryId(Long.valueOf(crawl.getParentCategoryId()));
-						//pro.setCrawlSellingPrice(crawl.getc);
 						if(StringUtils.isNotEmpty(crawl.getWeight())){
 							String[] split = crawl.getWeight().split("\\.");
 							pro.setWeight(Long.valueOf(split[0]));
 						}
-						pro.setStock(999L);
+						if(crawl.getStock() == null){
+							pro.setStock(999L);
+						}else{
+							pro.setStock(crawl.getStock().longValue());
+						}
 						pro.setGelinProductId(Long.valueOf(crawl.getReptileProductId()));
 						//设置商品未生效
 						pro.setIsValid(0);
 						productsMapper.insertSelective(pro);
 
 						crawl.setProductId(pro.getId());
-
 						crawl.setState(1);
 						productsCrawlMapper.updateByPrimaryKeySelective(crawl);
 					}

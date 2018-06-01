@@ -97,6 +97,10 @@ public class CurrencyUtil {
 		return convertYuanToFen(String.valueOf(yuanAmount));
 	}
 
+	public static Long convertYuanToFen(Long yuanAmount) throws Exception {
+		return convertYuanToFen(String.valueOf(yuanAmount));
+	}
+
 	/**
 	 * 分转元                                    <br/>
 	 * 保留2位小数                       <br/>

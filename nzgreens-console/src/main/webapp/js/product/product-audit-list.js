@@ -18,9 +18,6 @@ $(document).ready(function () {
     });
     searchList();
 
-    $("#add").on("click", function () {
-        $("#modalAdd").modal();
-    });
     $("#addPic").on("click", function () {
         uploadType = "1";
         dropz.removeAllFiles();
@@ -29,41 +26,6 @@ $(document).ready(function () {
     $("#delPic").on("click", function () {
         $("#contentPicId").val("");
         $("#addPicDiv").html("");
-    });
-
-    $("#btnAdd").on("click", function () {
-        if ($("#addForm").valid()) {
-            $(this).button('loading');
-            $("#addDetail").val($('#summernote1').code());
-
-            var params = {
-                "title": $("#addTitle").val(),
-                "brandId": $("#addBrandId").val(),
-                "weight": $("#addWeight").val(),
-                "image": $("#contentPicId").val(),
-                "costPrice": $("#addCostPrice").val(),
-                "sellingPrice": $("#addSellPrice").val(),
-                "categoryId": $("#addCategoryId").val(),
-                "detail": $("#addDetail").val(),
-                "stock": $("#addStock").val(),
-                "isValid": $("#addStatus").val()
-            }
-            post(_rootPath + "product/insert", params, function (result) {
-                $("#btnAdd").button('reset');
-                if (result.success == true) {
-                    swal({title: "提示", text: "保存成功", type: 'success'}, function () {
-                        $("#modalAdd").modal("hide");
-                        searchList();
-                    });
-                }
-            });
-        }
-    });
-
-    //删除
-    $(document).on("click",".btnDelete",function(){
-        var id = $(this).attr("productId");
-        deleteData(id);
     });
 
     initDropz();
@@ -107,7 +69,7 @@ function initDropz() {
 
 //查询列表
 function searchList() {
-    post(_rootPath + "product/search-list", $("#searchForm").serialize(), function (result) {
+    post(_rootPath + "product/audit/search-list", $("#searchForm").serialize(), function (result) {
         $("#tbody").setTemplateElement("appConTr-template", null, {filter_data: false});
         $("#tbody").processTemplate(result);
         $("#pageDiv").setTemplateElement("pager_template");
@@ -177,19 +139,5 @@ function saveUpdate() {
                 searchList();
             });
         }
-    });
-}
-
-
-function deleteData(id) {
-    layer.confirm('是否删除？', function(index){
-        post(_rootPath + "product/delete", {"id":id}, function (result) {
-            if (result.success == true) {
-                layer.close(index);
-                swal({title: "提示", text: "删除成功", type: 'success'}, function () {
-                    searchList();
-                });
-            }
-        });
     });
 }

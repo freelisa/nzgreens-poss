@@ -14,7 +14,8 @@
             category_id categoryId,
             detail,
             weight,
-            parent_category_id parentCategoryId
+            parent_category_id parentCategoryId,
+            stock,cost_price costPrice
         FROM
           products_crawl c
         WHERE NOT EXISTS (SELECT 1 FROM products p WHERE c.product_id = p.id) and c.state=0

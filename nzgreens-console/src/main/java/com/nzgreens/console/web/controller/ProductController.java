@@ -1,6 +1,7 @@
 package com.nzgreens.console.web.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.nzgreens.common.enums.IsValidEnum;
 import com.nzgreens.common.form.console.PageSearchForm;
 import com.nzgreens.common.form.console.ProductAddForm;
 import com.nzgreens.common.form.console.ProductForm;
@@ -44,6 +45,27 @@ public class ProductController extends BaseController {
     @Auth("PRODUCT_MANAGE")
     public ResultModel searchList(ProductForm form) throws Exception{
         ResultModel<PageInfo<Products>> resultModel = new ResultModel<>();
+        form.setIsValid(IsValidEnum.EFFECTIVE.getValue());
+        List<Products> products = productService.selectProductForPage(form);
+        PageInfo<Products> pageInfo = new PageInfo<>(products);
+        resultModel.setData(pageInfo);
+        return resultModel;
+    }
+
+    @RequestMapping("audit/to-list")
+    @Auth("PRODUCT_AUDIT_MANAGE")
+    public String toAuditList(Model model) throws Exception{
+        model.addAttribute("categoryList", productService.selectProductCategory());
+        model.addAttribute("brandList", productService.selectProductBrand());
+        return "product/product-audit-list";
+    }
+
+    @RequestMapping("audit/search-list")
+    @ResponseBody
+    @Auth("PRODUCT_AUDIT_MANAGE")
+    public ResultModel searchAuditList(ProductForm form) throws Exception{
+        ResultModel<PageInfo<Products>> resultModel = new ResultModel<>();
+        form.setIsValid(IsValidEnum.INVALID.getValue());
         List<Products> products = productService.selectProductForPage(form);
         PageInfo<Products> pageInfo = new PageInfo<>(products);
         resultModel.setData(pageInfo);

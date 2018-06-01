@@ -28,14 +28,14 @@
         <permission id="303" name="品牌修改" code="PRODUCT_BRAND_UPDATE" depends="" />
         <permission id="304" name="分类管理" code="PRODUCT_CATEGORY_MANAGE" depends=""/>
         <permission id="305" name="分类修改" code="PRODUCT_CATEGORY_UPDATE" depends="" />
-        <permission id="306" name="金币比例设置" code="COIN_SETTING_MANAGE" depends=""/>
-        <permission id="307" name="金币比例修改" code="COIN_SETTING_UPDATE" depends="" />
+        <!--<permission id="306" name="金币比例设置" code="COIN_SETTING_MANAGE" depends=""/>
+        <permission id="307" name="金币比例修改" code="COIN_SETTING_UPDATE" depends="" />-->
         <permission id="308" name="商品运费设置" code="PRODUCT_FREIGHT_MANAGE" depends=""/>
         <permission id="309" name="商品运费修改" code="PRODUCT_FREIGHT_UPDATE" depends="" />
         <permission id="310" name="关键字设置" code="SEARCH_KEYWORD_MANAGE" depends="" />
         <permission id="311" name="关键字修改" code="SEARCH_KEYWORD_UPDATE" depends="" />
-        <permission id="312" name="产品审核管理" code="PRODUCT_CRAWL_MANAGE" depends=""/>
-        <permission id="313" name="产品审核修改" code="PRODUCT_CRAWL_UPDATE" depends="" />
+        <permission id="312" name="产品审核管理" code="PRODUCT_AUDIT_MANAGE" depends=""/>
+        <permission id="313" name="产品审核修改" code="PRODUCT_AUDIT_MANAGE" depends="" />
         <permission id="314" name="产品价格变更记录" code="PRODUCT_PRICE_CHANGE_MANAGE" depends=""/>
     </permission-group>
 

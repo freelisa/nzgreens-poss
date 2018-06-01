@@ -218,7 +218,7 @@ public class CrawlProductTask extends AbstractScheduleTask {
                                             Integer stock = 0;
                                             if (bradHtml != null && bradHtml.length > 0) {
                                                 for (String s : bradHtml) {
-                                                    if (StringUtils.isNotBlank(s) && s.contains("库存")) {
+                                                    if (StringUtils.isNotBlank(s) && s.contains("库 存")) {
                                                         Pattern p = Pattern.compile("[^0-9]");
                                                         try {
                                                             Matcher m = p.matcher(s);
@@ -315,6 +315,11 @@ public class CrawlProductTask extends AbstractScheduleTask {
                                                 if(StringUtils.isNotEmpty(downloadImgMain)){
                                                     crawl.setImage(downloadImgMain);
                                                 }
+                                                if(stock != null && stock != 0){
+                                                    crawl.setStock(stock);
+                                                }else{
+                                                    crawl.setStock(999);
+                                                }
                                                 productsCrawlMapper.insertSelective(crawl);
                                             }else{
                                                 //修改产品
@@ -336,6 +341,14 @@ public class CrawlProductTask extends AbstractScheduleTask {
                                                     }
                                                     if(sellPrice != null && sellPrice != 0){
                                                         crawl.setSellingPrice(sellPrice);
+                                                    }
+                                                    if(costPrice == null || costPrice == 0){
+                                                        crawl.setCostPrice(sellPrice);
+                                                        crawl.setSellingPrice(sellPrice);
+                                                    }
+                                                    if(sellPrice == null || sellPrice == 0){
+                                                        crawl.setCostPrice(costPrice);
+                                                        crawl.setSellingPrice(costPrice);
                                                     }
                                                     crawl.setUpdateTime(new Date());
                                                     productsCrawlMapper.updateByPrimaryKeySelective(crawl);

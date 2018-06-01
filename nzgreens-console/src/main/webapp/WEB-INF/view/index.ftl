@@ -104,8 +104,8 @@
                             <@sec.any name="PRODUCT_MANAGE">
                                 <li><@s.a href="${ctx}product/to-list" class="J_menuItem">产品管理</@s.a></li>
                             </@sec.any>
-                            <@sec.any name="PRODUCT_CRAWL_MANAGE">
-                                <li><@s.a href="${ctx}product/crawl/to-list" class="J_menuItem">产品审核管理</@s.a></li>
+                            <@sec.any name="PRODUCT_AUDIT_MANAGE">
+                                <li><@s.a href="${ctx}product/audit/to-list" class="J_menuItem">产品审核管理</@s.a></li>
                             </@sec.any>
                             <@sec.any name="PRODUCT_BRAND_MANAGE">
                                 <li><@s.a href="${ctx}product/brand/to-list" class="J_menuItem">品牌管理</@s.a></li>
@@ -113,9 +113,9 @@
                             <@sec.any name="PRODUCT_CATEGORY_MANAGE">
                                 <li><@s.a href="${ctx}product/category/to-list" class="J_menuItem">分类管理</@s.a></li>
                             </@sec.any>
-                            <@sec.any name="COIN_SETTING_MANAGE">
+                            <#--<@sec.any name="COIN_SETTING_MANAGE">
                                 <li><@s.a href="${ctx}coin/setting/to-list" class="J_menuItem">金币比例设置</@s.a></li>
-                            </@sec.any>
+                            </@sec.any>-->
                             <@sec.any name="PRODUCT_FREIGHT_MANAGE">
                                 <li><@s.a href="${ctx}product/freight/to-list" class="J_menuItem">商品运费设置</@s.a></li>
                             </@sec.any>

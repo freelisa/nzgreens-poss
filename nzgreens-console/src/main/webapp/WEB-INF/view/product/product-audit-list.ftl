@@ -107,15 +107,6 @@
             <div class="form-group">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <@sec.any name=updateSec>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                   <button type="button" class="btn btn-success " id="add">
-                                       <i class="fa fa-plus"></i>&nbsp;&nbsp;<span class="bold">新增</span>
-                                   </button>
-                            </div>
-                        </div>
-                    </@sec.any>
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -128,7 +119,6 @@
                                     <th>商品图片</th>
                                     <th>原价</th>
                                     <th>售价</th>
-                                    <th>抓取的新价格</th>
                                     <th>分类</th>
                                     <th>库存</th>
                                     <th>商品评分</th>
@@ -152,131 +142,6 @@
         </div>
     </div>
 </div>
-
-<!-- 新增弹出框 -->
-<div class="modal inmodal" id="modalAdd" tabindex="-1" role="dialog"  aria-hidden="true">
-    <div class="modal-dialog" style="width: 900px">
-        <div class="modal-content animated fadeIn" style="width: 900px">
-            <div class="modal-header" style="height: 20px;">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" style="font-size: 22px;">新增</h4>
-            </div>
-            <div class="modal-body">
-                <form id="addForm" method="post" class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" style="text-align: left; width: 7%">标题</label>
-                        <div class="col-sm-6">
-                            <textarea name="title" class="form-control" rows="3" cols="40" id="addTitle"></textarea>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" style="text-align: left; width: 7%">品牌</label>
-                        <div class="col-sm-6">
-                            <select class="form-control" name="brandId" id="addBrandId">
-                                <option value="">请选择</option>
-                                <#list brandList as b>
-                                    <option value="${b.id}">${b.name}</option>
-                                </#list>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" style="text-align: left; width: 7%">重量</label>
-                        <div class="col-sm-6">
-                            <input type="text" name="weight" class="form-control" id="addWeight">
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" style="text-align: left; width: 7%">状态</label>
-                        <div class="col-sm-6">
-                            <select class="form-control" name="IsValid" id="addStatus">
-                                <option value="">请选择</option>
-                            <#list IsValidEnum?values as e>
-                                <option value="${e.value}">${e.text}</option>
-                            </#list>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <div id="file" class="dropzone" style="display: none"></div>
-                        <label class="col-sm-4 control-label" style="text-align: left; width: 10%">产品图片</label>
-                        <input type="hidden" name="contentPic" id="contentPicId">
-                        <div id="addPicDiv">
-                        </div>
-                        <button type="button" class="btn btn-primary pull-right" style="margin-left:5px" id="delPic">删除图片</button>
-                        <button type="button" class="btn btn-primary pull-right" style="margin-left:5px" id="addPic">选择图片</button>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" style="text-align: left; width: 7%">原价</label>
-                        <div class="col-sm-6">
-                            <input type="text" name="costPrice" class="form-control" id="addCostPrice">
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" style="text-align: left; width: 7%">售价</label>
-                        <div class="col-sm-6">
-                            <input type="text" name="sellingPrice" class="form-control" id="addSellPrice">
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" style="text-align: left; width: 7%">库存</label>
-                        <div class="col-sm-6">
-                            <input type="text" name="stock" class="form-control" id="addStock">
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" style="text-align: left; width: 7%">分类</label>
-                        <div class="col-sm-6">
-                            <select class="form-control" name="categoryId" id="addCategoryId">
-                                <option value="">请选择</option>
-                            <#list categoryList as b>
-                                <option value="${b.id}">${b.name}</option>
-                            </#list>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <input type="hidden" name="detail" value="" id="addDetail">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <h5>详情</h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content no-padding">
-                                        <div class="summernote" id="summernote1"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-            <@sec.any name=updateSec>
-                <button type="button" id="btnAdd" class="btn btn-primary">保存</button>
-            </@sec.any>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <!-- 详情弹出框 -->
 <div class="modal inmodal" id="modalDetail" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -440,8 +305,7 @@
             </td>
             <td>{Fen2Yuan($T.appCon.costPrice)}</td>
             <td>{Fen2Yuan($T.appCon.sellingPrice)}</td>
-            <td>{Fen2Yuan($T.appCon.crawlSellingPrice)}</td>
-             <td>
+            <td>
              <#list categoryList as c>
                  {#if $T.appCon.categoryId=="${c.id}"}${c.name}{#/if}
              </#list>
@@ -453,8 +317,7 @@
             <td>{new Date($T.appCon.updateTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>
                 <@sec.any name="PRODUCT_UPDATE">
-                <button type="button" productId="{$T.appCon.id}" class="btn btn-primary btnDetail">查看</button>
-                <button type="button" productId="{$T.appCon.id}" class="btn btn-danger btnDelete">删除</button>
+                <button type="button" productId="{$T.appCon.id}" class="btn btn-primary btnDetail">审核</button>
                 </@sec.any>
             </td>
         </tr>
@@ -486,7 +349,7 @@
 <script src="${ctx}js/plugins/summernote/summernote-zh-CN.js"></script>
 <script src="${ctx}js/plugins/layer/layer.min.js"></script>
 <script src="${ctx}${getVersion('js/page.js')}"></script>
-<script src="${ctx}${getVersion('js/product/product-list.js')}"></script>
+<script src="${ctx}${getVersion('js/product/product-audit-list.js')}"></script>
 </body>
 
 </html>

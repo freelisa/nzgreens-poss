@@ -144,6 +144,9 @@ public class ProductService extends BaseService implements IProductService {
         if (StringUtils.isBlank(form.getImage())) {
             thrown(ErrorCodes.PRODUCT_IMAGE_ILLEGAL);
         }
+        if (form.getIsValid() == null) {
+            thrown(ErrorCodes.PRODUCTS_IS_VALID_ILLEGAL);
+        }
         form.setDetail(html_Base64ToImg(form.getDetail()));
         form.setImage(form.getImage().substring(form.getImage().lastIndexOf("/") + 1));
         Products products = new Products();
@@ -177,6 +180,9 @@ public class ProductService extends BaseService implements IProductService {
         }
         if (form.getStock() == null) {
             thrown(ErrorCodes.STOCK_ILLEGAL);
+        }
+        if (form.getIsValid() == null) {
+            thrown(ErrorCodes.PRODUCTS_IS_VALID_ILLEGAL);
         }
         if(StringUtils.isNotEmpty(form.getDetail())){
             form.setDetail(html_Base64ToImg(form.getDetail()));

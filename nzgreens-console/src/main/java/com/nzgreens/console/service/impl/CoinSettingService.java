@@ -40,7 +40,7 @@ public class CoinSettingService extends BaseService implements ICoinSettingServi
         checkForm(coinSetting);
         CoinSetting setting = new CoinSetting();
         setting.setMoney(CurrencyUtil.convertYuanToFen(coinSetting.getMoney()));
-        setting.setCoin(coinSetting.getCoin());
+        setting.setCoin(CurrencyUtil.convertYuanToFen(coinSetting.getCoin()));
         if(coinSettingMapper.insertSelective(setting) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
         }
@@ -55,7 +55,7 @@ public class CoinSettingService extends BaseService implements ICoinSettingServi
         CoinSetting setting = new CoinSetting();
         setting.setId(coinSetting.getId());
         setting.setMoney(CurrencyUtil.convertYuanToFen(coinSetting.getMoney()));
-        setting.setCoin(coinSetting.getCoin());
+        setting.setCoin(CurrencyUtil.convertYuanToFen(coinSetting.getCoin()));
         if(coinSettingMapper.updateByPrimaryKeySelective(setting) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
         }
