@@ -41,7 +41,7 @@
         <if test="isValid != null">
             and is_valid = #{isValid}
         </if>
-        order by id desc
+        order by gelinProductId desc
     </select>
 
     <!-- 查询产品变更的列表 -->
