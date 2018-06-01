@@ -207,6 +207,29 @@ public class CrawlProductTask extends AbstractScheduleTask {
 
                                             //品牌
                                             Element brand = productDesc.select("ul.product-detail").first();
+                                            //获取库存
+                                            String[] bradHtml = new String[0];
+                                            try {
+                                                bradHtml = brand.html().replaceAll("<!--|-->","").split("\n");
+                                            } catch (Exception e1) {
+
+                                            }
+                                            //TODO 新增库存
+                                            Integer stock = 0;
+                                            if (bradHtml != null && bradHtml.length > 0) {
+                                                for (String s : bradHtml) {
+                                                    if (StringUtils.isNotBlank(s) && s.contains("库存")) {
+                                                        Pattern p = Pattern.compile("[^0-9]");
+                                                        try {
+                                                            Matcher m = p.matcher(s);
+                                                            stock = Integer.valueOf(m.replaceAll("").trim());
+                                                        } catch (NumberFormatException e1) {
+
+                                                        }
+
+                                                    }
+                                                }
+                                            }
                                             Elements brandA = brand.select("a");
                                             String brandLink = brandA.attr("href");
                                             String brandHtml = brandA.html();
