@@ -131,7 +131,7 @@
         <div class="form-group">
             <label class="col-sm-4 control-label" style="text-align: left; width: 20%">运费</label>
             <div class="col-sm-6">
-                <input name="freight" class="form-control" id="updateFreight" value="{Fen2Yuan($T.data.freight)}">
+                <input type="number" name="freight" class="form-control" id="updateFreight" value="{Fen2Yuan($T.data.freight)}" placeholder="{Fen2Yuan($T.data.freight)}">
             </div>
         </div>
         <div class="hr-line-dashed"></div>

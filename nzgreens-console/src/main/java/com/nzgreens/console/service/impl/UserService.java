@@ -224,7 +224,7 @@ public class UserService extends BaseService implements IUserService {
         //查询系统
         Users systemUser = selectSystemUser();
 
-        Integer balances = Integer.valueOf(balance);
+        Integer balances = CurrencyUtil.convertYuanToFenResInt(balance);
         if(balances < 0){
             int balanceAbs = Math.abs(balances);
             if(balanceAbs > u.getBalance()){
@@ -237,7 +237,7 @@ public class UserService extends BaseService implements IUserService {
             }
             //提现
             WithdrawRecord record = new WithdrawRecord();
-            record.setAmount(Long.valueOf(balanceAbs));
+            record.setAmount(CurrencyUtil.convertYuanToFen(balanceAbs));
             record.setUserAgentId(systemUser.getId());
             record.setUserId(userId);
             withdrawRecordMapper.insertSelective(record);

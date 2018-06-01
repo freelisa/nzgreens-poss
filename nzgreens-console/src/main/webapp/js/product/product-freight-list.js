@@ -65,8 +65,8 @@ function searchDetail(agentId) {
         $("#detailDiv").processTemplate(result);
 
         $("#modalDetail").modal();
-
-        $("#updateFreight").val(result.data.freight);
+        var freight = result.data.freight;
+        $("#updateFreight").val(freight.toFixed(2));
     });
 }
 

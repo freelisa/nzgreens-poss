@@ -164,14 +164,14 @@
         <div class="form-group">
             <label class="col-sm-4 control-label" style="text-align: left; width: 20%">返佣金额</label>
             <div class="col-sm-6">
-                <p class="form-control-static" id="rebatePrice"></p>
+                <p class="form-control-static">{Fen2Yuan($T.data.rebatePrice)}</p>
             </div>
         </div>
         <div class="hr-line-dashed"></div>
         <div class="form-group">
             <label class="col-sm-4 control-label" style="text-align: left; width: 20%">实际返佣金额</label>
             <div class="col-sm-6">
-                <input type="number" name="actualRebatePrice" class="form-control" id="actualRebatePrice" value="{$T.data.actualRebatePrice}">
+                <input type="number" name="actualRebatePrice" class="form-control" id="actualRebatePrice" value="{Fen2Yuan($T.data.actualRebatePrice)}">
             </div>
         </div>
         <div class="hr-line-dashed"></div>
@@ -205,8 +205,8 @@
                     {#if $T.agent.type == ${e.value}}${e.text}{#/if}
                 </#list>
             </td>
-            <td>{$T.agent.rebatePrice}</td>
-            <td>{$T.agent.actualRebatePrice}</td>
+            <td>{Fen2Yuan($T.agent.rebatePrice)}</td>
+            <td>{Fen2Yuan($T.agent.actualRebatePrice)}</td>
             <td>
                 <#list AgentRebateAuditStatusEnum?values as e>
                     {#if $T.agent.status == ${e.value}}${e.text}{#/if}
