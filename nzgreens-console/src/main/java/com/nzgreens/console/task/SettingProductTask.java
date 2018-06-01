@@ -45,7 +45,7 @@ public class SettingProductTask extends AbstractScheduleTask {
 	@Value("${images.product.detail.path}")
 	private String detailImagePath;
 
-	@Scheduled(cron = "${SettingProductTask.cron:0 22 3 * * ?}")
+	@Scheduled(cron = "${SettingProductTask.cron:0 10 18 * * ?}")
 	public void handle() {
 		doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
 			@Override
@@ -72,11 +72,23 @@ public class SettingProductTask extends AbstractScheduleTask {
 						if(StringUtils.isNotEmpty(crawl.getCategoryId())){
 							pro.setCategoryId(Long.valueOf(crawl.getCategoryId()));
 						}
-
-						BigDecimal sell = new BigDecimal(crawl.getSellingPrice());
-						BigDecimal sellBig = sell.divide(new BigDecimal(money)).multiply(new BigDecimal(coinSettings.get(0).getCoin()))
-								.setScale(0, BigDecimal.ROUND_UP);
-						pro.setCostPrice(sellBig.longValue());
+						BigDecimal costBig = null;
+						if(crawl.getCostPrice() == null){
+							costBig = new BigDecimal("0");
+						}else{
+							BigDecimal cost = new BigDecimal(crawl.getCostPrice());
+							costBig = cost.divide(new BigDecimal(money)).multiply(new BigDecimal(coinSettings.get(0).getCoin()))
+									.setScale(0, BigDecimal.ROUND_UP);
+						}
+						BigDecimal sellBig = null;
+						if(crawl.getSellingPrice() == null){
+							sellBig = new BigDecimal("0");
+						}else{
+							BigDecimal sell = new BigDecimal(crawl.getSellingPrice());
+							sellBig = sell.divide(new BigDecimal(money)).multiply(new BigDecimal(coinSettings.get(0).getCoin()))
+									.setScale(0, BigDecimal.ROUND_UP);
+						}
+						pro.setCostPrice(costBig.longValue());
 						pro.setSellingPrice(sellBig.longValue());
 						StringBuilder buff = new StringBuilder();
 						if(StringUtils.isNotEmpty(crawl.getDetail())){
@@ -92,6 +104,7 @@ public class SettingProductTask extends AbstractScheduleTask {
 						pro.setImage(crawl.getImage());
 						pro.setTitle(crawl.getTitle());
 						pro.setParentCategoryId(Long.valueOf(crawl.getParentCategoryId()));
+						//pro.setCrawlSellingPrice(crawl.getc);
 						if(StringUtils.isNotEmpty(crawl.getWeight())){
 							String[] split = crawl.getWeight().split("\\.");
 							pro.setWeight(Long.valueOf(split[0]));

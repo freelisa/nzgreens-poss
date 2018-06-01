@@ -41,15 +41,16 @@ public class CurrencyUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Long convertYuanToFens(String yuanAmount) throws Exception {
+	public static Long convertYuanToFensTask(String yuanAmount) throws Exception {
 		if (StringUtils.isBlank(yuanAmount)) {
 			throw new Exception("输入金额为空!");
 		}
 
 		yuanAmount = yuanAmount.trim();
-		if (!NumberUtils.isNumber(yuanAmount)) {
-			throw new Exception("输入金额格式错误!");
-		}
+		yuanAmount = yuanAmount.substring(1).replace(",","");
+//		if (!NumberUtils.isNumber(yuanAmount)) {
+//			throw new Exception("输入金额格式错误!");
+//		}
 
 		BigDecimal result = new BigDecimal(yuanAmount);
 		result = result.multiply(HUNDRED);
