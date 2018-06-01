@@ -68,6 +68,9 @@ public class ProductService extends BaseService implements IProductService {
         for(int i = 0,len = products.size();i < len;i ++){
             Products pro = products.get(i);
             pro.setImage(imageHost + imageProductIconPath + "/" + pro.getImage());
+            if(pro.getCrawlSellingPrice() == null){
+                pro.setCrawlSellingPrice(0L);
+            }
         }
         return products;
     }

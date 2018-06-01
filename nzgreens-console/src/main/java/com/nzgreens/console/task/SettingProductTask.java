@@ -26,8 +26,8 @@ import java.util.List;
  * @author helizheng
  * @create 2017-09-19 16:36
  **/
-@Component
-@Lazy(false)
+//@Component
+//@Lazy(false)
 public class SettingProductTask extends AbstractScheduleTask {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());

@@ -11,6 +11,7 @@
         image,
         cost_price costPrice,
         selling_price sellingPrice,
+        crawl_selling_price crawlSellingPrice,
         category_id categoryId,
         detail,
         stock,
