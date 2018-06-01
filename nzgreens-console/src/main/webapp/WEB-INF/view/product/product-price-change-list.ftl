@@ -58,8 +58,8 @@
                  <img src="{$T.t.image}" width="60px" height="60px">
                 {#/if}
             </td>
-            <td>{$T.t.oldSellPrice}</td>
-            <td>{$T.t.newSellPrice}</td>
+            <td>{Fen2Yuan($T.t.oldSellPrice)}</td>
+            <td>{Fen2Yuan($T.t.newSellPrice)}</td>
             <td>{new Date($T.t.createTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
         </tr>
     {#else}

@@ -145,8 +145,8 @@ public class ProductService extends BaseService implements IProductService {
         form.setImage(form.getImage().substring(form.getImage().lastIndexOf("/") + 1));
         Products products = new Products();
         BeanUtils.copyProperties(form,products);
-        products.setCostPrice(Long.valueOf(form.getCostPrice()));
-        products.setSellingPrice(Long.valueOf(form.getSellingPrice()));
+        products.setCostPrice(CurrencyUtil.convertYuanToFen(form.getCostPrice()));
+        products.setSellingPrice(CurrencyUtil.convertYuanToFen(form.getSellingPrice()));
         if (productsMapper.insertSelective(products) < 1) {
             thrown("update.error");
         }
@@ -183,8 +183,8 @@ public class ProductService extends BaseService implements IProductService {
         }
         Products products = new Products();
         BeanUtils.copyProperties(form,products);
-        products.setCostPrice(Long.valueOf(form.getCostPrice()));
-        products.setSellingPrice(Long.valueOf(form.getSellingPrice()));
+        products.setCostPrice(CurrencyUtil.convertYuanToFen(form.getCostPrice()));
+        products.setSellingPrice(CurrencyUtil.convertYuanToFen(form.getSellingPrice()));
         if (productsMapper.updateByPrimaryKeySelective(products) < 1) {
             thrown("update.error");
         }

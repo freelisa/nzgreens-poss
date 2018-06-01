@@ -23,7 +23,7 @@ public class CurrencyUtil {
 		}
 
 		yuanAmount = yuanAmount.trim();
-		yuanAmount = yuanAmount.substring(1).replace(",","");
+		//yuanAmount = yuanAmount.substring(1).replace(",","");
 //		if (!NumberUtils.isNumber(yuanAmount)) {
 //			throw new Exception("输入金额格式错误!");
 //		}

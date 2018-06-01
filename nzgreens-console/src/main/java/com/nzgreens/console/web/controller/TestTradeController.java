@@ -1,9 +1,9 @@
 package com.nzgreens.console.web.controller;
 
-import com.nzgreens.console.mt4.api.ConnectorAPI;
+/*import com.nzgreens.console.mt4.api.ConnectorAPI;
 import com.nzgreens.console.mt4.api.MT4;
 import com.nzgreens.console.mt4.api.bean.TradeRecord;
-import com.nzgreens.common.model.ResultModel;
+import com.nzgreens.common.model.ResultModel;*/
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +20,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("trade/history")
 public class TestTradeController extends BaseController {
-
+/*
     @RequestMapping("list")
     @ResponseBody
     public ResultModel selectTradeHistory() throws Exception{
@@ -46,7 +46,7 @@ public class TestTradeController extends BaseController {
         System.out.println("records="+records.length);
         result.setData(records);
         return result;
-    }
+    }*/
 
     public static void main(String[] args) {
         long currentTime = System.currentTimeMillis();

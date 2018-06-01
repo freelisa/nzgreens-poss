@@ -365,14 +365,14 @@
         <div class="form-group">
             <label class="col-sm-4 control-label" style="text-align: left; width: 7%">原价</label>
             <div class="col-sm-6">
-                <input type="text" name="costPrice" class="form-control" value="{$T.data.costPrice}" id="detailCostPrice">
+                <input type="text" name="costPrice" class="form-control" value="{Fen2Yuan($T.data.costPrice)}" id="detailCostPrice">
             </div>
         </div>
         <div class="hr-line-dashed"></div>
         <div class="form-group">
             <label class="col-sm-4 control-label" style="text-align: left; width: 7%">售价</label>
             <div class="col-sm-6">
-                <input type="text" name="sellingPrice" class="form-control" value="{$T.data.sellingPrice}" id="detailSellPrice">
+                <input type="text" name="sellingPrice" class="form-control" value="{Fen2Yuan($T.data.sellingPrice)}" id="detailSellPrice">
             </div>
         </div>
         <div class="hr-line-dashed"></div>
@@ -437,8 +437,8 @@
                  <img src="{$T.appCon.image}" width="60px" height="60px">
                 {#/if}
             </td>
-            <td>{$T.appCon.costPrice}</td>
-            <td>{$T.appCon.sellingPrice}</td>
+            <td>{Fen2Yuan($T.appCon.costPrice)}</td>
+            <td>{Fen2Yuan($T.appCon.sellingPrice)}</td>
              <td>
              <#list categoryList as c>
                  {#if $T.appCon.categoryId=="${c.id}"}${c.name}{#/if}

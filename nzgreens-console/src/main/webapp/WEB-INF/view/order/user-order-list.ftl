@@ -202,9 +202,9 @@
             <td>{$T.user.address}</td>
             <td>{$T.user.contact}</td>
             <td>{$T.user.mobile}</td>
-            <td>{$T.user.productPrice}</td>
-            <td>{$T.user.freight}</td>
-            <td>{$T.user.price}</td>
+            <td>{Fen2Yuan($T.user.productPrice)}</td>
+            <td>{Fen2Yuan($T.user.freight)}</td>
+            <td>{Fen2Yuan($T.user.price)}</td>
             <td>
             <#list UserOrderTypeEnum?values as e>
                 {#if $T.user.type == ${e.value}}${e.text}{#/if}

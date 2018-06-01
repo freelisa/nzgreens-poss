@@ -131,7 +131,7 @@
         <div class="form-group">
             <label class="col-sm-4 control-label" style="text-align: left; width: 20%">运费</label>
             <div class="col-sm-6">
-                <input name="freight" class="form-control" id="updateFreight" value="{$T.data.freight}">
+                <input name="freight" class="form-control" id="updateFreight" value="{Fen2Yuan($T.data.freight)}">
             </div>
         </div>
         <div class="hr-line-dashed"></div>
@@ -144,7 +144,7 @@
         <tr>
             <td>{$T.agent.id}</td>
             <td>{$T.agent.productWeight}</td>
-            <td>{$T.agent.freight}</td>
+            <td>{Fen2Yuan($T.agent.freight)}</td>
             <td>{new Date($T.agent.createTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>{new Date($T.agent.updateTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>

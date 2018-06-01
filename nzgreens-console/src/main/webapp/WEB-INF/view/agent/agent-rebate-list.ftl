@@ -181,14 +181,14 @@
         </div>
         <div class="hr-line-dashed"></div>
         <div class="form-group">
-            <label class="col-sm-4 control-label" style="text-align: left; width: 20%">订单返佣</label>
+            <label class="col-sm-4 control-label" style="text-align: left; width: 20%">订单 %</label>
             <div class="col-sm-6">
                 <input type="number" name="orderRebate" class="form-control" id="updateOrderRebate" value="{$T.data.orderRebate}">
             </div>
         </div>
         <div class="hr-line-dashed"></div>
         <div class="form-group">
-            <label class="col-sm-4 control-label" style="text-align: left; width: 20%">月返佣</label>
+            <label class="col-sm-4 control-label" style="text-align: left; width: 20%">月返佣 %</label>
             <div class="col-sm-6">
                 <input type="number" name="monthRebate" class="form-control" id="updateMonthRebate" value="{$T.data.monthRebate}">
             </div>
@@ -204,8 +204,8 @@
             <td>{$T.agent.id}</td>
             <td>{$T.agent.userId}</td>
             <td>{$T.agent.mobile}</td>
-            <td>{$T.agent.orderRebate}</td>
-            <td>{$T.agent.monthRebate}</td>
+            <td>{$T.agent.orderRebate}%</td>
+            <td>{$T.agent.monthRebate}%</td>
             <td>{new Date($T.agent.createTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>{new Date($T.agent.updateTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>

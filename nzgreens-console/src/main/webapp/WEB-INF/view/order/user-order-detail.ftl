@@ -155,15 +155,15 @@
                 <div class="form-group">
                     <label class="col-sm-4 control-label">商品总金额: </label>
                     <div class="col-sm-8">
-                        <p class="form-control-static">{$T.data.productPrice}</p>
+                        <p class="form-control-static">{Fen2Yuan($T.data.productPrice)}</p>
                     </div>
                     <label class="col-sm-4 control-label">订单运费: </label>
                     <div class="col-sm-8">
-                        <p class="form-control-static">{$T.data.freight}</p>
+                        <p class="form-control-static">{Fen2Yuan($T.data.freight)}</p>
                     </div>
                     <label class="col-sm-4 control-label">订单总金额: </label>
                     <div class="col-sm-8">
-                        <p class="form-control-static">{$T.data.price}</p>
+                        <p class="form-control-static">{Fen2Yuan($T.data.price)}</p>
                     </div>
                     <label class="col-sm-4 control-label">订单类型: </label>
                     <div class="col-sm-8">
