@@ -49,9 +49,11 @@
                                     <tr>
                                         <th>订单ID</th>
                                         <th>订单号</th>
+                                        <th>产品ID</th>
                                         <th>产品名称</th>
                                         <th>商品数量</th>
                                         <th>商品价格</th>
+                                        <th>代理购买金额</th>
                                         <th>状态</th>
                                         <th>评价状态</th>
                                         <th>创建时间</th>

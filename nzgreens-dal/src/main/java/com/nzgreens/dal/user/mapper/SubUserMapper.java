@@ -1,9 +1,11 @@
 package com.nzgreens.dal.user.mapper;
 
 import com.nzgreens.common.form.console.ChargeRecordForm;
+import com.nzgreens.common.form.console.UserForm;
 import com.nzgreens.common.form.console.WithdrawRecordForm;
 import com.nzgreens.common.model.console.BatchUpdateProductNumberModel;
 import com.nzgreens.common.model.console.ChargeRecordModel;
+import com.nzgreens.common.model.console.UsersModel;
 import com.nzgreens.common.model.console.WithdrawRecordModel;
 import com.nzgreens.dal.user.example.Orders;
 import org.apache.ibatis.annotations.Param;
@@ -11,6 +13,15 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface SubUserMapper {
+	List<UsersModel> selectUserForPage(UserForm form);
+
+	/**
+	 * 查询代理下的用户
+	 * @param form
+	 * @return
+	 */
+	List<UsersModel> selectAgentUserForPage(UserForm form);
+
 
 	/**
 	 * 扣除余额

@@ -66,7 +66,7 @@ function searchDetail(agentId) {
 
         $("#modalDetail").modal();
         var freight = result.data.freight;
-        $("#updateFreight").val(freight.toFixed(2));
+        $("#updateFreight").val(Fen2Yuan(freight));
     });
 }
 

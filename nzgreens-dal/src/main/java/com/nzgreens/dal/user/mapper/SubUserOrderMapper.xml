@@ -51,4 +51,27 @@
         </if>
         order by o.id desc
     </select>
+
+    <!-- orders订单列表 -->
+    <select id="selectOrdersForPage" parameterType="map" resultType="com.nzgreens.common.model.console.OrdersModel">
+        SELECT
+        o.id,
+        o.order_number orderNumber,
+        p.title,
+        o.product_number productNumber,
+        o.product_id productId,
+        o.price,
+        o.agent_price agentPrice,
+        o.comment_status commentStatus,
+        o.`status`,
+        o.create_time createTime
+        FROM
+        orders o,
+        products p
+        WHERE
+        o.order_number = #{orderNumber}
+        AND o.product_id = p.id
+        ORDER BY
+        o.create_time
+    </select>
 </mapper>

@@ -2,6 +2,7 @@ package com.nzgreens.console.service;
 
 import com.nzgreens.common.form.console.PageSearchForm;
 import com.nzgreens.common.form.console.UserOrderForm;
+import com.nzgreens.common.model.console.OrdersModel;
 import com.nzgreens.common.model.console.UserOrderModel;
 import com.nzgreens.dal.user.example.OrderCertificate;
 import com.nzgreens.dal.user.example.Orders;
@@ -17,7 +18,7 @@ import java.util.List;
 public interface IUserOrderService {
     List<UserOrderModel> selectUserOrderForPage(UserOrderForm form) throws Exception;
 
-    List<Orders> selectOrdersForPage(String orderNumber, PageSearchForm page) throws Exception;
+    List<OrdersModel> selectOrdersForPage(String orderNumber, PageSearchForm page) throws Exception;
 
     List<OrderCertificate> selectOrderCertForPage(String orderNumber,PageSearchForm page) throws Exception;
 

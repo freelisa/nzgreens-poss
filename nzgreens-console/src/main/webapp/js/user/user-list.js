@@ -57,6 +57,12 @@ function searchUserList() {
         $("#userPageDiv").setTemplateElement("pager_template");
         $("#userPageDiv").processTemplate(result);
 
+        $(".btnUserAgent").on("click",function () {
+            var userId = $(this).attr("user-id")
+            var agentMobile = $(this).attr("agent-mobile");
+            jumpTabPage("menuUserAgentDetail", "id=" + userId + "&agentMobile=" + agentMobile);
+        });
+
         $(".btnUserUpdate").on("click",function () {
             var userId = $(this).attr("userId");
             searchUserDetail(userId);

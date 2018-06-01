@@ -114,6 +114,7 @@
                                 <tr>
                                     <th>用户ID</th>
                                     <th>电话号码</th>
+                                    <th>代理电话号码</th>
                                     <th>用户类型</th>
                                     <th>余额</th>
                                     <th>是否有效</th>
@@ -306,6 +307,7 @@
         <tr>
             <td>{$T.user.id}</td>
             <td>{$T.user.telephone}</td>
+            <td>{$T.user.agentMobile}</td>
             <td>
             <#list UserTypeEnum?values as e>
                 {#if $T.user.type == ${e.value}}${e.text}{#/if}
@@ -332,6 +334,9 @@
             <@sec.any name="USER_UPDATE">
                 <button type="button" userId="{$T.user.id}" class="btn btn-danger btnUserFrozen">冻结</button>
             </@sec.any>
+            {#if $T.user.type == 2}
+            <button type="button" user-id="{$T.user.id}" agent-mobile="{$T.user.telephone}" class="btn btn-primary btnUserAgent">代理下用户</button>
+            {#/if}
             </td>
         </tr>
     {#else}

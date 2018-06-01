@@ -3,9 +3,6 @@ Dropzone.autoDiscover = false;
 var dropz;
 
 $(document).ready(function () {
-
-    $("#summernote1").summernote({lang:"zh-CN"});
-
     $(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",});
     $("#btnCancel").on("click", function () {
         $("#searchForm")[0].reset();
@@ -18,23 +15,12 @@ $(document).ready(function () {
     });
     searchList();
 
-    $("#addPic").on("click", function () {
-        uploadType = "1";
-        dropz.removeAllFiles();
-        dropz.hiddenFileInput.click();
-    });
-    $("#delPic").on("click", function () {
-        $("#contentPicId").val("");
-        $("#addPicDiv").html("");
-    });
-
     initDropz();
 
     pageFunInit(searchList);
 });
 
 function initDropz() {
-
     dropz = new Dropzone("#file", {
         url:_rootPath + "product/upload",
         addRemoveLinks: true,
@@ -49,10 +35,7 @@ function initDropz() {
             });
         },
         success:function(file,data){
-            if(uploadType == "1"){
-                $("#contentPicId").val(data.data);
-                $("#addPicDiv").html('<img src="'+data.data+'" width="101px" height="101px">');
-            }else if(uploadType == "2"){
+            if(uploadType == "2"){
                 $("#detailContentPicId").val(data.data);
                 $("#detailAddPicDiv").html('<img src="'+data.data+'" width="101px" height="101px">');
             }

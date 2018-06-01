@@ -5,6 +5,7 @@ import com.nzgreens.common.enums.*;
 import com.nzgreens.common.exception.ErrorCodes;
 import com.nzgreens.common.form.console.PageSearchForm;
 import com.nzgreens.common.form.console.UserOrderForm;
+import com.nzgreens.common.model.console.OrdersModel;
 import com.nzgreens.common.model.console.UserOrderModel;
 import com.nzgreens.console.service.BaseService;
 import com.nzgreens.console.service.IUserOrderService;
@@ -66,11 +67,9 @@ public class UserOrderService extends BaseService implements IUserOrderService {
     }
 
     @Override
-    public List<Orders> selectOrdersForPage(String orderNumber, PageSearchForm page) throws Exception {
+    public List<OrdersModel> selectOrdersForPage(String orderNumber, PageSearchForm page) throws Exception {
         PageHelper.startPage(page.getPageNum(),page.getPageSize());
-        OrdersExample example = new OrdersExample();
-        example.createCriteria().andOrderNumberEqualTo(orderNumber);
-        return ordersMapper.selectByExample(example);
+        return subUserOrderMapper.selectOrdersForPage(orderNumber);
     }
 
     @Override

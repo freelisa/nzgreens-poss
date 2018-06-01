@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.nzgreens.common.form.console.PageSearchForm;
 import com.nzgreens.common.form.console.UserOrderForm;
 import com.nzgreens.common.model.ResultModel;
+import com.nzgreens.common.model.console.OrdersModel;
 import com.nzgreens.common.model.console.UserOrderModel;
 import com.nzgreens.console.annotations.Auth;
 import com.nzgreens.console.service.IUserOrderService;
@@ -59,8 +60,8 @@ public class UserOrderController extends BaseController {
     @Auth("USER_ORDER_MANAGE")
     public ResultModel selectUserOrderDetailForPage(String orderNumber, PageSearchForm page) throws Exception{
         ResultModel result = new ResultModel();
-        List<Orders> orders = userOrderService.selectOrdersForPage(orderNumber, page);
-        PageInfo<Orders> pageInfo = new PageInfo<>(orders);
+        List<OrdersModel> orders = userOrderService.selectOrdersForPage(orderNumber, page);
+        PageInfo<OrdersModel> pageInfo = new PageInfo<>(orders);
         result.setData(pageInfo);
         return result;
     }

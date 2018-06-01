@@ -52,7 +52,7 @@
                                     <th>代理ID</th>
                                     <th>代理电话</th>
                                     <th>昵称</th>
-                                    <th>用户ID</th>
+                                    <th>提现用户ID</th>
                                     <th>提现金额</th>
                                     <th>创建时间</th>
                                 </tr>

@@ -8,6 +8,8 @@ public class UsersModel implements Serializable {
 
     private String telephone;
 
+    private String agentMobile;
+
     private String password;
 
     private String nickname;
@@ -114,5 +116,13 @@ public class UsersModel implements Serializable {
 
     public void setAgentUserId(Long agentUserId) {
         this.agentUserId = agentUserId;
+    }
+
+    public String getAgentMobile() {
+        return agentMobile;
+    }
+
+    public void setAgentMobile(String agentMobile) {
+        this.agentMobile = agentMobile;
     }
 }

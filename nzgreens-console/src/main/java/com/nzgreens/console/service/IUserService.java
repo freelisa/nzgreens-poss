@@ -13,7 +13,9 @@ import java.util.List;
  */
 
 public interface IUserService {
-    List<Users> selectUserForPage(UserForm form) throws Exception;
+    List<UsersModel> selectUserForPage(UserForm form) throws Exception;
+
+    List<UsersModel> selectAgentUserForPage(UserForm form) throws Exception;
 
     UsersModel selectUserDetail(Long userId) throws Exception;
 

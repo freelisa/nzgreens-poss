@@ -20,6 +20,66 @@
         </foreach>
     </update>
 
+    <select id="selectUserForPage" parameterType="com.nzgreens.common.form.console.UserForm" resultType="com.nzgreens.common.model.console.UsersModel">
+        SELECT
+        u.id,
+        u.telephone,
+        u.`password`,
+        u.nickname,
+        u.avatar,
+        u.type,
+        u.balance,
+        u.is_valid isValid,
+        u.create_time createTime,
+        u.update_time updateTime,
+        s.telephone agentMobile
+        FROM
+        users u
+        LEFT JOIN (
+        SELECT a.user_id, ur.telephone FROM user_agent a, users ur WHERE
+        a.agent_user_id = ur.id
+        ) s ON u.id = s.user_id
+        where 1=1
+        <if test="userId != null">
+            and u.id=#{userId}
+        </if>
+        <if test="type != null">
+            and u.type=#{type}
+        </if>
+        <if test="isValid != null">
+            and u.is_valid=#{isValid}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            and u.telephone = #{mobile}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and u.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and u.create_time &lt;= #{endTime}
+        </if>
+        order by u.type
+    </select>
+
+    <!-- 查询代理下的用户 -->
+    <select id="selectAgentUserForPage" parameterType="com.nzgreens.common.form.console.UserForm" resultType="com.nzgreens.common.model.console.UsersModel">
+        SELECT
+        u.id,
+        u.telephone,
+        u.`password`,
+        u.nickname,
+        u.avatar,
+        u.type,
+        u.balance,
+        u.is_valid isValid,
+        u.create_time createTime,
+        u.update_time updateTime
+        FROM
+        users u,user_agent a
+        where u.id = a.user_id
+        and a.agent_user_id=#{userId}
+    </select>
+
     <select id="selectChargeRecordForPage" parameterType="com.nzgreens.common.form.console.ChargeRecordForm" resultType="com.nzgreens.common.model.console.ChargeRecordModel">
         SELECT
         r.id,

@@ -143,6 +143,7 @@
     </div>
 </div>
 
+    <div id="file" class="dropzone" style="display: none"></div>
 <!-- 详情弹出框 -->
 <div class="modal inmodal" id="modalDetail" tabindex="-1" role="dialog"  aria-hidden="true">
     <div class="modal-dialog" style="width: 900px">

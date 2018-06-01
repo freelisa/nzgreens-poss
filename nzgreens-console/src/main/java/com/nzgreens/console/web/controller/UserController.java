@@ -37,9 +37,27 @@ public class UserController extends BaseController {
     @ResponseBody
     @Auth("USER_MANAGE")
     public ResultModel selectUserForPage(UserForm form) throws Exception{
-        ResultModel<PageInfo<Users>> resultModel = new ResultModel<>();
-        List<Users> users = userService.selectUserForPage(form);
-        PageInfo<Users> pageInfo = new PageInfo<>(users);
+        ResultModel<PageInfo<UsersModel>> resultModel = new ResultModel<>();
+        List<UsersModel> users = userService.selectUserForPage(form);
+        PageInfo<UsersModel> pageInfo = new PageInfo<>(users);
+        resultModel.setData(pageInfo);
+        return resultModel;
+    }
+
+    @RequestMapping("agent/to-list")
+    @Auth("USER_MANAGE")
+    public String toAgentUserList(Model model,Long id) throws Exception{
+        model.addAttribute("agentUserId",id);
+        return "user/user-agent-list";
+    }
+
+    @RequestMapping("agent/search-list")
+    @ResponseBody
+    @Auth("USER_MANAGE")
+    public ResultModel selectAgentUserForPage(UserForm form) throws Exception{
+        ResultModel<PageInfo<UsersModel>> resultModel = new ResultModel<>();
+        List<UsersModel> users = userService.selectAgentUserForPage(form);
+        PageInfo<UsersModel> pageInfo = new PageInfo<>(users);
         resultModel.setData(pageInfo);
         return resultModel;
     }

@@ -47,32 +47,15 @@ public class UserService extends BaseService implements IUserService {
     private UserOrderMapper userOrderMapper;
 
     @Override
-    public List<Users> selectUserForPage(UserForm form) throws Exception {
+    public List<UsersModel> selectUserForPage(UserForm form) throws Exception {
         PageHelper.startPage(form.getPageNum(),form.getPageSize());
-        UsersExample example = new UsersExample();
-        UsersExample.Criteria criteria = example.createCriteria();
-        if(form != null){
-            if(form.getUserId() != null){
-                criteria.andIdEqualTo(form.getUserId());
-            }
-            if(StringUtils.isNotBlank(form.getMobile())){
-                criteria.andTelephoneEqualTo(form.getMobile());
-            }
-            if(form.getType() != null){
-                criteria.andTypeEqualTo(form.getType());
-            }
-            if(form.getIsValid() != null){
-                criteria.andIsValidEqualTo(form.getIsValid());
-            }
-            if(form.getStartTime() != null){
-                criteria.andCreateTimeGreaterThanOrEqualTo(form.getStartTime());
-            }
-            if(form.getEndTime() != null){
-                criteria.andCreateTimeLessThanOrEqualTo(form.getEndTime());
-            }
-        }
-        example.setOrderByClause(" id desc");
-        return usersMapper.selectByExample(example);
+        return subUserMapper.selectUserForPage(form);
+    }
+
+    @Override
+    public List<UsersModel> selectAgentUserForPage(UserForm form) throws Exception {
+        PageHelper.startPage(form.getPageNum(),form.getPageSize());
+        return subUserMapper.selectAgentUserForPage(form);
     }
 
     @Override
@@ -237,7 +220,7 @@ public class UserService extends BaseService implements IUserService {
             }
             //提现
             WithdrawRecord record = new WithdrawRecord();
-            record.setAmount(CurrencyUtil.convertYuanToFen(balanceAbs));
+            record.setAmount(Long.valueOf(balanceAbs));
             record.setUserAgentId(systemUser.getId());
             record.setUserId(userId);
             withdrawRecordMapper.insertSelective(record);

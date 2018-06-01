@@ -61,6 +61,7 @@
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
+                            <li style="display: none;"><@s.a href="${ctx}user/agent/to-list" class="J_menuItem" id="menuUserAgentDetail">User Agent Detail</@s.a></li>
                             <@sec.any name="USER_MANAGE">
                                 <li><@s.a href="${ctx}user/to-list" class="J_menuItem">用户管理</@s.a></li>
                             </@sec.any>

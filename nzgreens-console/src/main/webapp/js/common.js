@@ -321,21 +321,30 @@ function jumpTabPage(menuId, keyStr) {
     var jump = parent.document.getElementById(menuId);
 
     //用户明细Tab需要显示用户名
-    if (menuId == 'menuUserOrderDetail') {
-        var keyParams = keyStr.split('&');
-        var replaceTabName = false;
-        for (var index = 0; index < keyParams.length; index++) {
-            var keyParam = keyParams[index];
+
+    var keyParams = keyStr.split('&');
+    var replaceTabName = false;
+    for (var index = 0; index < keyParams.length; index++) {
+        var keyParam = keyParams[index];
+        if (menuId == 'menuUserOrderDetail') {
             if (keyParam.startsWith('orderNumber')) {
                 jump.innerText = keyParam.substring(keyParam.indexOf('=') + 1);
                 replaceTabName = true;
                 break;
             }
         }
-        if (!replaceTabName) {
-            jump.innerText = 'User Order Detail';
+        if (menuId == 'menuUserAgentDetail') {
+            if (keyParam.startsWith('agentMobile')) {
+                jump.innerText = keyParam.substring(keyParam.indexOf('=') + 1);
+                replaceTabName = true;
+                break;
+            }
         }
     }
+    if (!replaceTabName) {
+        jump.innerText = 'User Order Detail';
+    }
+
 
     //跳转
     var jumpUrl = jump.href;
