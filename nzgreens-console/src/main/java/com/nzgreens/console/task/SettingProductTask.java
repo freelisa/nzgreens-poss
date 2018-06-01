@@ -58,9 +58,12 @@ public class SettingProductTask extends AbstractScheduleTask {
 					List<CoinSetting> coinSettings = coinSettingMapper.selectByExample(null);
 					Long money = null;
 					if(CollectionUtils.isEmpty(coinSettings)){
-						money = 100L;
+						money = 1L;
 					}
-					money = coinSettings.get(0).getMoney();
+					//RMB 分-> 金币
+					money = new BigDecimal(coinSettings.get(0).getMoney()).divide(
+							new BigDecimal(coinSettings.get(0).getCoin() == null ? 1L :coinSettings.get(0).getCoin()))
+									.setScale(BigDecimal.ROUND_UP).longValue();
 
 					for(int i = 0,length = productsCrawls.size();i < length;i++){
 						ProductsCrawl crawl = productsCrawls.get(i);
@@ -74,10 +77,13 @@ public class SettingProductTask extends AbstractScheduleTask {
 						}
 
 						BigDecimal sell = new BigDecimal(crawl.getSellingPrice());
-						BigDecimal sellBig = sell.divide(new BigDecimal(money)).multiply(new BigDecimal(coinSettings.get(0).getCoin()))
-								.setScale(0, BigDecimal.ROUND_UP);
-						pro.setCostPrice(sellBig.longValue());
+						BigDecimal sellBig = sell.divide(new BigDecimal(money)).setScale(0, BigDecimal.ROUND_UP);
+						BigDecimal cost = new BigDecimal(crawl.getCostPrice());
+						BigDecimal costBig = cost.divide(new BigDecimal(money)).setScale(0, BigDecimal.ROUND_UP);
+						pro.setCostPrice(costBig.longValue());
 						pro.setSellingPrice(sellBig.longValue());
+						pro.setCrawlSellingPrice(sellBig.longValue());
+
 						StringBuilder buff = new StringBuilder();
 						if(StringUtils.isNotEmpty(crawl.getDetail())){
 							String[] imgs = crawl.getDetail().split(",");
@@ -96,11 +102,14 @@ public class SettingProductTask extends AbstractScheduleTask {
 							String[] split = crawl.getWeight().split("\\.");
 							pro.setWeight(Long.valueOf(split[0]));
 						}
-						pro.setStock(9999l);
+						pro.setStock(999L);
 						pro.setGelinProductId(Long.valueOf(crawl.getReptileProductId()));
+						//设置商品未生效
+						pro.setIsValid(0);
 						productsMapper.insertSelective(pro);
 
 						crawl.setProductId(pro.getId());
+
 						crawl.setState(1);
 						productsCrawlMapper.updateByPrimaryKeySelective(crawl);
 					}
