@@ -297,27 +297,33 @@ public class CrawlProductTask extends AbstractScheduleTask {
                                                 //修改产品
                                                 ProductsCrawl productsCrawl = productsCrawls.get(0);
                                                 //标题、价格变动了
-                                                Long costPrice = CurrencyUtil.convertYuanToFen(priceOld);
-                                                Long sellPrice = CurrencyUtil.convertYuanToFen(priceNew);
+                                                Long costPrice = StringUtils.isNotBlank(priceOld) ? CurrencyUtil.convertYuanToFen(priceOld) : 0;
+                                                Long sellPrice = StringUtils.isNotBlank(priceNew) ? CurrencyUtil.convertYuanToFen(priceNew) : 0;
                                                 if(!StringUtils.equals(productTitle,productsCrawl.getTitle())
                                                         || !StringUtils.equals(String.valueOf(costPrice),String.valueOf(productsCrawl.getCostPrice()))
                                                         || !StringUtils.equals(String.valueOf(sellPrice),String.valueOf(productsCrawl.getSellingPrice()))){
 
                                                     ProductsCrawl crawl = new ProductsCrawl();
                                                     crawl.setId(productsCrawl.getId());
-                                                    crawl.setTitle(productTitle);
-                                                    crawl.setCostPrice(costPrice);
-                                                    crawl.setSellingPrice(sellPrice);
+                                                    if(StringUtils.isNotBlank(productTitle)){
+                                                        crawl.setTitle(productTitle);
+                                                    }
+                                                    if(costPrice != null && costPrice != 0){
+                                                        crawl.setCostPrice(costPrice);
+                                                    }
+                                                    if(sellPrice != null && sellPrice != 0){
+                                                        crawl.setSellingPrice(sellPrice);
+                                                    }
                                                     crawl.setUpdateTime(new Date());
                                                     productsCrawlMapper.updateByPrimaryKeySelective(crawl);
 
                                                     if(productsCrawl.getProductId() != null){
                                                         Products products = new Products();
                                                         products.setId(productsCrawl.getProductId());
-                                                        if(!StringUtils.equals(productTitle,productsCrawl.getTitle())){
+                                                        if(!StringUtils.equals(productTitle,productsCrawl.getTitle()) && StringUtils.isNotBlank(productTitle)){
                                                             products.setTitle(productTitle);
                                                         }
-                                                        if(!StringUtils.equals(String.valueOf(sellPrice),String.valueOf(productsCrawl.getSellingPrice()))){
+                                                        if(!StringUtils.equals(String.valueOf(sellPrice),String.valueOf(productsCrawl.getSellingPrice())) && sellPrice != null && sellPrice !=0){
                                                             products.setCrawlSellingPrice(sellPrice);
 
                                                             //价格变动，消息加入价格变动表
