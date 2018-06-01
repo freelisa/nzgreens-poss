@@ -45,7 +45,7 @@ public class SettingProductTask extends AbstractScheduleTask {
 	@Value("${images.product.detail.path}")
 	private String detailImagePath;
 
-	@Scheduled(cron = "${SettingProductTask.cron:0 22 3 * * ?}")
+	@Scheduled(cron = "${SettingProductTask.cron:0 10 18 * * ?}")
 	public void handle() {
 		doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
 			@Override
@@ -77,9 +77,19 @@ public class SettingProductTask extends AbstractScheduleTask {
 						}
 
 						BigDecimal sell = new BigDecimal(crawl.getSellingPrice());
-						BigDecimal sellBig = sell.divide(new BigDecimal(money)).setScale(0, BigDecimal.ROUND_UP);
 						BigDecimal cost = new BigDecimal(crawl.getCostPrice());
-						BigDecimal costBig = cost.divide(new BigDecimal(money)).setScale(0, BigDecimal.ROUND_UP);
+						BigDecimal costBig = null;
+						if(crawl.getCostPrice() == null){
+							costBig = new BigDecimal("0");
+						}else{
+							costBig = cost.divide(new BigDecimal(money)).setScale(0, BigDecimal.ROUND_UP);
+						}
+						BigDecimal sellBig = null;
+						if(crawl.getSellingPrice() == null){
+							sellBig = new BigDecimal("0");
+						}else{
+							sellBig = sell.divide(new BigDecimal(money)).setScale(0, BigDecimal.ROUND_UP);
+						}
 						pro.setCostPrice(costBig.longValue());
 						pro.setSellingPrice(sellBig.longValue());
 						pro.setCrawlSellingPrice(sellBig.longValue());
@@ -98,6 +108,7 @@ public class SettingProductTask extends AbstractScheduleTask {
 						pro.setImage(crawl.getImage());
 						pro.setTitle(crawl.getTitle());
 						pro.setParentCategoryId(Long.valueOf(crawl.getParentCategoryId()));
+						//pro.setCrawlSellingPrice(crawl.getc);
 						if(StringUtils.isNotEmpty(crawl.getWeight())){
 							String[] split = crawl.getWeight().split("\\.");
 							pro.setWeight(Long.valueOf(split[0]));
