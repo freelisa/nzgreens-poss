@@ -7,7 +7,7 @@ package com.nzgreens.common.enums;
  */
 public enum OrderStatusEnum implements IEnum {
     PENDING(0,"未处理"),
-    SUCCESS(1,"已处理");
+    SUCCESS(1,"已拒绝");
 
     private int value;
     private String name;
