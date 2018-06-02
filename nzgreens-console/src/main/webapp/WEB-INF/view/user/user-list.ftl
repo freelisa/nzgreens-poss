@@ -151,7 +151,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label" style="text-align: left; width:20%">用户账号</label>
                         <div class="col-sm-6">
-                            <input type="text" name="mobile" class="form-control" id="addMobile">
+                            <input type="text" name="mobile" class="form-control" id="addMobile" maxlength="11">
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
