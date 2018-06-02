@@ -30,7 +30,7 @@
                         <div class="form-group">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">电话号码：</label>
+                                    <label class="col-sm-4 control-label">用户账号：</label>
                                     <div class="col-sm-6">
                                         <input type="text" name="mobile" class="form-control" placeholder="">
                                     </div>
@@ -114,7 +114,7 @@
                                 <tr>
                                     <th>用户ID</th>
                                     <th>用户账号</th>
-                                    <th>代理电话号码</th>
+                                    <th>代理用户账号</th>
                                     <th>用户类型</th>
                                     <th>余额</th>
                                     <th>是否有效</th>
@@ -220,7 +220,7 @@
     <form id="detailForm" method="post" class="form-horizontal">
         <input type="hidden" class="form-control" value="{$T.data.id}" id="userId">
         <div class="form-group">
-            <label class="col-sm-4 control-label" style="text-align: left; width:20%">电话号码</label>
+            <label class="col-sm-4 control-label" style="text-align: left; width:20%">用户账号</label>
             <div class="col-sm-6">
                 <input type="text" name="mobile" class="form-control" id="detailMobile" value="{$T.data.telephone}">
             </div>
