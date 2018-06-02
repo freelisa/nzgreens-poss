@@ -113,7 +113,7 @@
                             <thead>
                                 <tr>
                                     <th>用户ID</th>
-                                    <th>电话号码</th>
+                                    <th>用户账号</th>
                                     <th>代理电话号码</th>
                                     <th>用户类型</th>
                                     <th>余额</th>
@@ -149,7 +149,7 @@
             <div class="modal-body">
                 <form id="addForm" method="post" class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" style="text-align: left; width:20%">电话号码</label>
+                        <label class="col-sm-4 control-label" style="text-align: left; width:20%">用户账号</label>
                         <div class="col-sm-6">
                             <input type="text" name="mobile" class="form-control" id="addMobile">
                         </div>
@@ -167,7 +167,7 @@
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
-                    <div class="form-group">
+                    <div class="form-group" id="agentSelectDiv">
                         <label class="col-sm-4 control-label" style="text-align: left; width:20%">代理</label>
                         <div class="col-sm-6">
                             <select class="form-control" name="agentUserId" id="addAgentUserId">

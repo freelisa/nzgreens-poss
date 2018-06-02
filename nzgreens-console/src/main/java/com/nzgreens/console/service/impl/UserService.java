@@ -317,7 +317,7 @@ public class UserService extends BaseService implements IUserService {
         if(StringUtils.isBlank(users.getTelephone())){
             thrown(ErrorCodes.USER_MOBILE_ILLEGAL);
         }
-        if(!StringUtil.isMobileNum(users.getTelephone())){
+        if(!StringUtils.isNumeric(users.getTelephone())){
             thrown(ErrorCodes.USER_MOBILE_ERROR);
         }
         if(users.getType() == null){

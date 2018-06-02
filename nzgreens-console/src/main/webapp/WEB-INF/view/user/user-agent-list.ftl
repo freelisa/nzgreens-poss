@@ -35,7 +35,7 @@
                             <thead>
                                 <tr>
                                     <th>用户ID</th>
-                                    <th>电话号码</th>
+                                    <th>用户账号</th>
                                     <th>用户类型</th>
                                     <th>余额</th>
                                     <th>是否有效</th>

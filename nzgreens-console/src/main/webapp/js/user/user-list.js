@@ -21,7 +21,14 @@ $(document).ready(function () {
     $("#btnUpdateBalance").on("click", function () {
         saveUpdateBalance();
     });
-
+    $("#addType").on("change",function (){
+        var type = $(this).val();
+        if (type == 1){
+            $("#agentSelectDiv").show();
+        } else {
+            $("#agentSelectDiv").hide();
+        }
+    });
     $("#btnAdd").on("click", function () {
         if ($("#addForm").valid()) {
             $(this).button('loading');
@@ -87,7 +94,7 @@ function searchUserList() {
 function resetPassword(userId) {
     post(_rootPath + "user/reset", {userId:userId}, function (result) {
         if (result.success == true) {
-            swal({title: "提示", text: "操作成功，重置密码为用户手机号码", type: 'success'}, function () {
+            swal({title: "提示", text: "操作成功，重置密码为用户账号", type: 'success'}, function () {
                 searchUserList();
             });
         }else{
