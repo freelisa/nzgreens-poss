@@ -23,7 +23,7 @@
                         <div class="form-group">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">代理手机号：</label>
+                                    <label class="col-sm-4 control-label">代理用户账号：</label>
                                     <div class="col-sm-6">
                                         <input type="text" name="mobile" class="form-control" placeholder="">
                                     </div>
@@ -50,7 +50,7 @@
                                 <tr>
                                     <th>序号</th>
                                     <th>代理ID</th>
-                                    <th>代理电话</th>
+                                    <th>代理用户账号</th>
                                     <th>昵称</th>
                                     <th>提现用户ID</th>
                                     <th>提现金额</th>

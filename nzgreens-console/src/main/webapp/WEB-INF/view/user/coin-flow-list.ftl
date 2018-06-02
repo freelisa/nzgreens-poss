@@ -31,7 +31,7 @@
                             </div>-->
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">手机号：</label>
+                                    <label class="col-sm-4 control-label">用户账号：</label>
                                     <div class="col-sm-6">
                                         <input type="text" name="telephone" class="form-control" placeholder="">
                                     </div>
@@ -105,7 +105,7 @@
                             <thead>
                                 <tr>
                                     <th>用户ID</th>
-                                    <th>电话</th>
+                                    <th>用户账号</th>
                                     <th>账户流水ID</th>
                                     <th>流水类型</th>
                                     <th>流水前余额</th>
