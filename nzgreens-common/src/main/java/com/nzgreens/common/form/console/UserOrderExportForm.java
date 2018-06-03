@@ -3,6 +3,7 @@ package com.nzgreens.common.form.console;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author:helizheng
@@ -11,6 +12,8 @@ import java.util.Date;
 
 public class UserOrderExportForm {
     private String orderIdsExport;
+
+    private List<Long> ids;
 
     private Long orderNumberExport;
 
@@ -60,5 +63,13 @@ public class UserOrderExportForm {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public List<Long> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<Long> ids) {
+        this.ids = ids;
     }
 }

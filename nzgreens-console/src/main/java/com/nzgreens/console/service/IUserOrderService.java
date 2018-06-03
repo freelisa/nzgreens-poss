@@ -22,6 +22,8 @@ public interface IUserOrderService {
 
     List<UserOrderExportModel> selectUserOrderExportExcel(UserOrderExportForm form) throws Exception;
 
+    List<UserOrderExportModel> selectUserOrderExportExcelV2(UserOrderExportForm form) throws Exception;
+
     List<OrdersModel> selectOrdersForPage(String orderNumber, PageSearchForm page) throws Exception;
 
     List<OrderCertificate> selectOrderCertForPage(String orderNumber,PageSearchForm page) throws Exception;

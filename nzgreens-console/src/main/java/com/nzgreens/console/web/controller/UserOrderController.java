@@ -142,7 +142,7 @@ public class UserOrderController extends BaseController {
     @Auth("USER_ORDER_EXPORT_MANAGE")
     public void selectUserOrderExportExcel(HttpServletRequest request, HttpServletResponse response,UserOrderExportForm form) throws Exception{
         String[] headers = {"序号","订单内容"};
-        List<UserOrderExportModel> exportModels = userOrderService.selectUserOrderExportExcel(form);
+        List<UserOrderExportModel> exportModels = userOrderService.selectUserOrderExportExcelV2(form);
 
         String[] fields = new String[]{"id","orderContent"};
         TableData td = ExcelUtils.createTableData(exportModels, ExcelUtils.createTableHeader(headers), fields);

@@ -52,6 +52,47 @@
         order by o.id desc
     </select>
 
+    <select id="selectUserOrderExportForPage" parameterType="com.nzgreens.common.form.console.UserOrderExportForm" resultType="com.nzgreens.common.model.console.UserOrderModel">
+        SELECT
+        o.id,
+        o.user_id userId,
+        u.telephone mobile,
+        o.order_number orderNumber,
+        o.delivery_mode deliveryMode,
+        o.address,
+        o.contact,
+        o.telephone,
+        o.product_price productPrice,
+        o.freight,
+        o.price,
+        o.type,
+        o.`status`,
+        o.create_time createTime,
+        o.update_time updateTime,
+        o.logistics_number logisticsNumber
+        FROM
+        user_order o,
+        users u
+        WHERE
+        o.user_id = u.id
+        <if test="status != null">
+            and o.status = #{status}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and o.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and o.create_time &lt;= #{endTime}
+        </if>
+        <if test="ids != null">
+            and o.id in
+            <foreach collection="ids" item="listItem" open="(" close=")" separator="," >
+                #{listItem}
+            </foreach>
+        </if>
+        order by o.id desc
+    </select>
+
     <!-- orders订单列表 -->
     <select id="selectOrdersForPage" parameterType="map" resultType="com.nzgreens.common.model.console.OrdersModel">
         SELECT

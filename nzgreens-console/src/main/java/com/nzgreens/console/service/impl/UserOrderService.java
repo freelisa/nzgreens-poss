@@ -130,6 +130,41 @@ public class UserOrderService extends BaseService implements IUserOrderService {
     }
 
     @Override
+    public List<UserOrderExportModel> selectUserOrderExportExcelV2(UserOrderExportForm form) throws Exception {
+        if(StringUtils.isBlank(form.getOrderIdsExport())){
+            thrown(ErrorCodes.EXPORT_ORDERID_ILLEGAL);
+        }
+
+        List<UserOrderExportModel> list = new ArrayList<>();
+
+        List<String> orderList = Arrays.asList(form.getOrderIdsExport().split(","));
+        List<Long> longs = new ArrayList<>();
+        for(String order : orderList){
+            longs.add(Long.valueOf(order));
+        }
+        form.setIds(longs);
+        List<UserOrderModel> userOrderModels = subUserOrderMapper.selectUserOrderExportForPage(form);
+        for(UserOrderModel userOrder : userOrderModels){
+            StringBuilder builder = new StringBuilder();
+            builder.append("单号 " + userOrder.getMobile() + "  ");
+            UserOrderExportModel model = new UserOrderExportModel();
+            List<OrdersModel> ordersModels = subUserOrderMapper.selectOrdersForPage(userOrder.getOrderNumber());
+            for(OrdersModel ordersModel : ordersModels){
+                builder.append(ordersModel.getTitle() + " * " + ordersModel.getProductNumber() + "，");
+            }
+            if(StringUtils.isNotBlank(userOrder.getAddress())) {
+                userOrder.setAddress(userOrder.getAddress().replace("$", ""));
+            }
+            builder.append(userOrder.getAddress() + "，" + userOrder.getContact() + "，" + userOrder.getTelephone());
+
+            model.setId(userOrder.getId());
+            model.setOrderContent(builder.toString());
+            list.add(model);
+        }
+        return list;
+    }
+
+    @Override
     public List<OrdersModel> selectOrdersForPage(String orderNumber, PageSearchForm page) throws Exception {
         PageHelper.startPage(page.getPageNum(),page.getPageSize());
         return subUserOrderMapper.selectOrdersForPage(orderNumber);
