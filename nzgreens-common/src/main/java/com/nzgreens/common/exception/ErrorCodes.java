@@ -86,6 +86,12 @@ public class ErrorCodes {
 
 	public static final String LOGISTICS_NUMBER_ILLEGAL = "40004";
 
+	public static final String EXPORT_ORDERID_ILLEGAL = "40005";
+
+	public static final String EXPORT_ORDERNUMBER_ILLEGAL = "40006";
+
+	public static final String EXPORT_ORDERNUMBER_FORMAT_ILLEGAL = "40007";
+
 	/**
 	 * =============== 产品分类 ==================
 	 */

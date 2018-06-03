@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    $(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",});
+
     var startTime={elem:"#startTime",format:"YYYY-MM-DD",max:"2099-06-16",istime:false,istoday:true};
     var endTime={elem:"#endTime",format:"YYYY-MM-DD",max:"2099-06-16",istime:false,istoday:true};
     laydate(startTime);
@@ -17,6 +19,48 @@ $(document).ready(function () {
 
     $("#btnNumberSave").on("click",function () {
         saveLogisticsNumber();
+    });
+
+    $('input[name=btnSelectAll]').on("click",function() {
+        if($(this).is(':checked')){
+            $('input[name="orderCheckId"]').each(function(){
+                $(this).prop("checked",true);
+            });
+        }else{
+            $('input[name="orderCheckId"]').each(function(){
+                $(this).removeAttr("checked",false);
+            });
+        }
+    });
+
+    $("#exportExcel").on("click", function () {
+        $("#modalUserOrderExport").modal();
+    });
+
+    $("#btnUserOrderExportCancel").on("click", function () {
+        $("#modalUserOrderExport").modal("hide");
+    });
+    var checkStr = "";
+    $("#btnUserOrderExportSave").on("click",function () {
+        checkStr = "";
+        $("input[name=orderCheckId]:checked").each(function(i,value){
+            checkStr += $(this).val() + ",";
+        });
+        if (checkStr == "") {
+            swal({title: "", text: "请选择需要导出的订单", type: 'error'}, function(){});
+            return;
+        }
+        var orderNumber = $("#userOrderExportInput").val();
+        if(orderNumber == null || orderNumber == undefined || orderNumber == ""){
+            swal({title: "", text: "请填写订单号", type: 'error'}, function(){});
+            return;
+        }
+        $("#orderIdsExport").val(checkStr);
+        $("#orderNumberExport").val(orderNumber);
+        $("#modalUserOrderExport").modal("hide");
+        var form = $("#userSearchForm");
+        form.attr("action", _rootPath + "user/order/export");
+        form.submit();
     });
 
     searchUserList();

@@ -22,7 +22,7 @@
     <div>
         <div>
 
-            <h1 class="logo-name" style="font-size: 80px;">nzgreens</h1>
+            <h1 class="" style="font-size: 40px;color: #e6e6e6;">新西兰直邮</h1>
 
         </div>
         <h3>欢迎使用</h3>

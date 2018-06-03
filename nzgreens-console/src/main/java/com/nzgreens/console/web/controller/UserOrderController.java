@@ -2,14 +2,20 @@ package com.nzgreens.console.web.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.nzgreens.common.form.console.PageSearchForm;
+import com.nzgreens.common.form.console.UserOrderExportForm;
 import com.nzgreens.common.form.console.UserOrderForm;
 import com.nzgreens.common.model.ResultModel;
 import com.nzgreens.common.model.console.OrdersModel;
+import com.nzgreens.common.model.console.UserOrderExportModel;
 import com.nzgreens.common.model.console.UserOrderModel;
 import com.nzgreens.console.annotations.Auth;
 import com.nzgreens.console.service.IUserOrderService;
+import com.nzgreens.console.util.exceltool.ExcelUtils;
+import com.nzgreens.console.util.exceltool.JsGridReportBase;
+import com.nzgreens.console.util.exceltool.TableData;
 import com.nzgreens.dal.user.example.OrderCertificate;
 import com.nzgreens.dal.user.example.Orders;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -126,5 +135,18 @@ public class UserOrderController extends BaseController {
         ResultModel<String> resultModel = new ResultModel<>();
         resultModel.setData(userOrderService.uploadImg(multiFile,orderNumber));
         return resultModel;
+    }
+
+    @RequestMapping("export")
+    @ResponseBody
+    @Auth("USER_ORDER_EXPORT_MANAGE")
+    public void selectUserOrderExportExcel(HttpServletRequest request, HttpServletResponse response,UserOrderExportForm form) throws Exception{
+        String[] headers = {"序号","订单内容"};
+        List<UserOrderExportModel> exportModels = userOrderService.selectUserOrderExportExcel(form);
+
+        String[] fields = new String[]{"id","orderContent"};
+        TableData td = ExcelUtils.createTableData(exportModels, ExcelUtils.createTableHeader(headers), fields);
+        JsGridReportBase report = new JsGridReportBase(request, response);
+        report.exportToExcel("订单列表", "admin", td,null);
     }
 }

@@ -25,10 +25,10 @@ public class UserOrderForm extends PageSearchForm {
     private Integer agentStatus;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date startTime;
+    private String startTime;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date endTime;
+    private String endTime;
 
     public Long getUserId() {
         return userId;
@@ -86,19 +86,19 @@ public class UserOrderForm extends PageSearchForm {
         this.agentStatus = agentStatus;
     }
 
-    public Date getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 }

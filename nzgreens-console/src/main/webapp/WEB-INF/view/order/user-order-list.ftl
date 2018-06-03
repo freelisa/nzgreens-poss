@@ -104,10 +104,19 @@
                                 </div>
                             </div>
                         </div>
+                        <input type="hidden" id="orderNumberExport" name="orderNumberExport" class="form-control" placeholder="">
+                        <input type="hidden" id="orderIdsExport" name="orderIdsExport" class="form-control" placeholder="">
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
                                 <button id="btnSearch" class="btn btn-primary" data-loading-text="正在加载..." type="button">搜索</button>
                                 <button id="btnCancel" class="btn btn-white" type="button">取消</button>
+                            </div>
+                            <div class="col-md-6" align="right">
+                            <@sec.any name="USER_ORDER_EXPORT_MANAGE">
+                                <button type="button" class="btn btn-success" id="exportExcel">
+                                    <i class="fa fa-download"></i>&nbsp;&nbsp;<span class="bold">导出</span>
+                                </button>
+                            </@sec.any>
                             </div>
                         </div>
                     </form>
@@ -124,8 +133,9 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
+                                    <th><input type="checkbox" name="btnSelectAll"></th>
                                     <th>订单ID</th>
-                                    <th>用户ID</th>
+                                    <th>账号</th>
                                     <th>订单号</th>
                                     <th>收货方式</th>
                                     <th>收货地址</th>
@@ -156,6 +166,37 @@
     </div>
 </div>
 
+<#-- 导出时输入订单号 -->
+<div class="modal inmodal" id="modalUserOrderExport" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" style="width: 500px;">
+        <form id="userOrderExportUpdateForm" method="post" class="form-horizontal">
+            <div class="modal-content animated fadeIn" >
+                <div class="modal-header" style="height: 20px;">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                            class="sr-only">Close</span></button>
+                    <h4 class="modal-title" style="font-size: 22px;">订单号</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="number" id="userOrderExportInput" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-1">
+                            <button id="btnUserOrderExportCancel" class="btn btn-white" type="button">取消</button>
+                        </div>
+                        <div class="col-sm-4 col-sm-offset-1">
+                            <button id="btnUserOrderExportSave" class="btn btn-success" type="button">导出</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<#-- 修改订单号 -->
 <div class="modal inmodal" id="modalUserNumberModify" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" style="width: 500px;">
         <form id="userOrderNumberUpdateForm" method="post" class="form-horizontal">
@@ -191,8 +232,11 @@
     {#if $T.data.total>0}
         {#foreach $T.data.list as user}
         <tr>
+            <td>
+                <input type="checkbox" class="i-checks" name="orderCheckId" value="{$T.user.id}">
+            </td>
             <td>{$T.user.id}</td>
-            <td>{$T.user.userId}</td>
+            <td>{$T.user.mobile}</td>
             <td>{$T.user.orderNumber}</td>
             <td>
             <#list DeliveryModeEnum?values as e>
@@ -201,7 +245,7 @@
             </td>
             <td>{$T.user.address}</td>
             <td>{$T.user.contact}</td>
-            <td>{$T.user.mobile}</td>
+            <td>{$T.user.telephone}</td>
             <td>{Fen2Yuan($T.user.productPrice)}</td>
             <td>{Fen2Yuan($T.user.freight)}</td>
             <td>{Fen2Yuan($T.user.price)}</td>

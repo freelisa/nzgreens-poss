@@ -11,7 +11,7 @@
         o.delivery_mode deliveryMode,
         o.address,
         o.contact,
-        o.telephone addressMobile,
+        o.telephone,
         o.product_price productPrice,
         o.freight,
         o.price,

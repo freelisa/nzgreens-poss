@@ -4,9 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.nzgreens.common.enums.*;
 import com.nzgreens.common.exception.ErrorCodes;
 import com.nzgreens.common.form.console.PageSearchForm;
+import com.nzgreens.common.form.console.UserOrderExportForm;
 import com.nzgreens.common.form.console.UserOrderForm;
 import com.nzgreens.common.model.console.OrdersModel;
+import com.nzgreens.common.model.console.UserOrderExportModel;
 import com.nzgreens.common.model.console.UserOrderModel;
+import com.nzgreens.common.utils.BeanMapUtil;
+import com.nzgreens.common.utils.CollectionUtil;
 import com.nzgreens.console.service.BaseService;
 import com.nzgreens.console.service.IUserOrderService;
 import com.nzgreens.console.web.common.UploadTempImageUtil;
@@ -14,6 +18,7 @@ import com.nzgreens.dal.user.example.*;
 import com.nzgreens.dal.user.mapper.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
@@ -24,6 +29,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -61,9 +67,66 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         PageHelper.startPage(form.getPageNum(),form.getPageSize());
         List<UserOrderModel> userOrderModels = subUserOrderMapper.selectUserOrderForPage(form);
         for(UserOrderModel model : userOrderModels){
-            model.setAddress(model.getAddress().replace("$",""));
+            if(StringUtils.isNotBlank(model.getAddress())){
+                model.setAddress(model.getAddress().replace("$",""));
+            }
         }
         return userOrderModels;
+    }
+
+    @Override
+    public List<UserOrderExportModel> selectUserOrderExportExcel(UserOrderExportForm form) throws Exception {
+        if(StringUtils.isBlank(form.getOrderIdsExport())){
+            thrown(ErrorCodes.EXPORT_ORDERID_ILLEGAL);
+        }
+        if(form.getOrderNumberExport() == null){
+            thrown(ErrorCodes.EXPORT_ORDERNUMBER_ILLEGAL);
+        }
+        if(!NumberUtils.isDigits(String.valueOf(form.getOrderNumberExport()))){
+            thrown(ErrorCodes.EXPORT_ORDERNUMBER_FORMAT_ILLEGAL);
+        }
+        Long orderNum = form.getOrderNumberExport();
+        List<UserOrderExportModel> list = new ArrayList<>();
+
+        List<String> orderList = Arrays.asList(form.getOrderIdsExport().split(","));
+        List<Long> longs = new ArrayList<>();
+        for(String order : orderList){
+            longs.add(Long.valueOf(order));
+        }
+        UserOrderExample example = new UserOrderExample();
+        UserOrderExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(longs);
+        if(form.getStartTime() != null){
+            criteria.andCreateTimeGreaterThanOrEqualTo(form.getStartTime());
+        }
+        if(form.getEndTime() != null){
+            criteria.andCreateTimeLessThanOrEqualTo(form.getEndTime());
+        }
+        if(form.getStatus() != null){
+            criteria.andStatusEqualTo(form.getStatus().byteValue());
+        }
+        example.setOrderByClause(" id desc");
+        List<UserOrder> userOrders = userOrderMapper.selectByExample(example);
+        for(UserOrder userOrder : userOrders){
+            StringBuilder builder = new StringBuilder();
+            builder.append("单号 " + orderNum + "  ");
+            UserOrderExportModel model = new UserOrderExportModel();
+            List<OrdersModel> ordersModels = subUserOrderMapper.selectOrdersForPage(userOrder.getOrderNumber());
+            for(OrdersModel ordersModel : ordersModels){
+                builder.append(ordersModel.getTitle() + " * " + ordersModel.getProductNumber() + "，");
+            }
+            if(StringUtils.isNotBlank(userOrder.getAddress())) {
+                userOrder.setAddress(userOrder.getAddress().replace("$", ""));
+            }
+            builder.append(userOrder.getAddress() + "，" + userOrder.getContact() + "，" + userOrder.getTelephone());
+
+            orderNum += 1;
+
+            model.setId(userOrder.getId());
+            model.setOrderContent(builder.toString());
+            list.add(model);
+        }
+        return list;
     }
 
     @Override
@@ -92,7 +155,9 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         orderModel.setDeliveryMode(userOrder.getDeliveryMode().intValue());
         orderModel.setStatus(userOrder.getStatus().intValue());
         orderModel.setType(userOrder.getType().intValue());
-        orderModel.setAddress(orderModel.getAddress().replace("$",""));
+        if(StringUtils.isNotBlank(orderModel.getAddress())) {
+            orderModel.setAddress(orderModel.getAddress().replace("$", ""));
+        }
         return orderModel;
     }
 
