@@ -118,6 +118,7 @@
                                     <th>用户类型</th>
                                     <th>余额</th>
                                     <th>是否有效</th>
+                                    <th>备注</th>
                                     <th>注册时间</th>
                                     <th>更新时间</th>
                                     <th>操作</th>
@@ -178,6 +179,13 @@
                                     </#list>
                                 </#if>
                             </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; width: 20%">备注</label>
+                        <div class="col-sm-6">
+                            <textarea name="remark" class="form-control" rows="3" cols="40" id="addRemark"></textarea>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -264,6 +272,13 @@
             </div>
         </div>
         <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" style="text-align: left; width: 20%">备注</label>
+            <div class="col-sm-6">
+                <textarea name="remark" class="form-control" rows="3" cols="40" id="updateRemark">{$T.data.remark}</textarea>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
     </form>
 </textarea>
 
@@ -319,6 +334,7 @@
                 {#if $T.user.isValid == ${e.value}}${e.text}{#/if}
             </#list>
             </td>
+            <td>{$T.user.remark}</td>
             <td>{#if $T.user.createTime!=null}{new Date($T.user.createTime).Format('yyyy-MM-dd hh:mm:ss')}{#else}--{#/if}</td>
             <td>{#if $T.user.updateTime!=null}{new Date($T.user.updateTime).Format('yyyy-MM-dd hh:mm:ss')}{#else}--{#/if}</td>
             <td>

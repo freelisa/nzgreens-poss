@@ -9,6 +9,7 @@
     <result column="avatar" property="avatar" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="balance" property="balance" jdbcType="BIGINT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="is_valid" property="isValid" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
@@ -72,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, telephone, password, nickname, avatar, type, balance, is_valid, create_time, 
+    id, telephone, password, nickname, avatar, type, balance, remark, is_valid, create_time, 
     update_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.nzgreens.dal.user.example.UsersExample" >
@@ -111,12 +112,12 @@
   <insert id="insert" parameterType="com.nzgreens.dal.user.example.Users" useGeneratedKeys="true" keyProperty="id">
     insert into users (id, telephone, password, 
       nickname, avatar, type, 
-      balance, is_valid, create_time, 
-      update_time)
+      balance, remark, is_valid, 
+      create_time, update_time)
     values (#{id,jdbcType=BIGINT}, #{telephone,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{nickname,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-      #{balance,jdbcType=BIGINT}, #{isValid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{balance,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.nzgreens.dal.user.example.Users" useGeneratedKeys="true" keyProperty="id">
     insert into users
@@ -141,6 +142,9 @@
       </if>
       <if test="balance != null" >
         balance,
+      </if>
+      <if test="remark != null" >
+        remark,
       </if>
       <if test="isValid != null" >
         is_valid,
@@ -173,6 +177,9 @@
       </if>
       <if test="balance != null" >
         #{balance,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="isValid != null" >
         #{isValid,jdbcType=INTEGER},
@@ -215,6 +222,9 @@
       <if test="record.balance != null" >
         balance = #{record.balance,jdbcType=BIGINT},
       </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
       <if test="record.isValid != null" >
         is_valid = #{record.isValid,jdbcType=INTEGER},
       </if>
@@ -238,6 +248,7 @@
       avatar = #{record.avatar,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
       balance = #{record.balance,jdbcType=BIGINT},
+      remark = #{record.remark,jdbcType=VARCHAR},
       is_valid = #{record.isValid,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
@@ -266,6 +277,9 @@
       <if test="balance != null" >
         balance = #{balance,jdbcType=BIGINT},
       </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
       <if test="isValid != null" >
         is_valid = #{isValid,jdbcType=INTEGER},
       </if>
@@ -286,6 +300,7 @@
       avatar = #{avatar,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
       balance = #{balance,jdbcType=BIGINT},
+      remark = #{remark,jdbcType=VARCHAR},
       is_valid = #{isValid,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}

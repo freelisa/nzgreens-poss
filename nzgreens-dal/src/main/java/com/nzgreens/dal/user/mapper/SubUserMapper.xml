@@ -30,6 +30,7 @@
         u.type,
         u.balance,
         u.is_valid isValid,
+        u.remark,
         u.create_time createTime,
         u.update_time updateTime,
         s.telephone agentMobile

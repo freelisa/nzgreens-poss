@@ -16,6 +16,8 @@ public class UserAddForm implements Serializable {
 
     private Integer isValid;
 
+    private String remark;
+
     private Long agentUserId;
 
     private Date createTime;
@@ -94,5 +96,13 @@ public class UserAddForm implements Serializable {
 
     public void setAgentUserId(Long agentUserId) {
         this.agentUserId = agentUserId;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

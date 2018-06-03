@@ -34,25 +34,7 @@ $(document).ready(function () {
     });
 
     $("#exportExcel").on("click", function () {
-        //$("#modalUserOrderExport").modal();
-        checkStr = "";
-        $("input[name=orderCheckId]:checked").each(function(i,value){
-            checkStr += $(this).val() + ",";
-        });
-        if (checkStr == "") {
-            swal({title: "", text: "请选择需要导出的订单", type: 'error'}, function(){});
-            return;
-        }
-        // var orderNumber = $("#userOrderExportInput").val();
-        // if(orderNumber == null || orderNumber == undefined || orderNumber == ""){
-        //     swal({title: "", text: "请填写订单号", type: 'error'}, function(){});
-        //     return;
-        // }
-        $("#orderIdsExport").val(checkStr);
-        $("#modalUserOrderExport").modal("hide");
-        var form = $("#userSearchForm");
-        form.attr("action", _rootPath + "user/order/export");
-        form.submit();
+        $("#modalUserOrderExport").modal();
     });
 
     $("#btnUserOrderExportCancel").on("click", function () {

@@ -24,6 +24,8 @@ public class UsersModel implements Serializable {
 
     private Integer isValid;
 
+    private String remark;
+
     private Date createTime;
 
     private Date updateTime;
@@ -124,5 +126,13 @@ public class UsersModel implements Serializable {
 
     public void setAgentMobile(String agentMobile) {
         this.agentMobile = agentMobile;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

@@ -18,6 +18,8 @@ public class Users implements Serializable {
 
     private Long balance;
 
+    private String remark;
+
     private Integer isValid;
 
     private Date createTime;
@@ -80,6 +82,14 @@ public class Users implements Serializable {
 
     public void setBalance(Long balance) {
         this.balance = balance;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public Integer getIsValid() {

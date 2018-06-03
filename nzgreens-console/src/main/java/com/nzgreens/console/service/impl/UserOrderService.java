@@ -122,7 +122,6 @@ public class UserOrderService extends BaseService implements IUserOrderService {
 
             orderNum += 1;
 
-            model.setId(userOrder.getId());
             model.setOrderContent(builder.toString());
             list.add(model);
         }
@@ -143,10 +142,13 @@ public class UserOrderService extends BaseService implements IUserOrderService {
             longs.add(Long.valueOf(order));
         }
         form.setIds(longs);
+
+        Long orderNum = form.getOrderNumberExport();
+
         List<UserOrderModel> userOrderModels = subUserOrderMapper.selectUserOrderExportForPage(form);
         for(UserOrderModel userOrder : userOrderModels){
             StringBuilder builder = new StringBuilder();
-            builder.append("单号 " + userOrder.getMobile() + "  ");
+            builder.append("单号 " + orderNum + "  ");
             UserOrderExportModel model = new UserOrderExportModel();
             List<OrdersModel> ordersModels = subUserOrderMapper.selectOrdersForPage(userOrder.getOrderNumber());
             for(OrdersModel ordersModel : ordersModels){
@@ -157,7 +159,10 @@ public class UserOrderService extends BaseService implements IUserOrderService {
             }
             builder.append(userOrder.getAddress() + "，" + userOrder.getContact() + "，" + userOrder.getTelephone());
 
+            orderNum += 1;
+
             model.setId(userOrder.getId());
+            model.setMobile(userOrder.getMobile());
             model.setOrderContent(builder.toString());
             list.add(model);
         }

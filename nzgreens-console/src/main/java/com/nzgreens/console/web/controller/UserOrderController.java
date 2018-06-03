@@ -141,10 +141,10 @@ public class UserOrderController extends BaseController {
     @ResponseBody
     @Auth("USER_ORDER_EXPORT_MANAGE")
     public void selectUserOrderExportExcel(HttpServletRequest request, HttpServletResponse response,UserOrderExportForm form) throws Exception{
-        String[] headers = {"序号","订单内容"};
+        String[] headers = {"序号","账号","订单内容"};
         List<UserOrderExportModel> exportModels = userOrderService.selectUserOrderExportExcelV2(form);
 
-        String[] fields = new String[]{"id","orderContent"};
+        String[] fields = new String[]{"id","mobile","orderContent"};
         TableData td = ExcelUtils.createTableData(exportModels, ExcelUtils.createTableHeader(headers), fields);
         JsGridReportBase report = new JsGridReportBase(request, response);
         report.exportToExcel("订单列表", "admin", td,null);
