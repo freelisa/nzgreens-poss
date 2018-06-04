@@ -45,7 +45,7 @@ public class SettingProductTask extends AbstractScheduleTask {
 	@Value("${images.product.detail.path}")
 	private String detailImagePath;
 
-	@Scheduled(cron = "${SettingProductTask.cron:0 56 4 * * ?}")
+	@Scheduled(cron = "${SettingProductTask.cron:0 0 5 * * ?}")
 	public void handle() {
 		doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
 			@Override
@@ -105,9 +105,13 @@ public class SettingProductTask extends AbstractScheduleTask {
 							buff.append("</div>");
 						}
 						pro.setDetail(buff.toString());
-						pro.setImage(crawl.getImage());
+						if(StringUtils.isNotBlank(crawl.getImage())){
+							pro.setImage(crawl.getImage());
+						}
 						pro.setTitle(crawl.getTitle());
-						pro.setParentCategoryId(Long.valueOf(crawl.getParentCategoryId()));
+						if(StringUtils.isNotBlank(crawl.getParentCategoryId())){
+							pro.setParentCategoryId(Long.valueOf(crawl.getParentCategoryId()));
+						}
 						if(StringUtils.isNotEmpty(crawl.getWeight())){
 							String[] split = crawl.getWeight().split("\\.");
 							pro.setWeight(Long.valueOf(split[0]));

@@ -3,7 +3,6 @@ package com.nzgreens.console.task;
 import com.nzgreens.common.enums.ProductsPriceChangeStatusEnum;
 import com.nzgreens.common.utils.CurrencyUtil;
 import com.nzgreens.console.util.ConvertUrlToMapUtil;
-import com.nzgreens.console.web.common.HttpRequestUtil;
 import com.nzgreens.dal.user.example.*;
 import com.nzgreens.dal.user.mapper.*;
 import org.apache.commons.collections.CollectionUtils;
@@ -22,7 +21,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,8 +35,8 @@ import java.util.regex.Pattern;
  **/
 @Component
 @Lazy(false)
-public class CrawlProductTask extends AbstractScheduleTask {
-    private static final Logger logger = LoggerFactory.getLogger(CrawlProductTask.class);
+public class CrawlMainCategoryProductTask extends AbstractScheduleTask {
+    private static final Logger logger = LoggerFactory.getLogger(CrawlMainCategoryProductTask.class);
     @Resource
     private ProductBrandMapper productBrandMapper;
     @Resource
@@ -55,7 +57,7 @@ public class CrawlProductTask extends AbstractScheduleTask {
     private String detailImagePath;
 
 
-    @Scheduled(cron = "${CrawlProductTask.cron:0 0 12 * * ?}")
+    @Scheduled(cron = "${CrawlProductTask.cron:0 0 3 * * ?}")
     public void handle() {
         doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
             @Override
@@ -100,91 +102,14 @@ public class CrawlProductTask extends AbstractScheduleTask {
                                 String categoryPath = theparent.attr("href");
                                 String categoryId = categoryPath.substring(categoryPath.lastIndexOf("=") + 1);
 
-                                ProductCategory categoryModel = productCategoryMapper.selectByPrimaryKey(Long.valueOf(categoryId));
-                                if (categoryModel == null) {
-                                    ProductCategory category = new ProductCategory();
-                                    category.setId(Long.valueOf(categoryId));
-                                    category.setName(theparent.html());
-                                    category.setCreateTime(new Date());
-                                    productCategoryMapper.insertSelective(category);
-                                }else{
-                                    if(!StringUtils.equals(theparent.html(),categoryModel.getName())){
-                                        ProductCategory category = new ProductCategory();
-                                        category.setId(categoryModel.getId());
-                                        category.setName(theparent.html());
-                                        category.setUpdateTime(new Date());
-                                        productCategoryMapper.updateByPrimaryKeySelective(category);
-                                    }
-                                }
                                 logger.info("---大分类：{}", theparent.html() + "," + hrefs[1]);
 
-
-                                Elements childLevel = categoryDivChild.select("ul.child-level li a");
-                                Iterator<Element> childLevelIter = childLevel.iterator();
-                                while (childLevelIter.hasNext()) {
-                                    Element child = childLevelIter.next();
-                                    String[] childHrefs = child.attr("href").split("\\?");
-
-                                    //保存小分类
-                                    String categoryChildPath = child.attr("href");
-                                    String categoryChildId = categoryChildPath.substring(categoryChildPath.lastIndexOf("_") + 1);
-
-                                    ProductCategory categoryChildModel = productCategoryMapper.selectByPrimaryKey(Long.valueOf(categoryChildId));
-                                    if (categoryChildModel == null) {
-                                        ProductCategory categoryChild = new ProductCategory();
-                                        categoryChild.setId(Long.valueOf(categoryChildId));
-                                        categoryChild.setParentId(Long.valueOf(categoryId));
-                                        categoryChild.setName(child.html());
-                                        categoryChild.setCreateTime(new Date());
-                                        productCategoryMapper.insertSelective(categoryChild);
-
-                                        logger.info("--------小分类：{}", child.html() + "," + childHrefs[1]);
-                                    }else{
-                                        if(!StringUtils.equals(child.html(),categoryChildModel.getName())){
-                                            ProductCategory categoryChild = new ProductCategory();
-                                            categoryChild.setId(categoryChildModel.getId());
-                                            categoryChild.setName(child.html());
-                                            categoryChild.setUpdateTime(new Date());
-                                            productCategoryMapper.updateByPrimaryKeySelective(categoryChild);
-                                        }
-                                    }
-                                    saveProductCrawl(con2,categoryChildPath,child.html(),theparent.html(),categoryId,1);
-                                }
-                            }
-                        } else if (StringUtils.equals(allCategory, "品牌专区")) {
-                            Iterator<Element> categoryIter = categoryDiv.iterator();
-                            while (categoryIter.hasNext()) {
-                                Element categoryDivChild = categoryIter.next();
-                                Elements theparent = categoryDivChild.select("a.theparent");//分类名称
-                                String[] hrefs = theparent.attr("href").split("\\?");
-
-                                //保存大分类
-                                String brandPath = theparent.attr("href");
-                                String brandId = brandPath.substring(brandPath.lastIndexOf("=") + 1);
-
-                                ProductBrand productBrand = productBrandMapper.selectByPrimaryKey(Long.valueOf(brandId));
-                                if (productBrand == null) {
-                                    ProductBrand brand = new ProductBrand();
-                                    brand.setId(Long.valueOf(brandId));
-                                    brand.setName(theparent.html());
-                                    brand.setCreateTime(new Date());
-                                    productBrandMapper.insertSelective(brand);
-                                    logger.info("---大分类：{}",theparent.html() + "," + hrefs[1]);
-                                }else{
-                                    if(!StringUtils.equals(theparent.html(),productBrand.getName())){
-                                        ProductBrand brand = new ProductBrand();
-                                        brand.setId(Long.valueOf(brandId));
-                                        brand.setName(theparent.html());
-                                        brand.setUpdateTime(new Date());
-                                        productBrandMapper.updateByPrimaryKeySelective(brand);
-                                    }
-                                }
-                                saveProductCrawl(con2,brandPath,"","","",2);
+                                saveProductCrawl(con2,categoryPath,"",theparent.html(),categoryId,1);
                             }
                         }
                     }
                 } catch (Exception e) {
-                    logger.error("CrawlProductTask error data：{}", e);
+                    logger.error("CrawlMainCategoryProductTask error data：{}", e);
                 }
             }
         });
@@ -439,7 +364,7 @@ public class CrawlProductTask extends AbstractScheduleTask {
     }
 
     public static void main(String[] args) throws Exception{
-        CrawlProductTask task = new CrawlProductTask();
+        CrawlMainCategoryProductTask task = new CrawlMainCategoryProductTask();
         String url = "http://gelin.nz/image/catalog/产品/Good%20Health/%E5%A5%BD%E5%81%A5%E5%BA%B7%20%E6%B7%B1%E6%B5%B7%E9%B1%BC%E6%B2%B9%E5%81%A5%E5%BA%B7%E5%8D%AB%E5%A3%AB%201000mg%20400%E7%B2%92/1.jpg";
         task.download(url,"test","123.jpg");
         System.out.println(URLEncoder.encode(url, "utf-8"));
