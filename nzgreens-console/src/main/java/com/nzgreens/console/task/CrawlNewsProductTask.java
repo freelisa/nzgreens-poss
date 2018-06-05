@@ -1,13 +1,6 @@
 package com.nzgreens.console.task;
 
-import com.nzgreens.common.enums.ProductsPriceChangeStatusEnum;
-import com.nzgreens.common.utils.CurrencyUtil;
 import com.nzgreens.console.service.IProductCrawlService;
-import com.nzgreens.console.util.ConvertUrlToMapUtil;
-import com.nzgreens.dal.user.example.*;
-import com.nzgreens.dal.user.mapper.*;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,14 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author helizheng
@@ -36,8 +22,8 @@ import java.util.regex.Pattern;
  **/
 @Component
 @Lazy(false)
-public class CrawlMainCategoryProductTask extends AbstractScheduleTask {
-    private static final Logger logger = LoggerFactory.getLogger(CrawlMainCategoryProductTask.class);
+public class CrawlNewsProductTask extends AbstractScheduleTask {
+    private static final Logger logger = LoggerFactory.getLogger(CrawlNewsProductTask.class);
     @Resource
     private IProductCrawlService productCrawlService;
     @Value("${images.host}")
@@ -50,7 +36,7 @@ public class CrawlMainCategoryProductTask extends AbstractScheduleTask {
     private String detailImagePath;
 
 
-    @Scheduled(cron = "${CrawlProductTask.cron:0 0 2 * * ?}")
+    @Scheduled(cron = "${CrawlProductTask.cron:0 0 3 * * ?}")
     public void handle() {
         doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
             @Override
@@ -83,29 +69,23 @@ public class CrawlMainCategoryProductTask extends AbstractScheduleTask {
 
                     while (iter.hasNext()) {
                         Element e = iter.next();
-                        Elements categoryDiv = e.select("div.bigdiv .withchild");
-                        String allCategory = e.select("a.tll").html();
-                        if (StringUtils.equals(allCategory, "全部分类")) {
-                            Iterator<Element> categoryIter = categoryDiv.iterator();
-                            while (categoryIter.hasNext()) {
-                                Element categoryDivChild = categoryIter.next();
-                                Elements theparent = categoryDivChild.select("a.theparent");//分类名称
-                                String[] hrefs = theparent.attr("href").split("\\?");
-                                //保存大分类
-                                String categoryPath = theparent.attr("href");
-                                String categoryId = categoryPath.substring(categoryPath.lastIndexOf("=") + 1);
+                        Elements linkTops = e.select("div.bigdiv .linkoftopitem");
+                        Iterator<Element> linktopIter = linkTops.iterator();
+                        while (linktopIter.hasNext()) {
+                            Element linkTop = linktopIter.next();
+                            Elements theparent = linkTop.select("a");
+                            String[] hrefs = theparent.attr("href").split("\\?");
 
-                                logger.info("---大分类：{}", theparent.html() + "," + hrefs[1]);
+                            String categoryPath = "http://gelin.nz" + theparent.attr("href");
+                            logger.info("---大分类：{}", theparent.html() + "," + hrefs[1]);
 
-                                productCrawlService.saveProductCrawl(con2,categoryPath,"",theparent.html(),categoryId,1);
-                            }
+                            productCrawlService.saveProductCrawl(con2,categoryPath,"","","",1);
                         }
                     }
                 } catch (Exception e) {
-                    logger.error("CrawlMainCategoryProductTask error data：{}", e);
+                    logger.error("CrawlNewsProductTask error data：{}", e);
                 }
             }
         });
     }
-
 }

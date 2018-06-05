@@ -14,14 +14,14 @@
 	<entry key="db.filters">slf4j,stat</entry>
 
 	<!--########## 图片配置 ##################-->
-	<entry key="images.host">http://localhost:8080/</entry>
+	<!--<entry key="images.host">http://localhost:8080/</entry>
 	<entry key="images.upload.path">d:/新西兰直邮/</entry>
 	<entry key="images.product.icon.path">product/icon</entry>
 	<entry key="images.product.detail.path">product/detail</entry>
-	<entry key="images.user.order.cert.path">user/order/cert</entry>
-	<!--<entry key="images.host">https://nzgreens.com/statics/</entry>
+	<entry key="images.user.order.cert.path">user/order/cert</entry>-->
+	<entry key="images.host">https://nzgreens.com/statics/</entry>
 	<entry key="images.upload.path">/data/upload</entry>
 	<entry key="images.product.icon.path">product/icon</entry>
 	<entry key="images.product.detail.path">product/detail</entry>
-	<entry key="images.user.order.cert.path">user/order/cert</entry>-->
+	<entry key="images.user.order.cert.path">user/order/cert</entry>
 </properties>
