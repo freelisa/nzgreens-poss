@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">电话号码：</label>
+                                    <label class="col-sm-4 control-label">账号：</label>
                                     <div class="col-sm-6">
                                         <input type="text" name="mobile" class="form-control" placeholder="">
                                     </div>

@@ -22,7 +22,7 @@
         user_order o on r.user_order_id = o.id
         where 1=1
         <if test="mobile != null and mobile != ''">
-            and u.telephone = #{mobile}
+            and u.telephone like '%${mobile}%'
         </if>
         <if test="orderNumber != null and orderNumber != ''">
             and o.order_number = #{orderNumber}

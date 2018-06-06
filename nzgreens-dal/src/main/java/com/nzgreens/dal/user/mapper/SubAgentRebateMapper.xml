@@ -20,7 +20,7 @@
             and r.agent_user_id = #{userId}
         </if>
         <if test="mobile != null and mobile != ''">
-            and u.telephone = #{mobile}
+            and u.telephone like '%${mobile}%'
         </if>
     </select>
 </mapper>

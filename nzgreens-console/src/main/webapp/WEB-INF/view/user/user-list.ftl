@@ -112,7 +112,7 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>用户ID</th>
+                                    <#--<th>用户ID</th>-->
                                     <th>用户账号</th>
                                     <th>代理用户账号</th>
                                     <th>用户类型</th>
@@ -320,7 +320,7 @@
     {#if $T.data.total>0}
         {#foreach $T.data.list as user}
         <tr>
-            <td>{$T.user.id}</td>
+            <#--<td>{$T.user.id}</td>-->
             <td>{$T.user.telephone}</td>
             <td>{$T.user.agentMobile}</td>
             <td>

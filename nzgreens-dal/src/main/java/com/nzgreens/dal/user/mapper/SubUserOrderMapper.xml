@@ -29,7 +29,7 @@
             and o.user_id = #{userId}
         </if>
         <if test="mobile != null and mobile != ''">
-            and u.telephone = #{mobile}
+            and u.telephone like '%${mobile}%'
         </if>
         <if test="orderNumber != null">
             and o.order_number = #{orderNumber}

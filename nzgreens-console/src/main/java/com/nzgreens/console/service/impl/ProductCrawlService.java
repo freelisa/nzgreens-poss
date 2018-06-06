@@ -145,6 +145,10 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
             while (productIter.hasNext()) {
                 Element next = productIter.next();
                 Elements link = next.select(".image a");
+
+                //列表内icon图片
+                Elements iconImg = next.select(".image img");
+                String iconImgSrc = iconImg.attr("src");
                 //商品链接
                 String linkHref = link.attr("href");
 
@@ -358,7 +362,8 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
                 logger.info("-----------------------品牌：{}", brandLink);
                 logger.info("-----------------------品牌：{}", brandHtml);
                 logger.info("-----------------------积分：{}", point);
-                logger.info("-----------------------图片：{}", imageSrc);
+                logger.info("-----------------------列表内图片：{}", iconImg.attr("src"));
+                logger.info("-----------------------详情内图片：{}", imageSrc);
                 logger.info("-----------------------重量：{}", weight);
                 logger.info("-----------------------市场价：{}", priceOld);
             }

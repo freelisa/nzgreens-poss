@@ -9,11 +9,11 @@
             <td>{$T.user.productNumber}</td>
             <td>{Fen2Yuan($T.user.price)}</td>
             <td>{Fen2Yuan($T.user.agentPrice)}</td>
-            <td>
+           <#-- <td>
             <#list OrderStatusEnum?values as e>
                 {#if $T.user.status == ${e.value}}${e.text}{#/if}
             </#list>
-            </td>
+            </td>-->
             <td>
             <#list OrderCommentEnum?values as e>
                 {#if $T.user.commentStatus == ${e.value}}${e.text}{#/if}

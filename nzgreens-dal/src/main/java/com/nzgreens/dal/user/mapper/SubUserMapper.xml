@@ -51,7 +51,7 @@
             and u.is_valid=#{isValid}
         </if>
         <if test="mobile != null and mobile != ''">
-            and u.telephone = #{mobile}
+            and u.telephone like '%${mobile}%'
         </if>
         <if test="startTime != null and startTime != ''">
             and u.create_time &gt;= #{startTime}
@@ -96,7 +96,7 @@
         WHERE
         r.user_agent_id = u.id
         <if test="mobile != null and mobile != ''">
-            and u.telephone = #{mobile}
+            and u.telephone like '%${mobile}%'
         </if>
         order by r.id desc
     </select>
@@ -117,7 +117,7 @@
         WHERE
         r.user_agent_id = u.id
         <if test="mobile != null and mobile != ''">
-            and u.telephone = #{mobile}
+            and u.telephone like '%${mobile}%'
         </if>
         order by r.id desc
     </select>
