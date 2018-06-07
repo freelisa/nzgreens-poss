@@ -293,11 +293,7 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
                     if(StringUtils.isNotEmpty(downloadImgMain)){
                         crawl.setImage(downloadImgMain);
                     }
-                    if(stock != null && stock != 0){
-                        crawl.setStock(stock);
-                    }else{
-                        crawl.setStock(999);
-                    }
+                    crawl.setStock(80);
                     productsCrawlMapper.insertSelective(crawl);
                 }else{
                     //修改产品
@@ -480,7 +476,7 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
             String[] split = crawl.getWeight().split("\\.");
             pro.setWeight(Long.valueOf(split[0]));
         }
-        pro.setStock(9999l);
+        pro.setStock(80l);
         pro.setGelinProductId(Long.valueOf(crawl.getReptileProductId()));
         pro.setCreateTime(new Date());
         productsMapper.insertSelective(pro);

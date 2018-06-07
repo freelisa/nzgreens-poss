@@ -117,7 +117,7 @@ public class SettingProductTask extends AbstractScheduleTask {
 							pro.setWeight(Long.valueOf(split[0]));
 						}
 						if(crawl.getStock() == null){
-							pro.setStock(999L);
+							pro.setStock(80L);
 						}else{
 							pro.setStock(crawl.getStock().longValue());
 						}
