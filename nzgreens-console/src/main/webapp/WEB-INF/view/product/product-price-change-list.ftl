@@ -32,6 +32,7 @@
                                     <th>产品原来价格</th>
                                     <th>产品最新价格</th>
                                     <th>创建时间</th>
+                                    <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody">
@@ -63,6 +64,7 @@
             <td>{Fen2Yuan($T.t.oldSellPrice)}</td>
             <td>{Fen2Yuan($T.t.newSellPrice)}</td>
             <td>{new Date($T.t.createTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
+            <td><button type="button" productId="{$T.t.id}" class="btn btn-danger btnUpdate">处理</button></td>
         </tr>
     {#else}
 		<tr>
@@ -85,10 +87,9 @@
 <script src="${ctx}js/jquery-jtemplates.js"></script>
 <script src="${ctx}js/dateutil.js"></script>
 <script src="${ctx}js/plugins/layer/laydate/laydate.js"></script>
+<script src="${ctx}js/plugins/layer/layer.min.js"></script>
 <script src="${ctx}${getVersion('js/page.js')}"></script>
-<@sec.any name="COIN_FLOW_MANAGE">
 <script src="${ctx}${getVersion('js/product/product-price-change-list.js')}"></script>
-</@sec.any>
 </body>
 
 </html>

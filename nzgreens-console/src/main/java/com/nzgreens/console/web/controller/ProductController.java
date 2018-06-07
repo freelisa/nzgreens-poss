@@ -83,10 +83,18 @@ public class ProductController extends BaseController {
     @Auth("PRODUCT_PRICE_CHANGE_MANAGE")
     public ResultModel searchChangeList(PageSearchForm form) throws Exception{
         ResultModel<PageInfo<ProductsPriceChangeModel>> resultModel = new ResultModel<>();
-        List<ProductsPriceChangeModel> products = productService.updateProductChangeForPage(form);
+        List<ProductsPriceChangeModel> products = productService.selectProductChangeForPage(form);
         PageInfo<ProductsPriceChangeModel> pageInfo = new PageInfo<>(products);
         resultModel.setData(pageInfo);
         return resultModel;
+    }
+
+    @RequestMapping("change/update")
+    @ResponseBody
+    @Auth("PRODUCT_PRICE_CHANGE_MANAGE")
+    public ResultModel update(Long id) throws Exception{
+        productService.updateProductChangeForPage(id);
+        return new ResultModel();
     }
 
     @RequestMapping("change/count")

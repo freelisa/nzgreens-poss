@@ -20,7 +20,9 @@ import java.util.List;
 public interface IProductService {
     List<Products> selectProductForPage(ProductForm form) throws Exception;
 
-    List<ProductsPriceChangeModel> updateProductChangeForPage(PageSearchForm form) throws Exception;
+    List<ProductsPriceChangeModel> selectProductChangeForPage(PageSearchForm form) throws Exception;
+
+    void updateProductChangeForPage(Long id) throws Exception;
 
     int selectProductChangeCount() throws Exception;
 

@@ -76,14 +76,7 @@ public class ProductService extends BaseService implements IProductService {
     }
 
     @Override
-    public List<ProductsPriceChangeModel> updateProductChangeForPage(PageSearchForm form) throws Exception {
-        ProductsPriceChange change = new ProductsPriceChange();
-        change.setStatus(ProductsPriceChangeStatusEnum.READED.getValue());
-        change.setUpdateTime(new Date());
-
-        ProductsPriceChangeExample changeExample = new ProductsPriceChangeExample();
-        changeExample.createCriteria().andStatusEqualTo(ProductsPriceChangeStatusEnum.NOT_READ.getValue());
-        productsPriceChangeMapper.updateByExampleSelective(change,changeExample);
+    public List<ProductsPriceChangeModel> selectProductChangeForPage(PageSearchForm form) throws Exception {
         PageHelper.startPage(form.getPageNum(), form.getPageSize());
         List<ProductsPriceChangeModel> changeModels = subProductsMapper.selectProductChangeForPage(form);
         for(int i = 0,len = changeModels.size();i < len;i ++){
@@ -94,10 +87,21 @@ public class ProductService extends BaseService implements IProductService {
     }
 
     @Override
+    public void updateProductChangeForPage(Long id) throws Exception {
+        ProductsPriceChange change = new ProductsPriceChange();
+        change.setStatus(ProductsPriceChangeStatusEnum.READED.getValue());
+        change.setUpdateTime(new Date());
+
+        ProductsPriceChangeExample changeExample = new ProductsPriceChangeExample();
+        changeExample.createCriteria().andIdEqualTo(id).andStatusEqualTo(ProductsPriceChangeStatusEnum.NOT_READ.getValue());
+        if(productsPriceChangeMapper.updateByExampleSelective(change,changeExample) < 1){
+            thrown(ErrorCodes.UPDATE_ERROR);
+        }
+    }
+
+    @Override
     public int selectProductChangeCount() throws Exception {
-        ProductsPriceChangeExample example = new ProductsPriceChangeExample();
-        example.createCriteria().andStatusEqualTo(ProductsPriceChangeStatusEnum.NOT_READ.getValue());
-        return productsPriceChangeMapper.countByExample(example);
+        return subProductsMapper.selectProductChangeCount();
     }
 
     @Override

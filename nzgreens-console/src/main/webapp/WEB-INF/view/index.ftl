@@ -103,10 +103,10 @@
                         </a>
                         <ul class="nav nav-second-level">
                             <@sec.any name="PRODUCT_MANAGE">
-                                <li><@s.a href="${ctx}product/to-list" class="J_menuItem">产品管理</@s.a></li>
+                                <li><@s.a href="${ctx}product/to-list" class="J_menuItem">商品管理</@s.a></li>
                             </@sec.any>
                             <@sec.any name="PRODUCT_AUDIT_MANAGE">
-                                <li><@s.a href="${ctx}product/audit/to-list" class="J_menuItem">产品审核管理</@s.a></li>
+                                <li><@s.a href="${ctx}product/audit/to-list" class="J_menuItem">商品审核管理</@s.a></li>
                             </@sec.any>
                             <@sec.any name="PRODUCT_BRAND_MANAGE">
                                 <li><@s.a href="${ctx}product/brand/to-list" class="J_menuItem">品牌管理</@s.a></li>
@@ -124,7 +124,7 @@
                                 <li><@s.a href="${ctx}search/keyword/to-list" class="J_menuItem">关键字设置</@s.a></li>
                             </@sec.any>
                             <@sec.any name="PRODUCT_PRICE_CHANGE_MANAGE">
-                                <li><@s.a href="${ctx}product/change/to-list" class="J_menuItem">产品价格变更记录</@s.a></li>
+                                <li><@s.a href="${ctx}product/change/to-list" class="J_menuItem">商品价格变更记录</@s.a></li>
                             </@sec.any>
                         </ul>
                     </li>

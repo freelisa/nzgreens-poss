@@ -13,6 +13,8 @@ import java.util.List;
 public interface SubProductsMapper {
     List<Products> selectProductForPage(ProductForm form) throws Exception;
 
+    int selectProductChangeCount() throws Exception;
+
     List<ProductsPriceChangeModel> selectProductChangeForPage(PageSearchForm form) throws Exception;
 
     /**
