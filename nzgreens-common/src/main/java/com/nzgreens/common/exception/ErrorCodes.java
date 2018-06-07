@@ -58,6 +58,8 @@ public class ErrorCodes {
 
 	public static final String USER_ORDER_STATUS_ERROR = "20010";
 
+	public static final String USER_MOBILE_EXIST_ERROR = "20011";
+
 	/**
 	 * =============== 代理返佣异常 ==================
 	 */

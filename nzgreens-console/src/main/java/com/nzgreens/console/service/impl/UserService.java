@@ -85,6 +85,13 @@ public class UserService extends BaseService implements IUserService {
     @Override
     public void insertUser(UserAddForm users) throws Exception {
         checkUserForm(users);
+
+        UsersExample example = new UsersExample();
+        example.createCriteria().andTelephoneEqualTo(users.getTelephone());
+        if(usersMapper.countByExample(example) > 0){
+            thrown(ErrorCodes.USER_MOBILE_EXIST_ERROR);
+        }
+
         if(users.getType().intValue() == UserTypeEnum._AGENT.getValue() && users.getAgentUserId() != null){
             thrown(ErrorCodes.USER_AGENT_SETTING_ERROR);
         }else if(users.getType().intValue() == UserTypeEnum._USER.getValue() && users.getAgentUserId() == null){
@@ -144,6 +151,13 @@ public class UserService extends BaseService implements IUserService {
         }else if(users.getType().intValue() == UserTypeEnum._USER.getValue() && users.getAgentUserId() == null){
             thrown(ErrorCodes.USER_AGENT_NOT_NULL);
         }
+
+        UsersExample usersExample = new UsersExample();
+        usersExample.createCriteria().andIdNotEqualTo(users.getId()).andTelephoneEqualTo(users.getTelephone());
+        if(usersMapper.countByExample(usersExample) > 0){
+            thrown(ErrorCodes.USER_MOBILE_EXIST_ERROR);
+        }
+
         Users user = new Users();
         BeanUtils.copyProperties(users,user);
         if(usersMapper.updateByPrimaryKeySelective(user) < 1){

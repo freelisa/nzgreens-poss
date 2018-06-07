@@ -230,7 +230,7 @@
         <div class="form-group">
             <label class="col-sm-4 control-label" style="text-align: left; width:20%">用户账号</label>
             <div class="col-sm-6">
-                <input type="text" name="mobile" class="form-control" id="detailMobile" value="{$T.data.telephone}">
+                <input type="text" name="mobile" class="form-control" id="detailMobile" disabled="disabled" value="{$T.data.telephone}">
             </div>
         </div>
         <div class="hr-line-dashed"></div>
