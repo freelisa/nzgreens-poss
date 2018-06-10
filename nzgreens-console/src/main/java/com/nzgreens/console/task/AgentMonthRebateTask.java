@@ -7,10 +7,7 @@ import com.nzgreens.common.enums.UserTypeEnum;
 import com.nzgreens.common.model.console.UserOrderPriceSumModel;
 import com.nzgreens.common.utils.DateUtil;
 import com.nzgreens.dal.user.example.*;
-import com.nzgreens.dal.user.mapper.AgentRebateAuditMapper;
-import com.nzgreens.dal.user.mapper.AgentRebateMapper;
-import com.nzgreens.dal.user.mapper.SubProductsMapper;
-import com.nzgreens.dal.user.mapper.UsersMapper;
+import com.nzgreens.dal.user.mapper.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,15 +31,15 @@ public class AgentMonthRebateTask extends AbstractScheduleTask {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Resource
-    private AgentRebateMapper agentRebateMapper;
+    private AgentMonthRebateMapper agentMonthRebateMapper;
     @Resource
     private AgentRebateAuditMapper agentRebateAuditMapper;
     @Resource
     private SubProductsMapper subProductsMapper;
     private static final BigDecimal HUNDRED = new BigDecimal("100");
 
-    @Scheduled(cron = "${AgentMonthRebateTask.cron:0 0 1 1 * ?}")
-    //@Scheduled(cron = "${AgentMonthRebateTask.cron:0 1 23 * * ?}")
+    //@Scheduled(cron = "${AgentMonthRebateTask.cron:0 0 1 1 * ?}")
+    @Scheduled(cron = "${AgentMonthRebateTask.cron:0 41 18 * * ?}")
     public void handle() {
         doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
             @Override
@@ -63,12 +60,12 @@ public class AgentMonthRebateTask extends AbstractScheduleTask {
                         return;
                     }
                     for(UserOrderPriceSumModel model : userOrderPriceSumModels){
-                        AgentRebateExample example = new AgentRebateExample();
-                        example.createCriteria().andAgentUserIdEqualTo(model.getUserId());
-
-                        List<AgentRebate> agentRebates = agentRebateMapper.selectByExample(example);
+                        AgentMonthRebateExample example = new AgentMonthRebateExample();
+                        example.createCriteria().andAmountLessThanOrEqualTo(model.getPrice());
+                        example.setOrderByClause(" amount desc");
+                        List<AgentMonthRebate> agentRebates = agentMonthRebateMapper.selectByExample(example);
                         if(CollectionUtils.isNotEmpty(agentRebates)){
-                            AgentRebate agentRebate = agentRebates.get(0);
+                            AgentMonthRebate agentRebate = agentRebates.get(0);
                             BigDecimal rebateDec = new BigDecimal(agentRebate.getMonthRebate());
                             BigDecimal priceDec = new BigDecimal(model.getPrice());
                             BigDecimal divide = rebateDec.multiply(priceDec).divide(HUNDRED)

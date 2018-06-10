@@ -75,8 +75,8 @@ public class AgentRebateService extends BaseService implements IAgentRebateServi
         if(agentRebate.getOrderRebate() == null){
             thrown(ErrorCodes.ORDER_REBATE_ILLEGAL);
         }
-        if(agentRebate.getMonthRebate() == null){
-            thrown(ErrorCodes.MONTH_REBATE_ILLEGAL);
-        }
+//        if(agentRebate.getMonthRebate() == null){
+//            thrown(ErrorCodes.MONTH_REBATE_ILLEGAL);
+//        }
     }
 }

@@ -14,50 +14,17 @@
 
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-content">
-                    <form id="searchForm" method="post" class="form-horizontal">
-                        <input type="hidden" name="pageNum" id="pageNo" value="1">
-                        <input type="hidden" name="pageSize" id="pageSize" value="10">
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label">代理ID：</label>
-                                    <div class="col-sm-6">
-                                        <input type="text" name="userId" class="form-control" placeholder="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label">代理用户账号：</label>
-                                    <div class="col-sm-6">
-                                        <input type="text" name="mobile" class="form-control" placeholder="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <button id="btnSearch" class="btn btn-primary" type="button">搜索</button>
-                                    <button id="btnCancel" class="btn btn-white" type="button">取消</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-    </div>
+    <form id="searchForm" method="post" class="form-horizontal">
+        <input type="hidden" name="pageNum" id="pageNo" value="1">
+        <input type="hidden" name="pageSize" id="pageSize" value="10">
+    </form>
 
     <div class="row">
         <div class="col-sm-12">
             <div class="form-group">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <@sec.any name="AGENT_REBATE_UPDATE">
+                    <@sec.any name="AGENT_MONTH_REBATE_UPDATE">
                         <div class="row">
                             <div class="col-sm-3">
                                    <button type="button" class="btn btn-success " id="add">
@@ -71,10 +38,8 @@
                             <thead>
                                 <tr>
                                     <th>序号</th>
-                                    <th>代理ID</th>
-                                    <th>代理用户账号</th>
-                                    <th>订单返佣</th>
-                                   <#-- <th>月返佣</th>-->
+                                    <th>客户消费金额</th>
+                                    <th>月返佣</th>
                                     <th>创建时间</th>
                                     <th>修改时间</th>
                                     <th>操作</th>
@@ -106,35 +71,23 @@
             <div class="modal-body">
                 <form id="addForm" method="post" class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" style="text-align: left; width: 20%">代理</label>
+                        <label class="col-sm-4 control-label" style="text-align: left; width: 20%">客户消费金额</label>
                         <div class="col-sm-6">
-                            <select class="form-control" name="userId" id="addUserId">
-                                <option value="">请选择</option>
-                            <#list agentList as e>
-                                <option value="${e.id}">${e.telephone}</option>
-                            </#list>
-                            </select>
+                            <input type="text" name="orderRebate" class="form-control" id="addOrderRebate">
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" style="text-align: left; width: 20%">订单返佣</label>
-                        <div class="col-sm-6">
-                            <input type="number" name="orderRebate" class="form-control" id="addOrderRebate">
-                        </div>
-                    </div>
-                    <#--<div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label" style="text-align: left; width: 20%">月返佣</label>
                         <div class="col-sm-6">
                             <input type="number" name="monthRebate" class="form-control" id="addMonthRebate">
                         </div>
-                    </div>-->
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-            <@sec.any name="AGENT_REBATE_UPDATE">
+            <@sec.any name="AGENT_MONTH_REBATE_UPDATE">
                 <button type="button" id="btnAdd" class="btn btn-primary">保存</button>
             </@sec.any>
             </div>
@@ -156,7 +109,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-            <@sec.any name="AGENT_REBATE_UPDATE">
+            <@sec.any name="AGENT_MONTH_REBATE_UPDATE">
                 <button type="button" id="btnSaveUpdate" class="btn btn-primary">保存</button>
                 </@sec.any>
             </div>
@@ -169,31 +122,19 @@
     <form id="detailForm" method="post" class="form-horizontal">
         <input type="hidden" class="form-control" value="{$T.data.id}" id="agentId">
         <div class="form-group">
-            <label class="col-sm-4 control-label" style="text-align: left; width: 20%">代理</label>
+            <label class="col-sm-4 control-label" style="text-align: left; width: 20%">客户消费金额</label>
             <div class="col-sm-6">
-                <select class="form-control" name="userId" id="updateUserId">
-                    <option value="">请选择</option>
-                <#list agentList as e>
-                    <option value="${e.id}">${e.telephone}</option>
-                </#list>
-                </select>
+                <input type="text" name="orderRebate" class="form-control" id="updateOrderRebate">
             </div>
         </div>
         <div class="hr-line-dashed"></div>
         <div class="form-group">
-            <label class="col-sm-4 control-label" style="text-align: left; width: 20%">订单 %</label>
-            <div class="col-sm-6">
-                <input type="number" name="orderRebate" class="form-control" id="updateOrderRebate" value="{$T.data.orderRebate}">
-            </div>
-        </div>
-        <div class="hr-line-dashed"></div>
-       <#-- <div class="form-group">
             <label class="col-sm-4 control-label" style="text-align: left; width: 20%">月返佣 %</label>
             <div class="col-sm-6">
                 <input type="number" name="monthRebate" class="form-control" id="updateMonthRebate" value="{$T.data.monthRebate}">
             </div>
         </div>
-        <div class="hr-line-dashed"></div>-->
+        <div class="hr-line-dashed"></div>
     </form>
 </textarea>
 
@@ -202,15 +143,13 @@
         {#foreach $T.data.list as agent}
         <tr>
             <td>{$T.agent.id}</td>
-            <td>{$T.agent.userId}</td>
-            <td>{$T.agent.mobile}</td>
-            <td>{$T.agent.orderRebate}%</td>
-           <#-- <td>{$T.agent.monthRebate}%</td>-->
+            <td>{Fen2Yuan($T.agent.amount)}</td>
+            <td>{$T.agent.monthRebate}%</td>
             <td>{new Date($T.agent.createTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>{new Date($T.agent.updateTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>
                 <button type="button" agentId="{$T.agent.id}" class="btn btn-primary btnDetail">查看</button>
-                <@sec.any name="AGENT_REBATE_UPDATE">
+                <@sec.any name="AGENT_MONTH_REBATE_UPDATE">
                 <button type="button" agentId="{$T.agent.id}" class="btn btn-danger btnDelete">删除</button>
                 </@sec.any>
             </td>
@@ -240,7 +179,7 @@
 <script src="${ctx}js/dateutil.js"></script>
 <script src="${ctx}js/plugins/layer/layer.min.js"></script>
 <script src="${ctx}${getVersion('js/page.js')}"></script>
-<script src="${ctx}${getVersion('js/agent/agent-rebate-list.js')}"></script>
+<script src="${ctx}${getVersion('js/agent/agent-month-rebate-list.js')}"></script>
 </body>
 
 </html>

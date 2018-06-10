@@ -42,8 +42,10 @@
     <permission-group name="代理管理" order="4">
         <permission id="400" name="代理返佣管理" code="AGENT_REBATE_MANAGE" depends=""/>
         <permission id="401" name="代理返佣修改" code="AGENT_REBATE_UPDATE" depends="" />
-        <permission id="402" name="返佣审核管理" code="AGENT_REBATE_AUDIT_MANAGE" depends=""/>
-        <permission id="403" name="返佣审核修改" code="AGENT_REBATE_AUDIT_UPDATE" depends="" />
+        <permission id="402" name="代理月返佣管理" code="AGENT_MONTH_REBATE_MANAGE" depends=""/>
+        <permission id="403" name="代理月返佣修改" code="AGENT_MONTH_REBATE_UPDATE" depends="" />
+        <permission id="404" name="返佣审核管理" code="AGENT_REBATE_AUDIT_MANAGE" depends=""/>
+        <permission id="405" name="返佣审核修改" code="AGENT_REBATE_AUDIT_UPDATE" depends="" />
     </permission-group>
 
     <permission-group name="订单管理" order="5">

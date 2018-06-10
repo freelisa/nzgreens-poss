@@ -88,6 +88,9 @@
                             <@sec.any name="AGENT_REBATE_MANAGE">
                                 <li><@s.a href="${ctx}agent/rebate/to-list" class="J_menuItem">代理返佣管理</@s.a></li>
                             </@sec.any>
+                            <@sec.any name="AGENT_MONTH_REBATE_MANAGE">
+                                <li><@s.a href="${ctx}agent/month/rebate/to-list" class="J_menuItem">代理月返佣管理</@s.a></li>
+                            </@sec.any>
                             <@sec.any name="AGENT_REBATE_AUDIT_MANAGE">
                                 <li><@s.a href="${ctx}agent/rebate/audit/to-list" class="J_menuItem">返佣审核管理</@s.a></li>
                             </@sec.any>

@@ -63,6 +63,7 @@
        <!-- <table schema="" tableName="products" domainObjectName="Products"/>-->
        <!-- <table schema="" tableName="products_crawl" domainObjectName="ProductsCrawl"/>-->
         <!--<table schema="" tableName="products_price_change" domainObjectName="ProductsPriceChange"/>-->
-        <table schema="" tableName="users" domainObjectName="Users"/>
+        <!--<table schema="" tableName="users" domainObjectName="Users"/>-->
+        <table schema="" tableName="agent_month_rebate" domainObjectName="AgentMonthRebate"/>
    </context>
 </generatorConfiguration>

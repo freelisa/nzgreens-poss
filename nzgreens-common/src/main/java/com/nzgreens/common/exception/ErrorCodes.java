@@ -75,6 +75,8 @@ public class ErrorCodes {
 
     public static final String REBATE_AMOUNT_ILLEGAL = "30005";
 
+	public static final String MONTH_REBATE_AMOUNT_ILLEGAL = "30006";
+
 	/**
 	 * =============== 订单凭证异常 ==================
 	 */

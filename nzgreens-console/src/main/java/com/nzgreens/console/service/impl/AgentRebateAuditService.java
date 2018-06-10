@@ -15,6 +15,7 @@ import com.nzgreens.dal.user.mapper.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -58,7 +59,8 @@ public class AgentRebateAuditService extends BaseService implements IAgentRebate
         if(StringUtils.isBlank(amount)){
             thrown(ErrorCodes.REBATE_AMOUNT_ILLEGAL);
         }
-        if(StringUtils.equals(amount,"0")){
+        BigDecimal s = new BigDecimal(amount);
+        if(s.compareTo(new BigDecimal(0)) == 0){
             thrown(ErrorCodes.REBATE_AMOUNT_ILLEGAL);
         }
         AgentRebateAudit agentRebateAudit = agentRebateAuditMapper.selectByPrimaryKey(id);
@@ -73,7 +75,7 @@ public class AgentRebateAuditService extends BaseService implements IAgentRebate
 
         AgentRebateAudit audit = new AgentRebateAudit();
         audit.setStatus(status.byteValue());
-        audit.setActualRebatePrice(CurrencyUtil.convertYuanToFen(amount));
+        audit.setActualRebatePrice(CurrencyUtil.convertYuanToFen(s.toString()));
         if(agentRebateAuditMapper.updateByExampleSelective(audit,example) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
         }
