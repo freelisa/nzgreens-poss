@@ -201,6 +201,43 @@
     </div>
 </div>
 
+<!-- 快捷新增弹出框 -->
+<div class="modal inmodal" id="modalQuickAdd" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog" style="width: 900px">
+        <div class="modal-content animated fadeIn" style="width: 500px">
+            <div class="modal-header" style="height: 20px;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="font-size: 22px;">新增</h4>
+            </div>
+            <div class="modal-body">
+                <form id="quickAddForm" method="post" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; width:20%">用户账号</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="telephone" class="form-control" id="quickAddMobile" maxlength="11">
+                        </div>
+                    </div>
+                    <input hidden name="agentUserId" id="quickAgentUserId" value="">
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; width: 20%">备注</label>
+                        <div class="col-sm-6">
+                            <textarea name="remark" class="form-control" rows="3" cols="40" id="quickAddRemark"></textarea>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+            <@sec.any name="USER_UPDATE">
+                <button type="button" id="btnQuickAdd" class="btn btn-primary">保存</button>
+            </@sec.any>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- 详情弹出框 -->
 <div class="modal inmodal" id="modalDetail" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -352,6 +389,7 @@
             </@sec.any>
             {#if $T.user.type == 2}
             <button type="button" user-id="{$T.user.id}" agent-mobile="{$T.user.telephone}" class="btn btn-primary btnUserAgent">代理下用户</button>
+            <button type="button" user-id="{$T.user.id}" agent-mobile="{$T.user.telephone}" class="btn btn-primary btnAgentAddUser">新增用户</button>
             {#/if}
             </td>
         </tr>

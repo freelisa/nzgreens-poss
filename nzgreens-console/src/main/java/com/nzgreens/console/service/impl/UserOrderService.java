@@ -269,12 +269,38 @@ public class UserOrderService extends BaseService implements IUserOrderService {
                 || order.getStatus() == UserOrderStatusEnum._DONE.getValue()){
             thrown(ErrorCodes.ORDER_STATUS_ILLEGAL);
         }
+        //修改用户订单状态
+        updateUserOrder(order,status);
+        //修改订单状态
+        updateOrder(order,status);
+        //处理订单
+        handlerOrder(status,order);
+    }
+
+    private void updateUserOrder(UserOrder order,Integer status) throws Exception{
         UserOrder userOrder = new UserOrder();
-        userOrder.setId(orderId);
+        userOrder.setId(order.getId());
         userOrder.setStatus(status.byteValue());
         if(userOrderMapper.updateByPrimaryKeySelective(userOrder) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
         }
+
+        //拒绝状态，修改合并的订单状态为未处理
+        if(status.intValue() == UserOrderStatusEnum._REFUSED.getValue()
+                && order.getDeliveryMode().intValue() == DeliveryModeEnum._SELF.getValue()
+                && StringUtils.isNotBlank(order.getUserOrderNumber())){
+            UserOrderExample example = new UserOrderExample();
+            for(String orderNumber : order.getUserOrderNumber().split(",")){
+                example.clear();
+                example.createCriteria().andOrderNumberEqualTo(orderNumber);
+                UserOrder urd = new UserOrder();
+                urd.setStatus((byte) UserOrderStatusEnum._PENDING.getValue());
+                userOrderMapper.updateByExampleSelective(urd,example);
+            }
+        }
+    }
+
+    private void updateOrder(UserOrder order,Integer status) throws Exception{
         OrdersExample example = new OrdersExample();
         example.createCriteria().andOrderNumberEqualTo(order.getOrderNumber());
         Orders orders = new Orders();
@@ -282,8 +308,22 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         if(ordersMapper.updateByExampleSelective(orders,example) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
         }
-        //处理订单
-        handlerOrder(status,order);
+
+        //拒绝状态，修改合并的订单状态为未处理
+        if(status.intValue() == UserOrderStatusEnum._REFUSED.getValue()
+                && order.getDeliveryMode().intValue() == DeliveryModeEnum._SELF.getValue()
+                && StringUtils.isNotBlank(order.getUserOrderNumber())){
+            List<Orders> ordersList = ordersMapper.selectByExample(example);
+            if(CollectionUtils.isEmpty(ordersList)){
+                return;
+            }
+            for(Orders o : ordersList){
+                Orders o1 = new Orders();
+                o1.setId(o.getOrderId());
+                o1.setStatus((byte) OrderStatusEnum.PENDING.getValue());
+                ordersMapper.updateByPrimaryKeySelective(o1);
+            }
+        }
     }
 
     @Override

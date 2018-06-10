@@ -82,7 +82,7 @@
         FROM
             user_order o,users u
         WHERE
-            o.type = 2 and o.user_id=u.id and u.type=2
+            o.type = 2 and o.user_id=u.id and u.type=2 and o.status in (1,2) and o.delivery_mode=1
         AND o.create_time BETWEEN #{startTime} AND #{endTime}
         GROUP BY
             o.user_id

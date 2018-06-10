@@ -51,6 +51,24 @@ $(document).ready(function () {
         }
     });
 
+    $("#btnQuickAdd").on("click", function () {
+        if ($("#quickAddForm").valid()) {
+            $(this).button('loading');
+
+            post(_rootPath + "user/quick/insert", $("#quickAddForm").serialize(), function (result) {
+                $("#btnQuickAdd").button('reset');
+                if (result.success == true) {
+                    swal({title: "提示", text: "保存成功", type: 'success'}, function () {
+                        //$("#modalAdd").modal("hide");
+                        $("#quickAddMobile").val("");
+                        $("#quickAddRemark").val("");
+                        searchUserList();
+                    });
+                }
+            });
+        }
+    });
+
     searchUserList();
     pageFunInit(searchUserList);
 });
@@ -86,6 +104,11 @@ function searchUserList() {
         $(".btnUserFrozen").on("click", function () {
             var userId = $(this).attr("userId");
             frozenUser(userId);
+        });
+        $(".btnAgentAddUser").on("click", function () {
+            var userId = $(this).attr("user-id");
+            $("#quickAgentUserId").val(userId);
+            $("#modalQuickAdd").modal();
         });
     });
 

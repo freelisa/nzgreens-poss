@@ -1,6 +1,7 @@
 package com.nzgreens.console.web.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.nzgreens.common.enums.UserTypeEnum;
 import com.nzgreens.common.form.console.UserAddForm;
 import com.nzgreens.common.form.console.UserForm;
 import com.nzgreens.common.model.ResultModel;
@@ -86,6 +87,15 @@ public class UserController extends BaseController {
     @ResponseBody
     @Auth("USER_UPDATE")
     public ResultModel insert(UserAddForm users) throws Exception{
+        userService.insertUser(users);
+        return new ResultModel();
+    }
+
+    @RequestMapping("quick/insert")
+    @ResponseBody
+    @Auth("USER_UPDATE")
+    public ResultModel quickInsert(UserAddForm users) throws Exception{
+        users.setType(UserTypeEnum._USER.getValue());
         userService.insertUser(users);
         return new ResultModel();
     }
