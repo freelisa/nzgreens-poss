@@ -101,6 +101,7 @@ public class UserService extends BaseService implements IUserService {
         Users user = new Users();
         BeanUtils.copyProperties(users,user);
         user.setNickname(RandomUtil.generateInt(8));
+        user.setLastOrderNumber(Long.valueOf(users.getTelephone() + "0"));
         if(usersMapper.insertSelective(user) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
         }

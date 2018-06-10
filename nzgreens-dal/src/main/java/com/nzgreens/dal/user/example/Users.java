@@ -20,6 +20,8 @@ public class Users implements Serializable {
 
     private String remark;
 
+    private Long lastOrderNumber;
+
     private Integer isValid;
 
     private Date createTime;
@@ -90,6 +92,14 @@ public class Users implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Long getLastOrderNumber() {
+        return lastOrderNumber;
+    }
+
+    public void setLastOrderNumber(Long lastOrderNumber) {
+        this.lastOrderNumber = lastOrderNumber;
     }
 
     public Integer getIsValid() {

@@ -647,6 +647,66 @@ public class UsersExample {
             return (Criteria) this;
         }
 
+        public Criteria andLastOrderNumberIsNull() {
+            addCriterion("last_order_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastOrderNumberIsNotNull() {
+            addCriterion("last_order_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastOrderNumberEqualTo(Long value) {
+            addCriterion("last_order_number =", value, "lastOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastOrderNumberNotEqualTo(Long value) {
+            addCriterion("last_order_number <>", value, "lastOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastOrderNumberGreaterThan(Long value) {
+            addCriterion("last_order_number >", value, "lastOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastOrderNumberGreaterThanOrEqualTo(Long value) {
+            addCriterion("last_order_number >=", value, "lastOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastOrderNumberLessThan(Long value) {
+            addCriterion("last_order_number <", value, "lastOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastOrderNumberLessThanOrEqualTo(Long value) {
+            addCriterion("last_order_number <=", value, "lastOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastOrderNumberIn(List<Long> values) {
+            addCriterion("last_order_number in", values, "lastOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastOrderNumberNotIn(List<Long> values) {
+            addCriterion("last_order_number not in", values, "lastOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastOrderNumberBetween(Long value1, Long value2) {
+            addCriterion("last_order_number between", value1, value2, "lastOrderNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastOrderNumberNotBetween(Long value1, Long value2) {
+            addCriterion("last_order_number not between", value1, value2, "lastOrderNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andIsValidIsNull() {
             addCriterion("is_valid is null");
             return (Criteria) this;

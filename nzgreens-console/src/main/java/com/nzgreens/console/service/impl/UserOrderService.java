@@ -272,7 +272,7 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         //修改用户订单状态
         updateUserOrder(order,status);
         //修改订单状态
-        updateOrder(order,status);
+        updateOrder(order);
         //处理订单
         handlerOrder(status,order);
     }
@@ -284,23 +284,45 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         if(userOrderMapper.updateByPrimaryKeySelective(userOrder) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
         }
-
+        UserOrderExample example = new UserOrderExample();
         //拒绝状态，修改合并的订单状态为未处理
-        if(status.intValue() == UserOrderStatusEnum._REFUSED.getValue()
-                && order.getDeliveryMode().intValue() == DeliveryModeEnum._SELF.getValue()
-                && StringUtils.isNotBlank(order.getUserOrderNumber())){
-            UserOrderExample example = new UserOrderExample();
-            for(String orderNumber : order.getUserOrderNumber().split(",")){
+        if(status.intValue() == UserOrderStatusEnum._REFUSED.getValue()){
+            //合并单处理
+            if(StringUtils.isNotBlank(order.getUserOrderNumber())){
+                for(String orderNumber : order.getUserOrderNumber().split(",")){
+                    //处理user_order
+                    example.clear();
+                    example.createCriteria().andOrderNumberEqualTo(orderNumber);
+                    List<UserOrder> userOrders = userOrderMapper.selectByExample(example);
+                    if(CollectionUtils.isEmpty(userOrders)){
+                        continue;
+                    }
+                    UserOrder ord = userOrders.get(0);
+                    Users users = usersMapper.selectByPrimaryKey(ord.getUserId());
+                    UserOrder urd = new UserOrder();
+                    if(users != null && users.getType().intValue() != UserTypeEnum._AGENT.getValue()){
+                        urd.setStatus((byte) UserOrderStatusEnum._PENDING.getValue());
+                    }else{
+                        urd.setStatus((byte) UserOrderStatusEnum._REFUSED.getValue());
+                    }
+                    userOrderMapper.updateByExampleSelective(urd,example);
+
+                    //处理orders
+                    updateChildOrder(users,orderNumber);
+                }
+            }else{
+                //用户自收，代理直接购买处理
                 example.clear();
-                example.createCriteria().andOrderNumberEqualTo(orderNumber);
+                example.createCriteria().andOrderNumberEqualTo(order.getOrderNumber());
+
                 UserOrder urd = new UserOrder();
-                urd.setStatus((byte) UserOrderStatusEnum._PENDING.getValue());
+                urd.setStatus((byte) UserOrderStatusEnum._REFUSED.getValue());
                 userOrderMapper.updateByExampleSelective(urd,example);
             }
         }
     }
 
-    private void updateOrder(UserOrder order,Integer status) throws Exception{
+    private void updateOrder(UserOrder order) throws Exception{
         OrdersExample example = new OrdersExample();
         example.createCriteria().andOrderNumberEqualTo(order.getOrderNumber());
         Orders orders = new Orders();
@@ -308,22 +330,21 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         if(ordersMapper.updateByExampleSelective(orders,example) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
         }
+    }
 
-        //拒绝状态，修改合并的订单状态为未处理
-        if(status.intValue() == UserOrderStatusEnum._REFUSED.getValue()
-                && order.getDeliveryMode().intValue() == DeliveryModeEnum._SELF.getValue()
-                && StringUtils.isNotBlank(order.getUserOrderNumber())){
-            List<Orders> ordersList = ordersMapper.selectByExample(example);
-            if(CollectionUtils.isEmpty(ordersList)){
-                return;
-            }
-            for(Orders o : ordersList){
-                Orders o1 = new Orders();
-                o1.setId(o.getOrderId());
-                o1.setStatus((byte) OrderStatusEnum.PENDING.getValue());
-                ordersMapper.updateByPrimaryKeySelective(o1);
-            }
+    private void updateChildOrder(Users users,String orderNumber) throws Exception{
+        Orders o1 = new Orders();
+
+        if(users != null && users.getType().intValue() != UserTypeEnum._AGENT.getValue()){
+            o1.setStatus((byte) OrderStatusEnum.PENDING.getValue());
+        }else{
+            o1.setStatus((byte) OrderStatusEnum.SUCCESS.getValue());
         }
+        o1.setOrderNumber(orderNumber);
+
+        OrdersExample ordersExample = new OrdersExample();
+        ordersExample.createCriteria().andOrderNumberEqualTo(orderNumber);
+        ordersMapper.updateByExampleSelective(o1,ordersExample);
     }
 
     @Override
