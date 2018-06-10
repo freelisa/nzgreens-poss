@@ -38,8 +38,8 @@ public class AgentMonthRebateTask extends AbstractScheduleTask {
     private SubProductsMapper subProductsMapper;
     private static final BigDecimal HUNDRED = new BigDecimal("100");
 
-    //@Scheduled(cron = "${AgentMonthRebateTask.cron:0 0 1 1 * ?}")
-    @Scheduled(cron = "${AgentMonthRebateTask.cron:0 41 18 * * ?}")
+    @Scheduled(cron = "${AgentMonthRebateTask.cron:0 0 1 1 * ?}")
+    //@Scheduled(cron = "${AgentMonthRebateTask.cron:0 41 18 * * ?}")
     public void handle() {
         doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
             @Override
