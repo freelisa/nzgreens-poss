@@ -27,7 +27,7 @@ public interface IUserService {
 
     void updateUser(UserAddForm users) throws Exception;
 
-    void updateUserBalance(Long userId,String balance) throws Exception;
+    void updateUserBalance(Long userId,String balance,String remark) throws Exception;
 
     void deleteUser(Long userId) throws Exception;
 }

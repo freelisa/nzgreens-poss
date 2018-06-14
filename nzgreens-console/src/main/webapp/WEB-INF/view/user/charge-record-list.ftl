@@ -54,6 +54,7 @@
                                     <th>昵称</th>
                                     <th>充值用户ID</th>
                                     <th>充值金额</th>
+                                    <th>备注</th>
                                     <th>创建时间</th>
                                 </tr>
                             </thead>
@@ -82,6 +83,7 @@
             <td>{$T.t.nickName}</td>
             <td>{$T.t.userId}</td>
             <td>{Fen2Yuan($T.t.amount)}</td>
+            <td>{$T.t.remark}</td>
             <td>{new Date($T.t.createTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
         </tr>
     {#else}

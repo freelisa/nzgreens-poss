@@ -189,7 +189,8 @@ function searchUserBalanceDetail(userId) {
 function saveUpdateBalance() {
     var params = {
         "userId": $("#balanceUserId").val(),
-        "balance": $("#updateBalance").val()
+        "balance": $("#updateBalance").val(),
+        "remark": $("#updateRemark").val()
     }
     post(_rootPath + "user/update/balance", params, function (result) {
         if (result.success == true) {

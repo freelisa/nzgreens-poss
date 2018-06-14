@@ -87,4 +87,11 @@
         GROUP BY
             o.user_id
     </select>
+
+    <!-- 批量修改商品价格 -->
+    <update id="updateProductPriceBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";" >
+            update products_test set selling_price=#{item.sellingPrice} where gelin_product_id=#{item.gelinProductId}
+        </foreach>
+    </update>
 </mapper>

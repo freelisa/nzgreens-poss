@@ -204,7 +204,7 @@ public class UserService extends BaseService implements IUserService {
     }
 
     @Override
-    public void updateUserBalance(Long userId,String balance) throws Exception {
+    public void updateUserBalance(Long userId,String balance,String remark) throws Exception {
         if(userId == null){
             thrown(ErrorCodes.ID_ILLEGAL);
         }
@@ -213,6 +213,9 @@ public class UserService extends BaseService implements IUserService {
         }
         if(StringUtils.equals(balance,"0")){
             thrown(ErrorCodes.USER_BALANCE_ILLEGAL);
+        }
+        if(StringUtils.isBlank(remark)){
+            thrown(ErrorCodes.USER_BALANCE_REMARK_ILLEGAL);
         }
         Users u = usersMapper.selectByPrimaryKey(userId);
         if(u == null){
@@ -238,6 +241,7 @@ public class UserService extends BaseService implements IUserService {
             record.setAmount(Long.valueOf(balanceAbs));
             record.setUserAgentId(systemUser.getId());
             record.setUserId(userId);
+            record.setRemark(remark);
             withdrawRecordMapper.insertSelective(record);
             //日志
             AccountLogs rebateLog = new AccountLogs();
@@ -277,6 +281,7 @@ public class UserService extends BaseService implements IUserService {
             record.setAmount(balances.longValue());
             record.setUserAgentId(systemUser.getId());
             record.setUserId(userId);
+            record.setRemark(remark);
             chargeRecordMapper.insertSelective(record);
             //日志
             AccountLogs rebateLog = new AccountLogs();

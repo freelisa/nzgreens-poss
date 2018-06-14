@@ -1,10 +1,16 @@
 package com.nzgreens.console.util;
 
 import com.nzgreens.common.exception.CommonException;
+import com.nzgreens.common.model.console.ProductsModel;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by z on 2016/11/26.
@@ -30,5 +36,40 @@ public class ExcelImportUtil {
             throw new CommonException("","解析的文件格式有误！");
         }
         return wb;
+    }
+
+    public static List<ProductsModel> getVoucherListByExcel(InputStream in, String fileName) throws Exception{
+        List<ProductsModel> list = new ArrayList<>();
+        //创建Excel工作薄
+        Workbook work = ExcelImportUtil.getWorkbook(in,fileName);
+        if(null == work){
+            throw new CommonException("","创建Excel工作薄为空！");
+        }
+        Sheet sheet = null;
+        Row row = null;
+        //遍历Excel中所有的sheet
+        for (int i = 0; i < work.getNumberOfSheets(); i++) {
+            sheet = work.getSheetAt(i);
+            if(sheet==null){
+                continue;
+            }
+            //遍历当前sheet中的所有行
+            int s = sheet.getLastRowNum();
+            for (int j = sheet.getFirstRowNum()+1; j <= s; j++) {
+                row = sheet.getRow(j);
+                if(row==null){
+                    continue;
+                }
+                if(row.getCell(0)==null || row.getCell(1)==null || StringUtils.isBlank(row.getCell(1).getStringCellValue())){
+                    continue;
+                }
+                ProductsModel productsModel = new ProductsModel();
+                productsModel.setGelinProductId(Long.valueOf(row.getCell(0).getStringCellValue()));
+                productsModel.setSellingPrice(row.getCell(1).getStringCellValue());
+                list.add(productsModel);
+            }
+        }
+        work.close();
+        return list;
     }
 }

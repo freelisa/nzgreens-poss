@@ -37,6 +37,8 @@
         <permission id="312" name="产品审核管理" code="PRODUCT_AUDIT_MANAGE" depends=""/>
         <permission id="313" name="产品审核修改" code="PRODUCT_AUDIT_MANAGE" depends="" />
         <permission id="314" name="产品价格变更记录" code="PRODUCT_PRICE_CHANGE_MANAGE" depends=""/>
+        <permission id="315" name="商品导出" code="PRODUCT_EXPORT_MANAGE" depends=""/>
+        <permission id="316" name="商品导入" code="PRODUCT_IMPORT_EXCEL" depends=""/>
     </permission-group>
 
     <permission-group name="代理管理" order="4">

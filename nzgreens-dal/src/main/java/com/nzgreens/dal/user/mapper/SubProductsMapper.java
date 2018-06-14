@@ -2,6 +2,7 @@ package com.nzgreens.dal.user.mapper;
 
 import com.nzgreens.common.form.console.PageSearchForm;
 import com.nzgreens.common.form.console.ProductForm;
+import com.nzgreens.common.model.console.ProductsModel;
 import com.nzgreens.common.model.console.ProductsPriceChangeModel;
 import com.nzgreens.common.model.console.UserOrderPriceSumModel;
 import com.nzgreens.dal.user.example.Products;
@@ -25,4 +26,11 @@ public interface SubProductsMapper {
      * @throws Exception
      */
     List<UserOrderPriceSumModel> selectAgentMonthRebate(@Param(value = "startTime") String startTime,@Param(value = "endTime") String endTime) throws Exception;
+
+    /**
+     * 批量修改商品价格
+     * @param list
+     * @throws Exception
+     */
+    void updateProductPriceBatch(List<ProductsModel> list) throws Exception;
 }

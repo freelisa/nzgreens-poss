@@ -94,8 +94,29 @@
                                 <button id="btnSearch" class="btn btn-primary" type="button">搜索</button>
                                 <button id="btnCancel" class="btn btn-white" type="button">取消</button>
                             </div>
+                            <div class="col-md-6" align="right">
+                            <@sec.any name="PRODUCT_EXPORT_MANAGE">
+                                <button type="button" class="btn btn-success" id="exportExcel">
+                                    <i class="fa fa-download"></i>&nbsp;&nbsp;<span class="bold">导出</span>
+                                </button>
+                            </@sec.any>
+                            <@sec.any name="PRODUCT_IMPORT_EXCEL">
+                                <div id="file1" class="dropzone" style="display: none"></div>
+                                <button type="button" class="btn btn-success" id="importExcel">
+                                    <i class="fa fa-download"></i>&nbsp;&nbsp;<span class="bold">导入</span>
+                                </button>
+                            </@sec.any>
+                            </div>
                         </div>
                     </form>
+                    <#--<form id="importForm" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div id="file-pretty">
+                            <div class="form-group">
+                                <label class="font-noraml">文件选择（单选）</label>
+                                <input type="file" class="form-control">
+                            </div>
+                        </div>
+                    </form>-->
                 </div>
             </div>
         </div>
@@ -479,6 +500,7 @@
 <script src="${ctx}js/plugins/iCheck/icheck.min.js"></script>
 <script src="${ctx}js/common.js"></script>
 <script src="${ctx}js/jquery-jtemplates.js"></script>
+<script src="${ctx}js/plugins/prettyfile/bootstrap-prettyfile.js"></script>
 <script src="${ctx}js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="${ctx}js/dateutil.js"></script>
 <script src="${ctx}js/plugins/dropzone/dropzone.js"></script>

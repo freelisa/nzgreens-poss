@@ -7,7 +7,9 @@ import com.nzgreens.common.exception.ErrorCodes;
 import com.nzgreens.common.form.console.PageSearchForm;
 import com.nzgreens.common.form.console.ProductAddForm;
 import com.nzgreens.common.form.console.ProductForm;
+import com.nzgreens.common.model.console.ProductsModel;
 import com.nzgreens.common.model.console.ProductsPriceChangeModel;
+import com.nzgreens.common.utils.BeanMapUtil;
 import com.nzgreens.common.utils.CurrencyUtil;
 import com.nzgreens.console.service.BaseService;
 import com.nzgreens.console.service.IProductService;
@@ -73,6 +75,27 @@ public class ProductService extends BaseService implements IProductService {
             }
         }
         return products;
+    }
+
+    @Override
+    public List<ProductsModel> selectProductExport(ProductForm form) throws Exception {
+        //查询是否是父分类
+        if(form.getCategoryId() != null){
+            ProductCategoryExample example = new ProductCategoryExample();
+            example.createCriteria().andParentIdEqualTo(form.getCategoryId());
+            if(productCategoryMapper.countByExample(example) > 0){
+                form.setParentCategoryId(form.getCategoryId());
+                form.setCategoryId(null);
+            }
+        }
+        List<Products> products = subProductsMapper.selectProductForPage(form);
+
+        return BeanMapUtil.collectionToList(products,ProductsModel.class);
+    }
+
+    @Override
+    public void updateProductPriceBatch(List<ProductsModel> list) throws Exception {
+        subProductsMapper.updateProductPriceBatch(list);
     }
 
     @Override

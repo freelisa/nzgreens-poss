@@ -89,7 +89,8 @@
         r.amount,
         r.create_time createTime,
         u.telephone mobile,
-        u.nickname
+        u.nickname,
+        r.remark
         FROM
         charge_record r,
         users u
@@ -110,7 +111,8 @@
         r.amount,
         r.create_time createTime,
         u.telephone mobile,
-        u.nickname
+        u.nickname,
+        r.remark
         FROM
         withdraw_record r,
         users u

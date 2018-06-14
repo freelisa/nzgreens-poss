@@ -1,6 +1,7 @@
 var uploadType = "0";
 Dropzone.autoDiscover = false;
 var dropz;
+var dropz1;
 
 $(document).ready(function () {
 
@@ -66,7 +67,20 @@ $(document).ready(function () {
         deleteData(id);
     });
 
+    $("#exportExcel").on("click", function () {
+        var form = $("#searchForm");
+        form.attr("action", _rootPath + "product/export");
+        form.submit();
+    });
+
     initDropz();
+
+    initDropz1();
+
+    $("#importExcel").on("click", function () {
+        dropz1.removeAllFiles();
+        dropz1.hiddenFileInput.click();
+    });
 
     pageFunInit(searchList);
 });
@@ -93,6 +107,38 @@ function initDropz() {
             }else if(uploadType == "2"){
                 $("#detailContentPicId").val(data.data);
                 $("#detailAddPicDiv").html('<img src="'+data.data+'" width="101px" height="101px">');
+            }
+        },
+        dictMaxFilesExceeded:"文件数量过多",
+        dictDefaultMessage:"拖动文件到该区域或点击上传文件",
+        dictCancelUpload:"取消",
+        dictCancelUploadConfirmation:"取消上传操作",
+        dictRemoveFile:"删除",
+        dictFileTooBig:"可添加的最大文件大小为{{maxFilesize}}Mb，当前文件大小为{{filesize}}Mb ",
+    });
+    // dropz.on("removedfile",function(file){})
+}
+
+function initDropz1() {
+
+    dropz1 = new Dropzone("#file1", {
+        url:_rootPath + "product/importExcel",
+        addRemoveLinks: true,
+        autoProcessQueue:true,
+        parallelUploads:8,
+        maxFiles: 1,//最大可上传的文件个数
+        maxFilesize: 2,
+        acceptedFiles: ".xlsx,.xls",
+        init: function() {
+            this.on("removedfile", function(file) {
+                console.log("File " + file.name + "removed");
+            });
+        },
+        success:function(file,data){
+            if(data.success){
+                swal({title: "提示", text: "批量修改成功", type: 'success'});
+            }else{
+                swal({title: "提示", text: data.errorInfo, type: 'error'});
             }
         },
         dictMaxFilesExceeded:"文件数量过多",

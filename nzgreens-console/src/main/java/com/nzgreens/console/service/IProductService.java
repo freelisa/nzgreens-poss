@@ -3,6 +3,7 @@ package com.nzgreens.console.service;
 import com.nzgreens.common.form.console.PageSearchForm;
 import com.nzgreens.common.form.console.ProductAddForm;
 import com.nzgreens.common.form.console.ProductForm;
+import com.nzgreens.common.model.console.ProductsModel;
 import com.nzgreens.common.model.console.ProductsPriceChangeModel;
 import com.nzgreens.dal.user.example.ProductBrand;
 import com.nzgreens.dal.user.example.ProductCategory;
@@ -19,6 +20,10 @@ import java.util.List;
 
 public interface IProductService {
     List<Products> selectProductForPage(ProductForm form) throws Exception;
+
+    List<ProductsModel> selectProductExport(ProductForm form) throws Exception;
+
+    void updateProductPriceBatch(List<ProductsModel> list) throws Exception;
 
     List<ProductsPriceChangeModel> selectProductChangeForPage(PageSearchForm form) throws Exception;
 

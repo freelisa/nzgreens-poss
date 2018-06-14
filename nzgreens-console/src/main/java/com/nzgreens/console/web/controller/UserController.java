@@ -111,8 +111,8 @@ public class UserController extends BaseController {
     @RequestMapping("update/balance")
     @ResponseBody
     @Auth("USER_UPDATE")
-    public ResultModel updateBalance(Long userId,String balance) throws Exception{
-        userService.updateUserBalance(userId,balance);
+    public ResultModel updateBalance(Long userId,String balance,String remark) throws Exception{
+        userService.updateUserBalance(userId,balance,remark);
         return new ResultModel();
     }
 

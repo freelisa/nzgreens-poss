@@ -60,6 +60,8 @@ public class ErrorCodes {
 
 	public static final String USER_MOBILE_EXIST_ERROR = "20011";
 
+	public static final String USER_BALANCE_REMARK_ILLEGAL = "20012";
+
 	/**
 	 * =============== 代理返佣异常 ==================
 	 */

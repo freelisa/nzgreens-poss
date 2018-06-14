@@ -350,6 +350,13 @@
                 <input type="text" name="balance" class="form-control" id="updateBalance">
             </div>
         </div>
+         <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" style="text-align: left; width:20%">备注</label>
+            <div class="col-sm-6">
+                <textarea name="remark" class="form-control" id="updateRemark" rows="3" cols="40"></textarea>
+            </div>
+        </div>
     </form>
 </textarea>
 

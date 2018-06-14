@@ -16,6 +16,8 @@ public class WithdrawRecordModel implements Serializable {
 
     private Long amount;
 
+    private String remark;
+
     private Date createTime;
 
     private Date updateTime;
@@ -84,5 +86,13 @@ public class WithdrawRecordModel implements Serializable {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
