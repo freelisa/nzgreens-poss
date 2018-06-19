@@ -22,11 +22,15 @@ public class AgentRebateAuditModel {
 
     private String typeDesc;
 
+    private Long amount;
+
     private Long rebatePrice;
 
     private Long actualRebatePrice;
 
     private Byte status;
+
+    private String remark;
 
     private Date createTime;
 
@@ -126,5 +130,21 @@ public class AgentRebateAuditModel {
 
     public void setTypeDesc(String typeDesc) {
         this.typeDesc = typeDesc;
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Long amount) {
+        this.amount = amount;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

@@ -9,9 +9,9 @@
         r.user_order_id userOrderId,
         u.telephone mobile,
         o.order_number orderNumber,
-        r.type,r.rebate_price rebatePrice,
+        r.type,r.rebate_price rebatePrice,r.amount,
         r.actual_rebate_price actualRebatePrice,
-        r.`status`,
+        r.`status`,r.remark,
         r.create_time createTime,
         r.update_time updateTime
         FROM

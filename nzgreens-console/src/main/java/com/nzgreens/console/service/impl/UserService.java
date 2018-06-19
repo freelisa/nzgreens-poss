@@ -79,6 +79,7 @@ public class UserService extends BaseService implements IUserService {
         UsersExample example = new UsersExample();
         example.createCriteria().andTypeEqualTo(UserTypeEnum._AGENT.getValue())
                 .andIsValidEqualTo(IsValidEnum.EFFECTIVE.getValue());
+        example.setOrderByClause(" telephone");
         return usersMapper.selectByExample(example);
     }
 

@@ -46,7 +46,8 @@ function saveUpdate() {
     var params = {
         "id": $("#agentId").val(),
         "status": $("#updateStatus").val(),
-        "amount": $("#actualRebatePrice").val()
+        "amount": $("#actualRebatePrice").val(),
+        "remark": $("#updateRemark").val()
     }
     post(_rootPath + "agent/rebate/audit/update", params, function (result) {
         if (result.success == true) {

@@ -40,6 +40,36 @@ public class UserOrderModel implements Serializable {
 
     private String logisticsNumber;
 
+    private Long rebateId;
+    /**
+     * 返佣类型
+     */
+    private Integer rebateType;
+    /**
+     * 返佣金额
+     */
+    private Long rebatePrice;
+    /**
+     * 真实返佣金额
+     */
+    private Long actualRebatePrice;
+    /**
+     * 返佣状态
+     */
+    private Integer rebateStatus;
+    /**
+     * 返佣时间
+     */
+    private Date rebateCreateTime;
+    /**
+     * 返佣审核时间
+     */
+    private Date rebateUpdateTime;
+    /**
+     * 返佣备注
+     */
+    private String rebateRemark;
+
     private Date createTime;
 
     private Date updateTime;
@@ -172,5 +202,69 @@ public class UserOrderModel implements Serializable {
 
     public void setLogisticsNumber(String logisticsNumber) {
         this.logisticsNumber = logisticsNumber;
+    }
+
+    public Integer getRebateType() {
+        return rebateType;
+    }
+
+    public void setRebateType(Integer rebateType) {
+        this.rebateType = rebateType;
+    }
+
+    public Long getRebatePrice() {
+        return rebatePrice;
+    }
+
+    public void setRebatePrice(Long rebatePrice) {
+        this.rebatePrice = rebatePrice;
+    }
+
+    public Long getActualRebatePrice() {
+        return actualRebatePrice;
+    }
+
+    public void setActualRebatePrice(Long actualRebatePrice) {
+        this.actualRebatePrice = actualRebatePrice;
+    }
+
+    public Integer getRebateStatus() {
+        return rebateStatus;
+    }
+
+    public void setRebateStatus(Integer rebateStatus) {
+        this.rebateStatus = rebateStatus;
+    }
+
+    public Date getRebateCreateTime() {
+        return rebateCreateTime;
+    }
+
+    public void setRebateCreateTime(Date rebateCreateTime) {
+        this.rebateCreateTime = rebateCreateTime;
+    }
+
+    public Date getRebateUpdateTime() {
+        return rebateUpdateTime;
+    }
+
+    public void setRebateUpdateTime(Date rebateUpdateTime) {
+        this.rebateUpdateTime = rebateUpdateTime;
+    }
+
+    public Long getRebateId() {
+        return rebateId;
+    }
+
+    public void setRebateId(Long rebateId) {
+        this.rebateId = rebateId;
+    }
+
+    public String getRebateRemark() {
+        return rebateRemark;
+    }
+
+    public void setRebateRemark(String rebateRemark) {
+        this.rebateRemark = rebateRemark;
     }
 }

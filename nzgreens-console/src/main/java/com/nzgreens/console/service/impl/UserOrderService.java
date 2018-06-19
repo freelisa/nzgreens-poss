@@ -198,6 +198,21 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         if(StringUtils.isNotBlank(orderModel.getAddress())) {
             orderModel.setAddress(orderModel.getAddress().replace("$", ""));
         }
+        //查询返佣
+        AgentRebateAuditExample example = new AgentRebateAuditExample();
+        example.createCriteria().andUserOrderIdEqualTo(id);
+        List<AgentRebateAudit> audits = agentRebateAuditMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(audits)){
+            AgentRebateAudit audit = audits.get(0);
+            orderModel.setRebateId(audit.getId());
+            orderModel.setRebateType(audit.getType().intValue());
+            orderModel.setRebatePrice(audit.getRebatePrice());
+            orderModel.setActualRebatePrice(audit.getActualRebatePrice());
+            orderModel.setRebateStatus(audit.getStatus().intValue());
+            orderModel.setRebateRemark(audit.getRemark());
+            orderModel.setRebateCreateTime(audit.getCreateTime());
+            orderModel.setRebateUpdateTime(audit.getUpdateTime());
+        }
         return orderModel;
     }
 
@@ -441,6 +456,7 @@ public class UserOrderService extends BaseService implements IUserOrderService {
                 AgentRebateAudit rebate = new AgentRebateAudit();
                 rebate.setAgentUserId(order.getUserId());
                 rebate.setRebatePrice(divide.longValue());
+                rebate.setAmount(order.getPrice());
                 rebate.setUserOrderId(order.getId());
                 rebate.setStatus((byte) AgentRebateAuditStatusEnum._PENDING.getValue());
                 rebate.setType((byte) AgentRebateTypeEnum._ORDER.getValue());

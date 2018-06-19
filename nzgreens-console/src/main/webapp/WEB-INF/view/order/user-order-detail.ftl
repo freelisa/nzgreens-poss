@@ -110,7 +110,7 @@
     <form id="userDetailForm" method="post" class="form-horizontal">
         <div class="form-group">
             <!-- 左边 -->
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div class="form-group">
                     <#--<label class="col-sm-4 control-label">用户ID: </label>
                     <div class="col-sm-8">
@@ -153,7 +153,7 @@
                 </div>
             </div>
             <!-- 右边 -->
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div class="form-group">
                     <label class="col-sm-4 control-label">商品总金额: </label>
                     <div class="col-sm-8">
@@ -165,7 +165,7 @@
                     </div>
                     <label class="col-sm-4 control-label">订单总金额: </label>
                     <div class="col-sm-8">
-                        <p class="form-control-static">{Fen2Yuan($T.data.price)}</p>
+                        <p class="form-control-static" id="userOrderAmount">{Fen2Yuan($T.data.price)}</p>
                     </div>
                     <label class="col-sm-4 control-label">订单类型: </label>
                     <div class="col-sm-8">
@@ -201,11 +201,129 @@
                     <div class="col-sm-4">
                         <button id="btnUploadCert" class="btn btn-success" type="button">上传凭证</button>
                     </div>
+                    {#if $T.data.rebateStatus == 0}
+                    <div class="col-sm-4">
+                        <button id="btnRebateAudit" class="btn btn-success" type="button">返佣审核</button>
+                    </div>
+                    {#/if}
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <input type="hidden" id="rebateId" value="{$T.data.rebateId}" />
+                    <label class="col-sm-4 control-label">返佣类型: </label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static">
+                        <#list AgentRebateTypeEnum?values as e>
+                            {#if $T.data.rebateType == ${e.value}}${e.text}{#/if}
+                        </#list>
+                        </p>
+                    </div>
+                    <label class="col-sm-4 control-label">返佣金额: </label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static" id="rebatePriceDetail">
+                        {Fen2Yuan($T.data.rebatePrice)}
+                        </p>
+                    </div>
+                    <label class="col-sm-4 control-label">实际返佣金额: </label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static">{Fen2Yuan($T.data.actualRebatePrice)}</p>
+                    </div>
+                    <label class="col-sm-4 control-label">审核状态: </label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static">
+                        <#list AgentRebateAuditStatusEnum?values as e>
+                            {#if $T.data.rebateStatus == ${e.value}}${e.text}{#/if}
+                        </#list>
+                        </p>
+                    </div>
+                    <label class="col-sm-4 control-label">备注: </label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static">{$T.data.rebateRemark}</p>
+                    </div>
+                     <label class="col-sm-4 control-label">创建时间: </label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static">
+                            {#if $T.data.rebateCreateTime!=null}{new Date($T.data.rebateCreateTime).Format('yyyy-MM-dd hh:mm:ss')}{#else}--{#/if}
+                        </p>
+                    </div>
+                    <label class="col-sm-4 control-label">审核时间: </label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static">
+                            {#if $T.data.rebateUpdateTime!=null}{new Date($T.data.rebateUpdateTime).Format('yyyy-MM-dd hh:mm:ss')}{#else}--{#/if}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </form>
 </textarea>
+<#-- 返佣审核 -->
+<div class="modal inmodal" id="modalRebateAuditModify" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" style="width: 600px;">
+        <form id="userRebateAuditUpdateForm" method="post" class="form-horizontal">
+            <div class="modal-content animated fadeIn" >
+                <div class="modal-header" style="height: 20px;">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                            class="sr-only">Close</span></button>
+                    <h4 class="modal-title" style="font-size: 22px;">返佣审核</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; width: 20%">订单金额</label>
+                        <div class="col-sm-6">
+                            <p class="form-control-static" id="rebateAuditAmount"></p>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; width: 20%">返佣金额</label>
+                        <div class="col-sm-6">
+                            <p class="form-control-static" id="rebateAuditPrice"></p>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; width: 20%">实际返佣金额</label>
+                        <div class="col-sm-6">
+                            <input name="actualRebatePrice" id="actualRebatePrice" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; width: 20%">状态</label>
+                        <div class="col-sm-6">
+                            <select class="form-control" name="rebateAuditStatus" id="rebateAuditStatus">
+                                <option value="">请选择</option>
+                            <#list AgentRebateAuditStatusEnum?values as e>
+                                <#if e.value != 0>
+                                    <option value="${e.value}">${e.text}</option>
+                                </#if>
+                            </#list>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; width:20%">备注</label>
+                        <div class="col-sm-6">
+                            <textarea name="remark" class="form-control" id="rebateRemark" rows="3" cols="40"></textarea>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-1">
+                            <button id="btnRebateAuditCancel" class="btn btn-white" type="button">取消</button>
+                        </div>
+                        <div class="col-sm-4 col-sm-offset-1">
+                            <button id="btnRebateAuditSave" class="btn btn-success" type="button">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <div class="modal inmodal" id="modalUserStatusModify" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" style="width: 300px;">

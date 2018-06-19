@@ -256,7 +256,17 @@
             </td>
             <td>
             <#list UserOrderStatusEnum?values as e>
-                {#if $T.user.status == ${e.value}}${e.text}{#/if}
+                {#if $T.user.status == ${e.value}}
+                    {#if $T.user.status ==  -1}
+                        <span style="color: red">${e.text}</span>
+                    {#elseif $T.user.status == 0}
+                        <span style="color: blue">${e.text}</span>
+                    {#elseif $T.user.status == 1}
+                        <span style="color: sandybrown">${e.text}</span>
+                    {#elseif $T.user.status == 2}
+                        <span style="color: green">${e.text}</span>
+                    {#/if}
+                {#/if}
             </#list>
             </td>
             <td>{#if $T.user.createTime!=null}{new Date($T.user.createTime).Format('yyyy-MM-dd hh:mm:ss')}{#else}--{#/if}</td>

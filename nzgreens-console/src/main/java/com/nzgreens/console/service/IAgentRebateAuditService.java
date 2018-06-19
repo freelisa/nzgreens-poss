@@ -15,5 +15,5 @@ public interface IAgentRebateAuditService {
 
     AgentRebateAuditModel selectAgentRebateAuditDetail(Long id) throws Exception;
 
-    void updateAgentRebateAuditStatus(Long id,Integer status,String amount) throws Exception;
+    void updateAgentRebateAuditStatus(Long id,Integer status,String amount,String remark) throws Exception;
 }

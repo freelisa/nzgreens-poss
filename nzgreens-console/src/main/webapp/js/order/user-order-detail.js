@@ -13,12 +13,20 @@ $(document).ready(function () {
         saveCertUpload();
     });
 
+    $("#btnRebateAuditSave").on("click",function () {
+        rebateAuditUpdate();
+    });
+
     $("#btnStatusCancel").on("click", function () {
         $("#modalUserStatusModify").modal("hide");
     });
 
     $("#btnCertCancel").on("click", function () {
         $("#modalUserCertModify").modal("hide");
+    });
+
+    $("#btnRebateAuditCancel").on("click", function () {
+        $("#modalRebateAuditModify").modal("hide");
     });
 
     $(document).on("click",".btnUserCertDel",function () {
@@ -50,6 +58,12 @@ function searchUserDetail(orderId) {
 
         $("#btnUploadCert").on("click",function(){
             $("#modalUserCertModify").modal();
+        });
+
+        $("#btnRebateAudit").on("click",function(){
+            $("#rebateAuditAmount").html($("#userOrderAmount").html());
+            $("#rebateAuditPrice").html($("#rebatePriceDetail").html());
+            $("#modalRebateAuditModify").modal();
         });
 
         $("#status").val(result.data.status);
@@ -142,6 +156,24 @@ function delUserCert(id) {
                 swal({title: "", text: result.errorInfo, type: 'error'});
             }
         });
+    });
+}
+
+//返佣审核
+function rebateAuditUpdate() {
+    var params = {
+        "id": $("#rebateId").val(),
+        "status": $("#rebateAuditStatus").val(),
+        "amount": $("#actualRebatePrice").val(),
+        "remark": $("#rebateRemark").val()
+    }
+    post(_rootPath + "agent/rebate/audit/update", params, function (result) {
+        if (result.success == true) {
+            swal({title: "提示", text: "保存成功", type: 'success'}, function () {
+                $("#modalRebateAuditModify").modal("hide");
+                location.reload();
+            });
+        }
     });
 }
 

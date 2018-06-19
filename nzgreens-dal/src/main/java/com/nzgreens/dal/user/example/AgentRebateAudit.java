@@ -12,11 +12,15 @@ public class AgentRebateAudit implements Serializable {
 
     private Byte type;
 
+    private Long amount;
+
     private Long rebatePrice;
 
     private Long actualRebatePrice;
 
     private Byte status;
+
+    private String remark;
 
     private Date createTime;
 
@@ -56,6 +60,14 @@ public class AgentRebateAudit implements Serializable {
         this.type = type;
     }
 
+    public Long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Long amount) {
+        this.amount = amount;
+    }
+
     public Long getRebatePrice() {
         return rebatePrice;
     }
@@ -78,6 +90,14 @@ public class AgentRebateAudit implements Serializable {
 
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public Date getCreateTime() {

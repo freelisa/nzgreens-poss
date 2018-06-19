@@ -54,8 +54,8 @@ public class AgentRebateAuditController extends BaseController{
     @RequestMapping("update")
     @ResponseBody
     @Auth("AGENT_REBATE_AUDIT_UPDATE")
-    public ResultModel updateStatus(Long id,Integer status,String amount) throws Exception{
-        agentRebateAuditService.updateAgentRebateAuditStatus(id,status,amount);
+    public ResultModel updateStatus(Long id,Integer status,String amount,String remark) throws Exception{
+        agentRebateAuditService.updateAgentRebateAuditStatus(id,status,amount,remark);
         return new ResultModel();
     }
 }

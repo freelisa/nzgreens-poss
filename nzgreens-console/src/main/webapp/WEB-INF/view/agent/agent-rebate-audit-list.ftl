@@ -92,6 +92,7 @@
                                     <th>代理用户账号</th>
                                     <th>订单号</th>
                                     <th>返佣类型</th>
+                                    <th>订单金额</th>
                                     <th>返佣金额</th>
                                     <th>实际返佣金额</th>
                                     <th>审核状态</th>
@@ -189,6 +190,13 @@
             </div>
         </div>
         <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" style="text-align: left; width:20%">备注</label>
+            <div class="col-sm-6">
+                <textarea name="remark" class="form-control" id="updateRemark" rows="3" cols="40"></textarea>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
     </form>
 </textarea>
 
@@ -205,6 +213,7 @@
                     {#if $T.agent.type == ${e.value}}${e.text}{#/if}
                 </#list>
             </td>
+            <td>{Fen2Yuan($T.agent.amount)}</td>
             <td>{Fen2Yuan($T.agent.rebatePrice)}</td>
             <td>{Fen2Yuan($T.agent.actualRebatePrice)}</td>
             <td>
@@ -212,6 +221,7 @@
                     {#if $T.agent.status == ${e.value}}${e.text}{#/if}
                 </#list>
             </td>
+            <td>{$T.agent.remark}</td>
             <td>{new Date($T.agent.createTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>{new Date($T.agent.updateTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>

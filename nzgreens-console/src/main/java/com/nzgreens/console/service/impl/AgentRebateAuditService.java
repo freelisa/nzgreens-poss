@@ -49,7 +49,7 @@ public class AgentRebateAuditService extends BaseService implements IAgentRebate
     }
 
     @Override
-    public void updateAgentRebateAuditStatus(Long id, Integer status,String amount) throws Exception {
+    public void updateAgentRebateAuditStatus(Long id, Integer status,String amount,String remark) throws Exception {
         if(id == null){
             thrown(ErrorCodes.ID_ILLEGAL);
         }
@@ -76,6 +76,7 @@ public class AgentRebateAuditService extends BaseService implements IAgentRebate
         AgentRebateAudit audit = new AgentRebateAudit();
         audit.setStatus(status.byteValue());
         audit.setActualRebatePrice(CurrencyUtil.convertYuanToFen(s.toString()));
+        audit.setRemark(remark);
         if(agentRebateAuditMapper.updateByExampleSelective(audit,example) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
         }

@@ -68,7 +68,7 @@
 
         <!--<table schema="" tableName="users" domainObjectName="Users"/>-->
 
-        <table schema="" tableName="withdraw_record" domainObjectName="WithdrawRecord"/>
-        <table schema="" tableName="charge_record" domainObjectName="ChargeRecord"/>
+        <!--<table schema="" tableName="withdraw_record" domainObjectName="WithdrawRecord"/>-->
+        <table schema="" tableName="agent_rebate_audit" domainObjectName="AgentRebateAudit"/>
    </context>
 </generatorConfiguration>
