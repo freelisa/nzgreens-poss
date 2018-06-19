@@ -144,6 +144,8 @@
                                     <th>商品总价格</th>
                                     <th>订单运费</th>
                                     <th>订单总金额</th>
+                                    <th>返佣金额</th>
+                                    <th>实际返佣金额</th>
                                     <th>订单类型</th>
                                     <th>订单状态</th>
                                     <th>创建时间</th>
@@ -249,6 +251,8 @@
             <td>{Fen2Yuan($T.user.productPrice)}</td>
             <td>{Fen2Yuan($T.user.freight)}</td>
             <td>{Fen2Yuan($T.user.price)}</td>
+            <td>{Fen2Yuan($T.user.rebatePrice)}</td>
+            <td>{Fen2Yuan($T.user.actualRebatePrice)}</td>
             <td>
             <#list UserOrderTypeEnum?values as e>
                 {#if $T.user.type == ${e.value}}${e.text}{#/if}

@@ -19,12 +19,13 @@
         o.`status`,
         o.create_time createTime,
         o.update_time updateTime,
-        o.logistics_number logisticsNumber
+        o.logistics_number logisticsNumber,
+        a.rebate_price rebatePrice,a.actual_rebate_price actualRebatePrice
         FROM
-        user_order o,
-        users u
-        WHERE
-        o.user_id = u.id
+        user_order o
+        inner join
+        users u on o.user_id = u.id
+        left join agent_rebate_audit a on o.id=a.user_order_id and o.user_id=a.agent_user_id
         <if test="userId != null">
             and o.user_id = #{userId}
         </if>
