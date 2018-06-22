@@ -26,6 +26,7 @@
         inner join
         users u on o.user_id = u.id
         left join agent_rebate_audit a on o.id=a.user_order_id and o.user_id=a.agent_user_id
+        where 1=1
         <if test="userId != null">
             and o.user_id = #{userId}
         </if>
