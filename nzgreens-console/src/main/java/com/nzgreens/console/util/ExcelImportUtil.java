@@ -60,13 +60,23 @@ public class ExcelImportUtil {
                 if(row==null){
                     continue;
                 }
-                if(row.getCell(0)==null || row.getCell(1)==null || StringUtils.isBlank(row.getCell(1).getStringCellValue())){
+                if(row.getCell(0)==null || row.getCell(1)==null){
                     continue;
                 }
                 ProductsModel productsModel = new ProductsModel();
-                productsModel.setGelinProductId(Long.valueOf(row.getCell(0).getStringCellValue()));
-                productsModel.setSellingPrice(row.getCell(1).getStringCellValue());
-                list.add(productsModel);
+                try {
+                    productsModel.setGelinProductId((long) row.getCell(0).getNumericCellValue());
+                } catch (Exception e) {
+                    productsModel.setGelinProductId(Long.valueOf(row.getCell(0).getStringCellValue()));
+                }
+                try {
+                    productsModel.setSellingPrice(row.getCell(1).getStringCellValue());
+                } catch (Exception e) {
+                    productsModel.setSellingPrice(String.valueOf(row.getCell(1).getNumericCellValue()));
+                }
+                if(productsModel.getGelinProductId() != 0 && StringUtils.isNotBlank(productsModel.getSellingPrice())){
+                    list.add(productsModel);
+                }
             }
         }
         work.close();

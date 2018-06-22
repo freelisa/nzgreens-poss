@@ -27,6 +27,7 @@
 
 	<beans profile="default">
 		<context:property-placeholder location="classpath:settings/settings-dev.xml" ignore-resource-not-found="false"/>
+		<!--<context:property-placeholder location="classpath:settings/settings-dev.xml" ignore-resource-not-found="false"/>-->
 	</beans>
 
 	<beans profile="test">
