@@ -96,6 +96,6 @@
     </update>
 
     <delete id="deleteProductCrawlBatch">
-        delete from products_crawl where id in (select c.id from products p,products_crawl c where p.id=c.product_id and p.is_valid=0)
+        delete from products_crawl where id in (select * from (select c.id from products p,products_crawl c where p.id=c.product_id and p.is_valid=0) s)
     </delete>
 </mapper>
