@@ -354,14 +354,14 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
 
 
                 logger.info("-----------------------链接：{}", linkHref);
-                logger.info("-----------------------标题：{}", productTitle);
-                logger.info("-----------------------品牌：{}", brandLink);
-                logger.info("-----------------------品牌：{}", brandHtml);
-                logger.info("-----------------------积分：{}", point);
-                logger.info("-----------------------列表内图片：{}", iconImg.attr("src"));
-                logger.info("-----------------------详情内图片：{}", imageSrc);
-                logger.info("-----------------------重量：{}", weight);
-                logger.info("-----------------------市场价：{}", priceOld);
+//                logger.info("-----------------------标题：{}", productTitle);
+//                logger.info("-----------------------品牌：{}", brandLink);
+//                logger.info("-----------------------品牌：{}", brandHtml);
+//                logger.info("-----------------------积分：{}", point);
+//                logger.info("-----------------------列表内图片：{}", iconImg.attr("src"));
+//                logger.info("-----------------------详情内图片：{}", imageSrc);
+//                logger.info("-----------------------重量：{}", weight);
+//                logger.info("-----------------------市场价：{}", priceOld);
             }
         }
     }
