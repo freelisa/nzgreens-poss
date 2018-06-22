@@ -33,4 +33,10 @@ public interface SubProductsMapper {
      * @throws Exception
      */
     void updateProductPriceBatch(List<ProductsModel> list) throws Exception;
+
+    /**
+     * 删除待审核对应的抓取表数据
+     * @throws Exception
+     */
+    void deleteProductCrawlBatch() throws Exception;
 }

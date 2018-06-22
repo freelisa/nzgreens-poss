@@ -94,4 +94,8 @@
             update products set selling_price=#{item.sellingPrice} where gelin_product_id=#{item.gelinProductId}
         </foreach>
     </update>
+
+    <delete id="deleteProductCrawlBatch">
+        delete from products_crawl where id in (select c.id from products p,products_crawl c where p.id=c.product_id and p.is_valid=0)
+    </delete>
 </mapper>

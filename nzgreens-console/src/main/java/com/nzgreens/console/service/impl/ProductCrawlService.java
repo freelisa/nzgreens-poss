@@ -222,7 +222,7 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
                 if (StringUtils.isNotBlank(imageSrc)) {
                     //image/product/大分类ID/小分类ID/产品ID/图片名称
                     String suff = imageSrc.substring(imageSrc.lastIndexOf("."));
-                    imageName = map.get("product_id") + "_" + System.currentTimeMillis() + suff;
+                    imageName = map.get("product_id") + "_0_1" + suff;
                     downloadImgMain = download(imageSrc, imageProductIconPath, imageName);
                 }
                 //type=1全部分类，2=品牌
@@ -279,7 +279,7 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
                         String src = detailImg.attr("src");
                         if (StringUtils.isNotBlank(src)) {
                             String suff = src.substring(src.lastIndexOf("."));
-                            String downloadImg = download(src, detailImagePath, map.get("product_id") +  "_" + detailIndex + suff);
+                            String downloadImg = download(src, detailImagePath, map.get("product_id") +  "_1_" + detailIndex + suff);
                             if(StringUtils.isNotEmpty(downloadImg)){
                                 buff.append(downloadImg);
                                 if (detailImgIter.hasNext()) {
