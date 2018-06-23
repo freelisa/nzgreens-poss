@@ -23,9 +23,15 @@
                         <div class="form-group">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">代理用户账号：</label>
+                                    <label class="col-sm-4 control-label">充值发起账号：</label>
                                     <div class="col-sm-6">
                                         <input type="text" name="mobile" class="form-control" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">充值到账账号：</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" name="userMobile" class="form-control" placeholder="">
                                     </div>
                                 </div>
                             </div>
@@ -49,10 +55,9 @@
                             <thead>
                                 <tr>
                                     <th>序号</th>
-                                    <th>代理ID</th>
-                                    <th>代理用户账号</th>
+                                    <th>发起账号</th>
                                     <th>昵称</th>
-                                    <th>充值用户ID</th>
+                                    <th>充值账号</th>
                                     <th>充值金额</th>
                                     <th>备注</th>
                                     <th>创建时间</th>
@@ -78,10 +83,9 @@
         {#foreach $T.data.list as t}
         <tr>
             <td>{$T.t.id}</td>
-            <td>{$T.t.userAgentId}</td>
             <td>{$T.t.mobile}</td>
             <td>{$T.t.nickName}</td>
-            <td>{$T.t.userId}</td>
+            <td>{$T.t.userMobile}</td>
             <td>{Fen2Yuan($T.t.amount)}</td>
             <td>{$T.t.remark}</td>
             <td>{new Date($T.t.createTime).Format('yyyy-MM-dd hh:mm:ss')}</td>

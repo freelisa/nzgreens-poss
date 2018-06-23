@@ -136,19 +136,23 @@ public class SettingProductTask extends AbstractScheduleTask {
 							productsCrawlMapper.updateByPrimaryKeySelective(crawl);
 						}else{
 							Products proModel = products.get(0);
-							StringBuilder buff = new StringBuilder();
-							if(StringUtils.isNotEmpty(crawl.getDetail())){
-								String[] imgs = crawl.getDetail().split(",");
-								buff.append("<div>");
-								for(int j = 0,len = imgs.length;j < len;j++){
-									//域名+图片地址+图片名称
-									buff.append("<p><img src=\"").append(imagePath + detailImagePath + "/" + imgs[j]).append("\" /></p>");
+							proModel.setTitle(crawl.getTitle());
+							//无效更新detail,image
+							if (Integer.valueOf(0).equals(proModel.getIsValid())) {
+								StringBuilder buff = new StringBuilder();
+								if(StringUtils.isNotEmpty(crawl.getDetail())){
+									String[] imgs = crawl.getDetail().split(",");
+									buff.append("<div>");
+									for(int j = 0,len = imgs.length;j < len;j++){
+										//域名+图片地址+图片名称
+										buff.append("<p><img src=\"").append(imagePath + detailImagePath + "/" + imgs[j]).append("\" /></p>");
+									}
+									buff.append("</div>");
 								}
-								buff.append("</div>");
-							}
-							proModel.setDetail(buff.toString());
-							if(StringUtils.isNotBlank(crawl.getImage())){
-								proModel.setImage(crawl.getImage());
+								proModel.setDetail(buff.toString());
+								if(StringUtils.isNotBlank(crawl.getImage())){
+									proModel.setImage(crawl.getImage());
+								}
 							}
 							productsMapper.updateByPrimaryKeySelective(proModel);
 

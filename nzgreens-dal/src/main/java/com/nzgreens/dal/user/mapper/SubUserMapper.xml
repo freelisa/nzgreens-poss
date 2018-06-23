@@ -90,14 +90,17 @@
         r.create_time createTime,
         u.telephone mobile,
         u.nickname,
-        r.remark
+        r.remark,
+        chargedUsers.telephone userMobile
         FROM
-        charge_record r,
-        users u
-        WHERE
-        r.user_agent_id = u.id
+        charge_record r
+        INNER JOIN users chargedUsers ON chargedUsers.id = r.user_id
+        <if test="userMobile != null and userMobile != ''">
+            AND chargedUsers.telephone like '%${userMobile}%'
+        </if>
+        INNER JOIN users u ON  r.user_agent_id = u.id
         <if test="mobile != null and mobile != ''">
-            and u.telephone like '%${mobile}%'
+            AND u.telephone like '%${mobile}%'
         </if>
         order by r.id desc
     </select>

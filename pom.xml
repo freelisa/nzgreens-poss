@@ -16,6 +16,8 @@
     <properties>
         <!-- 编译参数 -->
         <jdk.version>1.8</jdk.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <encoding>UTF-8</encoding>
         <plugin.compiler.version>3.1</plugin.compiler.version>
         <plugin.resources.version>2.6</plugin.resources.version>

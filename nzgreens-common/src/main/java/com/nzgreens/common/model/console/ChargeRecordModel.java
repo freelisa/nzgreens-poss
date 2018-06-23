@@ -14,6 +14,8 @@ public class ChargeRecordModel implements Serializable {
 
     private Long userId;
 
+    private Long userMobile;
+
     private Long amount;
 
     private String remark;
@@ -94,5 +96,13 @@ public class ChargeRecordModel implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Long getUserMobile() {
+        return userMobile;
+    }
+
+    public void setUserMobile(Long userMobile) {
+        this.userMobile = userMobile;
     }
 }
