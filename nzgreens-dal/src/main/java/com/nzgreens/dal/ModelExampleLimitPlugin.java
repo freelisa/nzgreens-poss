@@ -18,7 +18,7 @@ public class ModelExampleLimitPlugin extends PluginAdapter {
 	public boolean modelExampleClassGenerated(TopLevelClass topLevelClass,
 											  IntrospectedTable introspectedTable) {
 		FullyQualifiedJavaType limitType = new FullyQualifiedJavaType(
-				"Limit");
+				"com.nzgreens.dal.Limit");
 		topLevelClass.addImportedType(limitType);
 
 		Field field = new Field();
