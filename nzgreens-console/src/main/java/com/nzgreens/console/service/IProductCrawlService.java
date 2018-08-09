@@ -8,8 +8,10 @@ import com.nzgreens.dal.user.example.ProductCategory;
 import com.nzgreens.dal.user.example.Products;
 import com.nzgreens.dal.user.example.ProductsCrawl;
 import org.jsoup.Connection;
+import org.jsoup.nodes.Element;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -33,4 +35,7 @@ public interface IProductCrawlService {
      * @throws Exception
      */
     void saveProductCrawl(Connection con2, String href, String cateHtml, String cateName, String categoryId, int type) throws Exception;
+
+
+    void saveProductCrawl(Connection con2, Iterator<Element> productHtml, String menu) throws Exception;
 }

@@ -1,6 +1,7 @@
 package com.nzgreens.console.task;
 
 import com.nzgreens.console.service.IProductCrawlService;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -36,7 +37,7 @@ public class CrawlNewsProductTask extends AbstractScheduleTask {
     private String detailImagePath;
 
 
-    @Scheduled(cron = "${CrawlProductTask.cron:0 0 3 * * ?}")
+    @Scheduled(cron = "${CrawlProductTask.cron:0 0 2 * * ?}")
     public void handle() {
         doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
             @Override
@@ -70,6 +71,27 @@ public class CrawlNewsProductTask extends AbstractScheduleTask {
                     while (iter.hasNext()) {
                         Element e = iter.next();
                         Elements linkTops = e.select("div.bigdiv .linkoftopitem");
+                        Elements products = e.select("div.bigdiv .supermenu-left .withimage");
+                        String[] menuHrefs = lis.select("a.tll").attr("href").split("\\?");
+                        String menuHref = lis.select("a.tll").attr("href");
+                        if (!"#".equals(menuHref) && StringUtils.isNotBlank(menuHref)) {
+                            try {
+                                String menuPath = "http://gelin.nz" + menuHrefs[1];
+                                logger.info("load menu nav products {}", menuPath);
+                                productCrawlService.saveProductCrawl(con2, menuPath, "", "", "", 1);
+                            } catch (Exception e1) {
+
+                            }
+                        }
+
+                        if (products != null) {
+                            try {
+                                productCrawlService.saveProductCrawl(con2, products.iterator(), lis.select("a.tll").html());
+                            } catch (Exception e1) {
+                                logger.error("load menu product error");
+                            }
+                        }
+
                         Iterator<Element> linktopIter = linkTops.iterator();
                         while (linktopIter.hasNext()) {
                             Element linkTop = linktopIter.next();
@@ -87,5 +109,9 @@ public class CrawlNewsProductTask extends AbstractScheduleTask {
                 }
             }
         });
+    }
+
+    public static void main(String[] args) {
+        System.out.println("/index.php?route=product/allproduct".split("\\?")[1]);
     }
 }

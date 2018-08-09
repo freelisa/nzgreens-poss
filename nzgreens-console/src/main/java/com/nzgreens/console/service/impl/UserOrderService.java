@@ -162,6 +162,8 @@ public class UserOrderService extends BaseService implements IUserOrderService {
             orderNum += 1;
 
             model.setId(userOrder.getId());
+            model.setOrderPrice(new BigDecimal(userOrder.getPrice()).divide(new BigDecimal(100))
+                    .setScale(2).doubleValue());
             model.setMobile(userOrder.getMobile());
             model.setOrderContent(builder.toString());
             list.add(model);
@@ -245,7 +247,14 @@ public class UserOrderService extends BaseService implements IUserOrderService {
             if(oldUserOrder.getType() != UserOrderTypeEnum._SYSTEM.getValue()){
                 thrown(ErrorCodes.ORDER_TYPE_ILLEGAL);
             }
-            if(oldUserOrder.getStatus() == UserOrderStatusEnum._PENDING.getValue()){
+            if (oldUserOrder.getStatus() == UserOrderStatusEnum._PROCESSED.getValue()) {
+                UserOrder userOrder = new UserOrder();
+                userOrder.setId(oldUserOrder.getId());
+                userOrder.setStatus((byte) UserOrderStatusEnum._DONE.getValue());
+                if(userOrderMapper.updateByPrimaryKeySelective(userOrder) < 1){
+                    thrown(ErrorCodes.UPDATE_ERROR);
+                }
+            } else if(oldUserOrder.getStatus() == UserOrderStatusEnum._PENDING.getValue()){
                 UserOrder userOrder = new UserOrder();
                 userOrder.setId(oldUserOrder.getId());
                 userOrder.setStatus((byte) UserOrderStatusEnum._DONE.getValue());
@@ -279,10 +288,15 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         if(order.getType() != UserOrderTypeEnum._SYSTEM.getValue()){
             thrown(ErrorCodes.ORDER_TYPE_ILLEGAL);
         }
-        if(order.getStatus() == UserOrderStatusEnum._PROCESSED.getValue()
-                || order.getStatus() == UserOrderStatusEnum._REFUSED.getValue()
+        if(order.getStatus() == UserOrderStatusEnum._REFUSED.getValue()
                 || order.getStatus() == UserOrderStatusEnum._DONE.getValue()){
             thrown(ErrorCodes.ORDER_STATUS_ILLEGAL);
+        }
+        //已处理->上传凭证，直接修改user_order状态
+        if (order.getStatus() == UserOrderStatusEnum._PROCESSED.getValue()
+                && status == UserOrderStatusEnum._DONE.getValue()) {
+            updateUserOrder(order,status);
+            return;
         }
         //修改用户订单状态
         updateUserOrder(order,status);

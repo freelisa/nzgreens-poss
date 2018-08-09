@@ -8,6 +8,8 @@ package com.nzgreens.common.model.console;
 public class UserOrderExportModel {
     private Long id;
 
+    private Double orderPrice;
+
     private String mobile;
 
     private String orderContent;
@@ -18,6 +20,14 @@ public class UserOrderExportModel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Double getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(Double orderPrice) {
+        this.orderPrice = orderPrice;
     }
 
     public String getMobile() {

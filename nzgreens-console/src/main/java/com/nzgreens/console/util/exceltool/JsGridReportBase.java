@@ -218,7 +218,7 @@ public class JsGridReportBase {
 
 		HSSFSheet sheet = wb.createSheet(title);// 在Excel工作簿中建一工作表
 		sheet.setDisplayGridlines(false);// 设置表标题是否有表格边框
-
+		sheet.setColumnWidth(0, 20 * 256);
 		//创建标题
 		HSSFRow row = sheet.createRow(0);// 创建新行
 		HSSFCell cell = row.createCell(0);// 创建新列
@@ -331,6 +331,7 @@ public class JsGridReportBase {
 		// 设置前两列根据数据自动列宽
 		for (int c = 0; c < headerMetaData.getColumns().size(); c++) {
 			sheet.autoSizeColumn((short) c);
+			sheet.setColumnWidth(c, (c + 1)*2560);
 //			String t = headerMetaData.getColumns().get(c).getDisplay();
 //			//if(sheet.getColumnWidth(c)<t.length()*256*3)
 //				sheet.setColumnWidth(c, t.length()*256*3);
