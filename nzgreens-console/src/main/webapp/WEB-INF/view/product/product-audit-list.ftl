@@ -88,11 +88,14 @@
                                 </div>
                             </div>-->
                         </div>
+                        <input type="hidden" id="startProductId" name="startProductId">
+                        <input type="hidden" id="endProductId" name="endProductId" >
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
                                 <button id="btnSearch" class="btn btn-primary" type="button">搜索</button>
                                 <button id="btnCancel" class="btn btn-white" type="button">取消</button>
+                                <button id="btnAdd" class="btn btn-primary" type="button">抓取格林商品</button>
                             </div>
                         </div>
                     </form>
@@ -285,6 +288,38 @@
         <div class="hr-line-dashed"></div>
     </form>
 </textarea>
+<#-- 导出时输入订单号 -->
+    <div class="modal inmodal" id="addProduct" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" style="width: 500px;">
+            <form id="addProductForm" method="post" class="form-horizontal">
+                <div class="modal-content animated fadeIn" >
+                    <div class="modal-header" style="height: 20px;">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                                class="sr-only">Close</span></button>
+                        <h4 class="modal-title" style="font-size: 22px;">格林商品ID</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <input type="number" id="left" class="form-control" placeholder="开始ID">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="number" id="right" class="form-control" placeholder="结束ID">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-1">
+                                <button id="addProductCancel" class="btn btn-white" type="button">取消</button>
+                            </div>
+                            <div class="col-sm-4 col-sm-offset-1">
+                                <button id="addProductSave" class="btn btn-success" type="button">抓取</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
 <textarea id="appConTr-template" style="display: none;">
     {#if $T.data.total>0}

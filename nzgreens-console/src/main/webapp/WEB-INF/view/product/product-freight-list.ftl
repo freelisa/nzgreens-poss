@@ -40,6 +40,7 @@
                                     <th>序号</th>
                                     <th>商品重量</th>
                                     <th>运费</th>
+                                    <th>不足重量运费</th>
                                     <th>创建时间</th>
                                     <th>修改时间</th>
                                     <th>操作</th>
@@ -81,6 +82,13 @@
                         <label class="col-sm-4 control-label" style="text-align: left; width: 20%">运费</label>
                         <div class="col-sm-6">
                             <input name="freight" class="form-control" id="addFreight">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; width: 20%">不足重量运费</label>
+                        <div class="col-sm-6">
+                            <input name="minFreight" class="form-control" id="addMinFreight">
                         </div>
                     </div>
                 </form>
@@ -135,6 +143,13 @@
             </div>
         </div>
         <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" style="text-align: left; width: 20%">不足商品运费</label>
+            <div class="col-sm-6">
+                <input type="number" name="minFreight" class="form-control" id="updateMinFreight" value="{Fen2Yuan($T.data.minFreight)}" placeholder="{Fen2Yuan($T.data.minFreight)}">
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
     </form>
 </textarea>
 
@@ -145,6 +160,7 @@
             <td>{$T.agent.id}</td>
             <td>{$T.agent.productWeight}</td>
             <td>{Fen2Yuan($T.agent.freight)}</td>
+            <td>{Fen2Yuan($T.agent.minFreight)}</td>
             <td>{new Date($T.agent.createTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>{new Date($T.agent.updateTime).Format('yyyy-MM-dd hh:mm:ss')}</td>
             <td>

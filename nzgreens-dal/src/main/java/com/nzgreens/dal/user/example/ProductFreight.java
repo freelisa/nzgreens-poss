@@ -10,6 +10,8 @@ public class ProductFreight implements Serializable {
 
     private Long freight;
 
+    private Long minFreight;
+
     private Date createTime;
 
     private Date updateTime;
@@ -38,6 +40,14 @@ public class ProductFreight implements Serializable {
 
     public void setFreight(Long freight) {
         this.freight = freight;
+    }
+
+    public Long getMinFreight() {
+        return minFreight;
+    }
+
+    public void setMinFreight(Long minFreight) {
+        this.minFreight = minFreight;
     }
 
     public Date getCreateTime() {

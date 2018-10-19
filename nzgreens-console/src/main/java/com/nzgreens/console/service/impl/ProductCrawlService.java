@@ -116,7 +116,7 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
     }
 
     @Override
-    public void saveProductCrawl(Connection con2, String href, String cateHtml, String cateName, String categoryId, int type) throws Exception {
+    public void saveProductCrawl(Connection con2, String href) throws Exception {
         //获取小分类
         Document temp = null;
         try {
@@ -132,12 +132,20 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
             String lastHref = lastLi.attr("href");
             page = Integer.valueOf(lastHref.substring(lastHref.lastIndexOf("=") + 1));
         }
-        logger.info("concurrent menu {},concurrent total page {}",temp.select("#content h2").text(),page);
-        for (int i = page; i > 0; i--) {
-            loadProductByPage(con2, href, i, cateHtml, cateName, categoryId, type);
-        }
+        logger.info("concurrent menu {},concurrent total page {}",temp.select("#content h2").html(),page);
+/*        for (int i = page; i > 0; i--) {
+            try {
+                loadProductByPage(con2, href, i);
+            } catch (Exception e) {
+                logger.error("page load error : "+i);
+            }
+        }*/
         for (int i = 1; i <= page; i++) {
-            loadProductByPage(con2, href, i, cateHtml, cateName, categoryId, type);
+            try {
+                loadProductByPage(con2, href, i);
+            } catch (Exception e) {
+                logger.error("page load error : "+i);
+            }
         }
 
     }
@@ -150,24 +158,26 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
         while (productHtml.hasNext()) {
             Element next = productHtml.next();
             try {
-                loadProduct(next, con2, "", "" ,"",1);
+                loadProduct(next, con2);
             } catch (Exception e) {
                 logger.error("load menu product error ,scan to next. "+ menu, e);
             }
         }
     }
 
-    private void loadProductByPage (Connection con2,String href,int i,String cateHtml,String cateName, String categoryId,int type) {
+    private void loadProductByPage (Connection con2,String href,int page) {
         Document productList = null;
         try {
-            productList = con2.url(href + "&page=" + i).get();
-        } catch (IOException e1) {}
+            productList = con2.url(href + "&page=" + page).get();
+        } catch (IOException e1) {
+        }
         if(productList == null){
             return;
         }
         Elements productEle = productList.select(".product-thumb");
         try {
-            logger.info("concurrent page info {}",productList.select(".col-sm-6 .text-right").text());
+            logger.info("concurrent page title {}",productList.select("#content h2").html());
+            logger.info("concurrent page info {}",productList.select("div.col-sm-6 .text-right").html());
         } catch (Exception e) {
 
         }
@@ -175,30 +185,34 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
         while (productIter.hasNext()) {
             Element product = productIter.next();
             try {
-                loadProduct(product, con2, cateHtml, cateName, categoryId, type);
+                loadProduct(product, con2);
             } catch (Exception e) {
                 logger.error("load product error, scan to next. "+JSON.toJSONString(product), e);
             }
         }
     }
 
-    private void loadProduct (Element productIter,Connection con2,String cateHtml,String cateName, String categoryId,int type) {
+    @Override
+    public void loadProduct (Element productIter,Connection con2) {
         Element next = productIter;
         Elements link = next.select(".image a");
+        loadProductByLink(con2,link.attr("href"));
+        //logger.info("-----------------------链接：{}", linkHref);
+    }
 
-        //列表内icon图片
-        Elements iconImg = next.select(".image img");
-        String iconImgSrc = iconImg.attr("src");
+    private void loadProductByLink(Connection con2,String link) {
         //商品链接
-        String linkHref = link.attr("href");
+        String linkHref = link;
 
         Map<String, String> map = ConvertUrlToMapUtil.URLRequest(linkHref);
 
         //进入商品详情
         Document productDetail = null;
         try {
-            productDetail = con2.url(linkHref).get();
-        } catch (IOException e1) {}
+            productDetail = con2.url(linkHref).userAgent("Mozilla").get();
+        } catch (IOException e1) {
+            logger.error("load product detail error："+linkHref,e1);
+        }
         if(productDetail == null){
             return;
         }
@@ -209,35 +223,29 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
         String productTitle = productDesc.select("h4 b").first().html();
 
         //品牌
-        Element brand = productDesc.select("ul.product-detail").first();
-        //获取库存
-        String[] bradHtml = new String[0];
-        try {
-            bradHtml = brand.html().replaceAll("<!--|-->","").split("\n");
-        } catch (Exception e1) {
-
-        }
+        Elements detailClasify = productDesc.select("ul.product-detail li");
+        Iterator<Element> iterator = detailClasify.iterator();
+        String brandHtml = null;
+        String brandId = null;
         //TODO 新增库存
         Integer stock = 0;
-        if (bradHtml != null && bradHtml.length > 0) {
-            for (String s : bradHtml) {
-                if (StringUtils.isNotBlank(s) && s.contains("库 存")) {
-                    Pattern p = Pattern.compile("[^0-9]");
-                    try {
-                        Matcher m = p.matcher(s);
-                        stock = Integer.valueOf(m.replaceAll("").trim());
-                    } catch (NumberFormatException e1) {
-
-                    }
-
+        while (iterator.hasNext()) {
+            Element element = iterator.next();
+            String content = element.html();
+            if (StringUtils.isNoneBlank(content) && content.contains("品  牌")) {
+                String brandHref = element.select("a").first().attr("herf");
+                brandId = brandHref.substring(brandHref.lastIndexOf("=")+1);
+                brandHtml = element.select("a").first().html();
+            } else if (StringUtils.isNoneBlank(content) && content.contains("库 存")) {
+                Pattern p = Pattern.compile("[^0-9]");
+                try {
+                    Matcher m = p.matcher(content);
+                    stock = Integer.valueOf(m.replaceAll("").trim());
+                } catch (NumberFormatException e1) {
+                    stock = 80;
                 }
             }
         }
-        Elements brandA = brand.select("a");
-        String brandLink = brandA.attr("href");
-        String brandHtml = brandA.html();
-        //积分
-        String point = brand.select("span.get-reward-live").html();
 
         //价格
         Element price = productDesc.select("ul.pro-d").first();
@@ -253,9 +261,9 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
         //添加抓取的商品信息
         Elements detailUl = productContent.select("ul.thumbnails");
         //商品图片属性
-        Elements image = detailUl.select("img");
+        Elements image = detailUl.select("a.thumbnail");
         //商品图片路径
-        String imageSrc = image.attr("src");
+        String imageSrc = image.attr("href");
         //商品图片名称
         String imageName = "";
         String downloadImgMain = null;
@@ -266,22 +274,38 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
             try {
                 downloadImgMain = download(imageSrc, imageProductIconPath, imageName);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
             }
         }
-        //type=1全部分类，2=品牌
         String categoryParentId = "";
-        String categoryName = cateName;
-        if(type == 1){
-            categoryParentId = map.get("path");
-            if(StringUtils.isNotBlank(categoryParentId)){
-                int index = categoryParentId.indexOf("_");
-                //如果存在下划线，则是有小分类，不存在就是大分类的产品
-                if (index > 0) {
-                    categoryParentId = categoryParentId.substring(index + 1);
-                    categoryName = cateHtml;
+        String categoryId = "";
+        String categoryName = "";
+        Elements categroys = productDetail.select("ul.breadcrumb li");
+        Iterator<Element> cateIterator = categroys.iterator();
+        while (cateIterator.hasNext()) {
+            Element element = cateIterator.next();
+            String href = element.select("a").attr("href");
+            if (href.contains("manufacturer_id")) {
+                String brand = href.substring(href.lastIndexOf("manufacturer_id=")+1);
+                if (StringUtils.isNumeric(brand)) {
+                    logger.info("当前商品按照--品牌--分类");
                 }
             }
+            if (href.contains("path")) {
+                String cate = href.substring(href.lastIndexOf("path=")+1);
+                if (StringUtils.isNumeric(cate)) {
+                    logger.info("当前商品按照--大分类--分类");
+                    categoryParentId = cate;
+                } else {
+                    logger.info("当前商品按照--小分类--分类");
+                    cate = href.substring(href.lastIndexOf("path="+cate+"_")+1);
+                    if (StringUtils.isNumeric(cate)) {
+                        categoryId = cate;
+                    }
+                    categoryName = element.select("a").html();
+                }
+            }
+
         }
 
         //查询产品是否存在，存在修改，不存在新增
@@ -291,9 +315,10 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
         if(CollectionUtils.isEmpty(productsCrawls)){
             ProductsCrawl crawl = new ProductsCrawl();
             crawl.setReptileProductId(map.get("product_id"));
-            crawl.setCategoryId(categoryParentId);
+            crawl.setParentCategoryId(categoryParentId);
+            crawl.setCategoryId(categoryId);
             crawl.setCategoryName(categoryName);
-            crawl.setBrandId(brandLink.substring(brandLink.lastIndexOf("=") + 1));
+            crawl.setBrandId(brandId);
             crawl.setBrandName(brandHtml);
             if(StringUtils.isNotBlank(priceOld)){
                 try {
@@ -320,7 +345,6 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
                 weight = weight.substring(5, weight.length() - 2);
             }
             crawl.setWeight(weight);
-            crawl.setParentCategoryId(categoryId);
             StringBuilder buff = new StringBuilder();
             //产品详细图片描述
             Elements detailImgs = productContent.select("div.item-content .tab-content img");
@@ -351,8 +375,9 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
                 crawl.setImage(downloadImgMain);
             }
             crawl.setStock(80);
+            logger.info("insert=="+JSON.toJSONString(crawl));
             productsCrawlMapper.insertSelective(crawl);
-        }else{
+        } else {
             //修改产品
             ProductsCrawl productsCrawl = productsCrawls.get(0);
             //标题、价格变动了
@@ -410,13 +435,16 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
                         productsPriceChangeMapper.insertSelective(change);
                     }
                     products.setUpdateTime(new Date());
+                    logger.info("update=="+JSON.toJSONString(products));
                     productsMapper.updateByPrimaryKeySelective(products);
                 }
             }
         }
+    }
 
-
-        //logger.info("-----------------------链接：{}", linkHref);
+    @Override
+    public void loadProduct(String productUrl, Connection con2) throws Exception {
+        loadProductByLink(con2, productUrl);
     }
 
 
@@ -436,6 +464,8 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
         if (index == -1) {
             return null;
         }
+        OutputStream os = null;
+        InputStream is = null;
         File targetFile = new File(uploadPath + "/" + savePath);
         try {
             // 创建目标文件
@@ -455,14 +485,14 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
             //设置请求超时为5s
             con.setConnectTimeout(10 * 1000);
             // 输入流
-            InputStream is = con.getInputStream();
+            is = con.getInputStream();
 
             // 1K的数据缓冲
             byte[] bs = new byte[1024];
             // 读取到的数据长度
             int len;
             // 输出的文件流
-            OutputStream os = new FileOutputStream(uploadPath + "/" + savePath + "/" + imageName);
+            os = new FileOutputStream(uploadPath + "/" + savePath + "/" + imageName);
             // 开始读取
             while ((len = is.read(bs)) != -1) {
                 os.write(bs, 0, len);
@@ -474,6 +504,13 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
             return imageName;
         } catch (Exception e) {
             logger.error("download error：{}" ,e.getMessage());
+        } finally {
+            if (os != null) {
+                os.close();
+            }
+            if (is != null) {
+                is.close();
+            }
         }
         return null;
     }
@@ -530,7 +567,7 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
             String[] split = crawl.getWeight().split("\\.");
             pro.setWeight(Long.valueOf(split[0]));
         }
-        pro.setStock(80l);
+        pro.setStock(80L);
         pro.setGelinProductId(Long.valueOf(crawl.getReptileProductId()));
         pro.setCreateTime(new Date());
         productsMapper.insertSelective(pro);

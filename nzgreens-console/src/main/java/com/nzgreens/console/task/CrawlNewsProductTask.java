@@ -21,7 +21,7 @@ import java.util.*;
  * @author helizheng
  * @create 2017-09-19 16:36
  **/
-@Component
+//@Component
 @Lazy(false)
 public class CrawlNewsProductTask extends AbstractScheduleTask {
     private static final Logger logger = LoggerFactory.getLogger(CrawlNewsProductTask.class);
@@ -37,7 +37,7 @@ public class CrawlNewsProductTask extends AbstractScheduleTask {
     private String detailImagePath;
 
 
-    @Scheduled(cron = "${CrawlProductTask.cron:0 0 2 * * ?}")
+    //@Scheduled(cron = "${CrawlProductTask.cron:0 40 15 * * ?}")
     public void handle() {
         doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
             @Override
@@ -67,18 +67,18 @@ public class CrawlNewsProductTask extends AbstractScheduleTask {
                     Document doc = Jsoup.connect("http://www.gelin.nz/").get();
                     Elements lis = doc.select("#supermenu ul li.tlli");
                     Iterator<Element> iter = lis.iterator();
-
                     while (iter.hasNext()) {
                         Element e = iter.next();
                         Elements linkTops = e.select("div.bigdiv .linkoftopitem");
                         Elements products = e.select("div.bigdiv .supermenu-left .withimage");
                         String[] menuHrefs = lis.select("a.tll").attr("href").split("\\?");
+                        logger.info("----memu hrefs {}",menuHrefs);
                         String menuHref = lis.select("a.tll").attr("href");
                         if (!"#".equals(menuHref) && StringUtils.isNotBlank(menuHref)) {
                             try {
                                 String menuPath = "http://gelin.nz" + menuHrefs[1];
                                 logger.info("load menu nav products {}", menuPath);
-                                productCrawlService.saveProductCrawl(con2, menuPath, "", "", "", 1);
+                                productCrawlService.saveProductCrawl(con2, menuPath);
                             } catch (Exception e1) {
 
                             }
@@ -101,7 +101,7 @@ public class CrawlNewsProductTask extends AbstractScheduleTask {
                             String categoryPath = "http://gelin.nz" + theparent.attr("href");
                             logger.info("---大分类：{}", theparent.html() + "," + hrefs[1]);
 
-                            productCrawlService.saveProductCrawl(con2,categoryPath,"","","",1);
+                            productCrawlService.saveProductCrawl(con2,categoryPath);
                         }
                     }
                 } catch (Exception e) {

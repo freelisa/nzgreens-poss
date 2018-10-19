@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="product_weight" property="productWeight" jdbcType="BIGINT" />
     <result column="freight" property="freight" jdbcType="BIGINT" />
+    <result column="min_freight" property="minFreight" jdbcType="BIGINT" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, product_weight, freight, create_time, update_time
+    id, product_weight, freight, min_freight, create_time, update_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.nzgreens.dal.user.example.ProductFreightExample" >
     select
@@ -103,9 +104,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.nzgreens.dal.user.example.ProductFreight" >
-    insert into product_freight (id, product_weight, freight, 
+    insert into product_freight (id, product_weight, freight, min_freight,
       create_time, update_time)
-    values (#{id,jdbcType=BIGINT}, #{productWeight,jdbcType=BIGINT}, #{freight,jdbcType=BIGINT}, 
+    values (#{id,jdbcType=BIGINT}, #{productWeight,jdbcType=BIGINT}, #{freight,jdbcType=BIGINT}, #{min_freight,jdbcType=BIGINT},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.nzgreens.dal.user.example.ProductFreight" >
@@ -119,6 +120,9 @@
       </if>
       <if test="freight != null" >
         freight,
+      </if>
+      <if test="minFreight != null" >
+        min_freight,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -136,6 +140,9 @@
       </if>
       <if test="freight != null" >
         #{freight,jdbcType=BIGINT},
+      </if>
+      <if test="minFreight != null" >
+        #{minFreight,jdbcType=BIGINT},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -163,6 +170,9 @@
       <if test="record.freight != null" >
         freight = #{record.freight,jdbcType=BIGINT},
       </if>
+      <if test="record.minFreight != null" >
+        min_freight = #{record.minFreight,jdbcType=BIGINT},
+      </if>
       <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -179,6 +189,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       product_weight = #{record.productWeight,jdbcType=BIGINT},
       freight = #{record.freight,jdbcType=BIGINT},
+      min_freight = #{record.minFreight,jdbcType=BIGINT},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -194,6 +205,9 @@
       <if test="freight != null" >
         freight = #{freight,jdbcType=BIGINT},
       </if>
+      <if test="minFreight != null" >
+        min_freight = #{minFreight,jdbcType=BIGINT},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -207,6 +221,7 @@
     update product_freight
     set product_weight = #{productWeight,jdbcType=BIGINT},
       freight = #{freight,jdbcType=BIGINT},
+      min_freight = #{minFreight,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

@@ -28,14 +28,14 @@ public interface IProductCrawlService {
      * 抓取格林商品
      * @param con2
      * @param href
-     * @param cateHtml
-     * @param cateName
-     * @param categoryId
-     * @param type
      * @throws Exception
      */
-    void saveProductCrawl(Connection con2, String href, String cateHtml, String cateName, String categoryId, int type) throws Exception;
+    void saveProductCrawl(Connection con2, String href) throws Exception;
 
 
     void saveProductCrawl(Connection con2, Iterator<Element> productHtml, String menu) throws Exception;
+
+    void loadProduct (Element productIter,Connection con2) throws Exception;
+
+    void loadProduct (String productUrl,Connection con2) throws Exception;
 }
