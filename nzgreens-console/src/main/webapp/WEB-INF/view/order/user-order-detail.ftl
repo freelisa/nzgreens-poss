@@ -195,12 +195,16 @@
 
                         </p>
                     </div>
+                     {#if $T.data.status != -1 && $T.data.status!= 2}
                     <div class="col-sm-4">
                         <button id="btnUserStatusUpdate"  class="btn btn-success" type="button">状态修改</button>
                     </div>
-                    <div class="col-sm-4">
+                     {#/if}
+                    {#if $T.data.status != -1}
+                      <div class="col-sm-4">
                         <button id="btnUploadCert" class="btn btn-success" type="button">上传凭证</button>
                     </div>
+                    {#/if}
                     {#if $T.data.rebateStatus == 0}
                     <div class="col-sm-4">
                         <button id="btnRebateAudit" class="btn btn-success" type="button">返佣审核</button>
