@@ -43,6 +43,7 @@ public class ProductFreightService extends BaseService implements IProductFreigh
         checkForm(productFreight);
         ProductFreight freight = new ProductFreight();
         freight.setFreight(CurrencyUtil.convertYuanToFen(productFreight.getFreight()));
+        freight.setMinFreight(CurrencyUtil.convertYuanToFen(productFreight.getMinFreight()));
         freight.setProductWeight(productFreight.getProductWeight());
         if(productFreightMapper.insertSelective(freight) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
@@ -58,6 +59,7 @@ public class ProductFreightService extends BaseService implements IProductFreigh
         ProductFreight freight = new ProductFreight();
         freight.setId(productFreight.getId());
         freight.setFreight(CurrencyUtil.convertYuanToFen(productFreight.getFreight()));
+        freight.setMinFreight(CurrencyUtil.convertYuanToFen(productFreight.getMinFreight()));
         freight.setProductWeight(productFreight.getProductWeight());
         if(productFreightMapper.updateByPrimaryKeySelective(freight) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
@@ -83,6 +85,9 @@ public class ProductFreightService extends BaseService implements IProductFreigh
         }
         if(productFreight.getProductWeight() == null){
             thrown(ErrorCodes.PRODUCT_WEIGHT_ILLEGAL);
+        }
+        if(StringUtils.isBlank(productFreight.getMinFreight())){
+            thrown(ErrorCodes.FREIGHT_ILLEGAL);
         }
     }
 }

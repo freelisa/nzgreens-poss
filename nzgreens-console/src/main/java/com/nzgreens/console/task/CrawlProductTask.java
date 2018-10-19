@@ -23,7 +23,7 @@ import java.util.*;
  * @author helizheng
  * @create 2017-09-19 16:36
  **/
-@Component
+//@Component
 @Lazy(false)
 public class CrawlProductTask extends AbstractScheduleTask {
     private static final Logger logger = LoggerFactory.getLogger(CrawlProductTask.class);
@@ -43,7 +43,7 @@ public class CrawlProductTask extends AbstractScheduleTask {
     private String detailImagePath;
 
 
-    @Scheduled(cron = "${CrawlProductTask.cron:0 0 0 * * ?}")
+    @Scheduled(cron = "${CrawlProductTask.cron:0 50 16 * * ?}")
     public void handle() {
         doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
             @Override
@@ -136,7 +136,8 @@ public class CrawlProductTask extends AbstractScheduleTask {
                                             productCategoryMapper.updateByPrimaryKeySelective(categoryChild);
                                         }
                                     }
-                                    productCrawlService.saveProductCrawl(con2,categoryChildPath,child.html(),theparent.html(),categoryId,1);
+                                    //productCrawlService.saveProductCrawl(con2,categoryChildPath,child.html(),theparent.html(),categoryId,1);
+                                    productCrawlService.saveProductCrawl(con2, categoryChildPath);
                                 }
                             }
                         } else if (StringUtils.equals(allCategory, "品牌专区")) {
@@ -167,7 +168,7 @@ public class CrawlProductTask extends AbstractScheduleTask {
                                         productBrandMapper.updateByPrimaryKeySelective(brand);
                                     }
                                 }
-                                productCrawlService.saveProductCrawl(con2,brandPath,"","","",2);
+                                productCrawlService.saveProductCrawl(con2,brandPath);
                             }
                         }
                     }

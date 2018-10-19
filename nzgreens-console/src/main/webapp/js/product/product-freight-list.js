@@ -20,7 +20,8 @@ $(document).ready(function () {
 
             var params = {
                 "productWeight": $("#addProductWeight").val(),
-                "freight": $("#addFreight").val()
+                "freight": $("#addFreight").val(),
+                "minFreight": $("#addMinFreight").val()
             }
 
             post(_rootPath + "product/freight/insert", params, function (result) {
@@ -75,8 +76,10 @@ function saveUpdate() {
     var params = {
         "id": $("#agentId").val(),
         "productWeight": $("#updateProductWeight").val(),
-        "freight": $("#updateFreight").val()
+        "freight": $("#updateFreight").val(),
+        "minFreight": $("#updateMinFreight").val()
     }
+    console.info($("#updateMinFreight").val());
     post(_rootPath + "product/freight/update", params, function (result) {
         if (result.success == true) {
             swal({title: "提示", text: "保存成功", type: 'success'}, function () {

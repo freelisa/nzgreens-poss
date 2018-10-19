@@ -7,6 +7,8 @@ public class ProductFreightForm {
 
     private String freight;
 
+    private String minFreight;
+
     public Long getId() {
         return id;
     }
@@ -29,5 +31,13 @@ public class ProductFreightForm {
 
     public void setFreight(String freight) {
         this.freight = freight;
+    }
+
+    public String getMinFreight() {
+        return minFreight;
+    }
+
+    public void setMinFreight(String minFreight) {
+        this.minFreight = minFreight;
     }
 }

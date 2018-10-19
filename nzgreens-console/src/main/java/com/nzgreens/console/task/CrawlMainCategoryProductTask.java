@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  * @author helizheng
  * @create 2017-09-19 16:36
  **/
-@Component
+//@Component
 @Lazy(false)
 public class CrawlMainCategoryProductTask extends AbstractScheduleTask {
     private static final Logger logger = LoggerFactory.getLogger(CrawlMainCategoryProductTask.class);
@@ -50,7 +50,7 @@ public class CrawlMainCategoryProductTask extends AbstractScheduleTask {
     private String detailImagePath;
 
 
-    @Scheduled(cron = "${CrawlProductTask.cron:0 0 2 * * ?}")
+    //@Scheduled(cron = "${CrawlProductTask.cron:0 40 15 * * ?}")
     public void handle() {
         doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
             @Override
@@ -95,9 +95,10 @@ public class CrawlMainCategoryProductTask extends AbstractScheduleTask {
                                 String categoryPath = theparent.attr("href");
                                 String categoryId = categoryPath.substring(categoryPath.lastIndexOf("=") + 1);
 
-                                logger.info("---大分类：{}", theparent.html() + "," + hrefs[1]);
+                                logger.info("---按照分类统计抓取：{}", theparent.html() + "," + hrefs[1]);
 
-                                productCrawlService.saveProductCrawl(con2,categoryPath,"",theparent.html(),categoryId,1);
+                                //productCrawlService.saveProductCrawl(con2,categoryPath,"",theparent.html(),categoryId,1);
+                                productCrawlService.saveProductCrawl(con2,categoryPath);
                             }
                         }
                     }

@@ -3,6 +3,28 @@ Dropzone.autoDiscover = false;
 var dropz;
 
 $(document).ready(function () {
+    var loading = true;
+    $('#searchForm').submit(function() {
+        jQuery.ajax({
+            url:_rootPath + "product/crawl/insert",
+            data:$('#searchForm').serialize(),
+            type:"POST",
+            beforeSend:function() {
+                swal({title: "", text: "抓取商品中，请稍等...", type: 'info'}, function(){});
+                if (!loading) {
+                    loading = true;
+                }
+                $("#btnAdd").attr("disabled", "disabled");
+            },
+            success:function() {
+                swal({title: "", text: "抓取成功.", type: 'success'}, function(){});
+            }, complete: function () {
+                loading = false;
+                $("#btnAdd").removeAttr("disabled");
+            }
+        });
+        return false;
+    });
     $(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",});
     $("#btnCancel").on("click", function () {
         $("#searchForm")[0].reset();
@@ -12,6 +34,20 @@ $(document).ready(function () {
     });
     $("#btnSaveUpdate").on("click", function () {
         saveUpdate();
+    });
+    $("#btnAdd").on("click", function () {
+        $("#addProduct").modal();
+    });
+
+    $("#addProductCancel").on("click", function () {
+        $("#addProduct").modal("hide");
+    });
+
+    $("#addProductSave").on("click",function () {
+        $("#startProductId").val($("#left").val());
+        $("#endProductId").val($("#right").val());
+        $("#addProduct").modal("hide");
+        $('#searchForm').submit();
     });
     searchList();
 
