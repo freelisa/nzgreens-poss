@@ -31,6 +31,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author:helizheng
@@ -56,6 +57,8 @@ public class UserOrderService extends BaseService implements IUserOrderService {
     private AccountLogsMapper accountLogsMapper;
     @Resource
     private AgentRebateAuditMapper agentRebateAuditMapper;
+    @Resource
+    private UserAgentMapper userAgentMapper;
     @Value("${images.host}")
     private String imageHost;
     @Value("${images.user.order.cert.path}")
@@ -215,6 +218,32 @@ public class UserOrderService extends BaseService implements IUserOrderService {
             orderModel.setRebateCreateTime(audit.getCreateTime());
             orderModel.setRebateUpdateTime(audit.getUpdateTime());
         }
+        Users users = usersMapper.selectByPrimaryKey(userOrder.getUserId());
+        orderModel.setBalance(users.getBalance());
+        orderModel.setTotalBalance(users.getBalance());
+        orderModel.setMobile(users.getTelephone());
+        if (users.getType() == UserTypeEnum._AGENT.getValue()) {
+            UserAgentExample agentExample = new UserAgentExample();
+            agentExample.createCriteria().andAgentUserIdEqualTo(users.getId());
+            List<UserAgent> userAgentList = userAgentMapper.selectByExample(agentExample);
+            if (CollectionUtils.isEmpty(userAgentList)) {
+                return orderModel;
+            }
+            UsersExample usersExample = new UsersExample();
+            usersExample.createCriteria().andIdIn(userAgentList.stream().map(UserAgent::getUserId)
+                    .collect(Collectors.toList())).andBalanceLessThan(0L);
+            List<Users> usersList = usersMapper.selectByExample(usersExample);
+            if (CollectionUtils.isEmpty(usersList)) {
+                return orderModel;
+            }
+            orderModel.setSubUserLiabilities(usersList.stream().map(Users::getBalance).reduce(Long::sum).get());
+            orderModel.setTotalBalance(users.getBalance() + orderModel.getSubUserLiabilities());
+        }
+/*        if (userOrder.getStatus() == UserOrderStatusEnum._PROCESSED.getValue()
+                || userOrder.getStatus() == UserOrderStatusEnum._DONE.getValue()) {
+            Users users = usersMapper.selectByPrimaryKey(userOrder.getUserId());
+            orderModel.setBalance(users.getBalance());
+        }*/
         return orderModel;
     }
 
