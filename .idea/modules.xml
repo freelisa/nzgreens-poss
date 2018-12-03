@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/nzgreens-common/nzgreens-common.iml" filepath="$PROJECT_DIR$/nzgreens-common/nzgreens-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nzgreens-console/nzgreens-console.iml" filepath="$PROJECT_DIR$/nzgreens-console/nzgreens-console.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nzgreens-dal/nzgreens-dal.iml" filepath="$PROJECT_DIR$/nzgreens-dal/nzgreens-dal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nzgreens-parent.iml" filepath="$PROJECT_DIR$/nzgreens-parent.iml" />
+    </modules>
+  </component>
+</project>

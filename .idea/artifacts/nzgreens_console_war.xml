@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="nzgreens-console:war">
+    <output-path>$PROJECT_DIR$/nzgreens-console/target</output-path>
+    <root id="archive" name="nzgreens-console.war">
+      <element id="artifact" artifact-name="nzgreens-console:war exploded" />
+    </root>
+  </artifact>
+</component>
