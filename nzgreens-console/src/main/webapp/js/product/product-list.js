@@ -47,6 +47,7 @@ $(document).ready(function () {
                 "categoryId": $("#addCategoryId").val(),
                 "detail": $("#addDetail").val(),
                 "stock": $("#addStock").val(),
+                "salesVolume":$("#addSalesVolume").val(),
                 "isValid": $("#addStatus").val()
             }
             post(_rootPath + "product/insert", params, function (result) {
@@ -214,6 +215,7 @@ function saveUpdate() {
         "categoryId": $("#detailCategoryId").val(),
         "detail": $("#updateDetail").val(),
         "stock": $("#detailStock").val(),
+        "salesVolume": $("#detailSalesVolume").val(),
         "isValid": $("#detailIsValid").val()
     }
     post(_rootPath + "product/update", params, function (result) {

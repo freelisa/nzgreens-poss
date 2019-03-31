@@ -29,7 +29,12 @@ public class UsersModel implements Serializable {
     private Date createTime;
 
     private Date updateTime;
+    /**
+     * 子用户总负债
+     */
+    private Long subUserLiabilities;
 
+    private Long totalBalance;
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -134,5 +139,17 @@ public class UsersModel implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Long getTotalBalance() {
+        return totalBalance;
+    }
+
+    public void setTotalBalance(Long totalBalance) {
+        this.totalBalance = totalBalance;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 }

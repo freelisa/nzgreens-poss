@@ -193,14 +193,14 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
     }
 
     @Override
-    public void loadProduct (Element productIter,Connection con2) {
+    public void loadProduct (Element productIter, Connection con2) {
         Element next = productIter;
         Elements link = next.select(".image a");
-        loadProductByLink(con2,link.attr("href"));
+        loadProductByLink(con2, link.attr("href"), true);
         //logger.info("-----------------------链接：{}", linkHref);
     }
 
-    private void loadProductByLink(Connection con2,String link) {
+    private void loadProductByLink(Connection con2,String link, boolean retry) {
         //商品链接
         String linkHref = link;
 
@@ -345,6 +345,14 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
                 weight = weight.substring(5, weight.length() - 2);
             }
             crawl.setWeight(weight);
+            if (crawl.getCostPrice() == 0
+                    || crawl.getSellingPrice() == 0) {
+                if (retry) {
+                    loadProductByLink(con2,"http://gelin.nz/index.php?route=product/product&"+map.get("product_id"), false);
+                    logger.info("当前商品售价为0，重试！-》》"+crawl.getReptileProductId());
+                    return;
+                }
+            }
             StringBuilder buff = new StringBuilder();
             //产品详细图片描述
             Elements detailImgs = productContent.select("div.item-content .tab-content img");
@@ -444,7 +452,7 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
 
     @Override
     public void loadProduct(String productUrl, Connection con2) throws Exception {
-        loadProductByLink(con2, productUrl);
+        loadProductByLink(con2, productUrl, true);
     }
 
 

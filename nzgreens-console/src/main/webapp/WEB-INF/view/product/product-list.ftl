@@ -254,6 +254,13 @@
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left; width: 7%">销售量</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="salesVolume" class="form-control" id="addSalesVolume">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
                         <label class="col-sm-4 control-label" style="text-align: left; width: 7%">分类</label>
                         <div class="col-sm-6">
                             <select class="form-control" name="categoryId" id="addCategoryId">
@@ -406,6 +413,13 @@
         </div>
         <div class="hr-line-dashed"></div>
         <div class="form-group">
+            <label class="col-sm-4 control-label" style="text-align: left; width: 7%">销售量</label>
+            <div class="col-sm-6">
+                <input type="text" name="salesVolume" class="form-control" value="{$T.data.salesVolume}" id="detailSalesVolume">
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
             <label class="col-sm-4 control-label" style="text-align: left; width: 7%">分类</label>
             <div class="col-sm-6">
                 <select class="form-control" name="categoryId" id="detailCategoryId">
@@ -508,7 +522,7 @@
 <script src="${ctx}js/plugins/summernote/summernote-zh-CN.js"></script>
 <script src="${ctx}js/plugins/layer/layer.min.js"></script>
 <script src="${ctx}${getVersion('js/page.js')}"></script>
-<script src="${ctx}${getVersion('js/product/product-list.js')}"></script>
+<script src="${ctx}${getVersion('js/product/product-list.js?v20190331')}"></script>
 </body>
 
 </html>

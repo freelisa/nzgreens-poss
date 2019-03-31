@@ -23,7 +23,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @Author:helizheng
@@ -49,8 +53,44 @@ public class UserService extends BaseService implements IUserService {
     @Override
     public List<UsersModel> selectUserForPage(UserForm form) throws Exception {
         PageHelper.startPage(form.getPageNum(),form.getPageSize());
-        return subUserMapper.selectUserForPage(form);
+        List<UsersModel> usersModels = subUserMapper.selectUserForPage(form);
+        if (CollectionUtils.isEmpty(usersModels)) {
+            return usersModels;
+        }
+        List<Long> agentIds = usersModels.stream().filter(usersModel -> UserTypeEnum._AGENT.getValue() == usersModel.getType())
+                .map(UsersModel::getId).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(agentIds)) {
+            return usersModels;
+        }
+        UserAgentExample agentExample = new UserAgentExample();
+        agentExample.createCriteria().andAgentUserIdIn(agentIds);
+        List<UserAgent> userAgentList = userAgentMapper.selectByExample(agentExample);
+        if (CollectionUtils.isEmpty(userAgentList)) {
+            return usersModels;
+        }
+        UsersExample usersExample = new UsersExample();
+        usersExample.createCriteria().andIdIn(userAgentList.stream().map(UserAgent::getUserId)
+                .collect(Collectors.toList())).andBalanceLessThan(0L);
+        List<Users> usersList = usersMapper.selectByExample(usersExample);
+        if (CollectionUtils.isEmpty(usersList)) {
+            return usersModels;
+        }
+        try {
+            Map<Long, List<UserAgent>> agentMap = userAgentList.stream().collect(Collectors.groupingBy(UserAgent::getAgentUserId, Collectors.toList()));
+            Map<Long, Long> userBalanceMap = usersList.stream().collect(Collectors.groupingBy(Users::getId, Collectors.summingLong(Users::getBalance)));
+            agentMap.forEach((k,v)->{
+                UsersModel usersModel = usersModels.stream().filter(a->a.getId().equals(k)).findFirst().get();
+                Long balance = v.stream().map(user->
+                        userBalanceMap.getOrDefault(user.getUserId(), 0L))
+                        .reduce(0L,(v1,v2)->v1+v2);
+                usersModel.setTotalBalance(usersModel.getBalance() + balance);
+            });
+        } catch (Exception e) {
+            usersModels.forEach(user->user.setTotalBalance(-1L));
+        }
+        return usersModels;
     }
+
 
     @Override
     public List<UsersModel> selectAgentUserForPage(UserForm form) throws Exception {

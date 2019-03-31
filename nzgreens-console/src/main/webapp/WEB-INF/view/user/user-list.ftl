@@ -117,6 +117,7 @@
                                     <th>代理用户账号</th>
                                     <th>用户类型</th>
                                     <th>余额</th>
+                                    <th>用户资产</th>
                                     <th>是否有效</th>
                                     <th>备注</th>
                                     <th>注册时间</th>
@@ -373,6 +374,7 @@
             </#list>
             </td>
             <td>{Fen2Yuan($T.user.balance)}</td>
+            <td>{#if $T.user.totalBalance!=null}{Fen2Yuan($T.user.totalBalance)}{#else}{Fen2Yuan($T.user.balance)}{#/if}</td>
             <td>
             <#list IsValidEnum?values as e>
                 {#if $T.user.isValid == ${e.value}}${e.text}{#/if}
