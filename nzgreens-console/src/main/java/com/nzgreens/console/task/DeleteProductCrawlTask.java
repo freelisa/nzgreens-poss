@@ -20,7 +20,7 @@ public class DeleteProductCrawlTask extends AbstractScheduleTask {
 	@Resource
 	private SubProductsMapper subProductsMapper;
 
-	@Scheduled(cron = "${DeleteProductCrawlTask.cron:0 50 23 * * ?}")
+	@Scheduled(cron = "${DeleteProductCrawlTask.cron:0 30 0 * * ?}")
 	public void handle() {
 		doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
 			@Override

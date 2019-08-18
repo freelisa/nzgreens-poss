@@ -23,7 +23,7 @@ import java.util.*;
  * @author helizheng
  * @create 2017-09-19 16:36
  **/
-//@Component
+@Component
 @Lazy(false)
 public class CrawlProductTask extends AbstractScheduleTask {
     private static final Logger logger = LoggerFactory.getLogger(CrawlProductTask.class);
@@ -43,7 +43,7 @@ public class CrawlProductTask extends AbstractScheduleTask {
     private String detailImagePath;
 
 
-    @Scheduled(cron = "${CrawlProductTask.cron:0 50 16 * * ?}")
+    @Scheduled(cron = "${CrawlProductTask.cron:0 0 23 * * ?}")
     public void handle() {
         doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
             @Override

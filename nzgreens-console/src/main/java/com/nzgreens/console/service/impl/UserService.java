@@ -20,13 +20,11 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -48,8 +46,9 @@ public class UserService extends BaseService implements IUserService {
     @Resource
     private UserAgentMapper userAgentMapper;
     @Resource
+    private UserOrderCountMapper userOrderCountMapper;
+    @Resource
     private UserOrderMapper userOrderMapper;
-
     @Override
     public List<UsersModel> selectUserForPage(UserForm form) throws Exception {
         PageHelper.startPage(form.getPageNum(),form.getPageSize());
@@ -59,6 +58,27 @@ public class UserService extends BaseService implements IUserService {
         }
         List<Long> agentIds = usersModels.stream().filter(usersModel -> UserTypeEnum._AGENT.getValue() == usersModel.getType())
                 .map(UsersModel::getId).collect(Collectors.toList());
+        UserOrderExample userOrderExample = new UserOrderExample();
+        userOrderExample.createCriteria().andUserIdIn(usersModels.stream().map(UsersModel::getId).collect(Collectors.toList()))
+                .andStatusIn(Arrays.asList(new Byte("0"),new Byte("1"),new Byte("2")));
+        userOrderExample.setOrderByClause("create_time desc");
+        List<UserOrderCount> orderList = userOrderCountMapper.countByExamples(userOrderExample);
+        if (CollectionUtils.isNotEmpty(orderList)) {
+            Map<Long, List<UserOrderCount>> map = orderList.stream().collect(Collectors.groupingBy(UserOrderCount::getUserId));
+            try {
+
+                usersModels.forEach(usersModel -> {
+                    List<UserOrderCount> countList = map.getOrDefault(usersModel.getId(), Collections.emptyList());
+                    if (CollectionUtils.isNotEmpty(countList)) {
+                        usersModel.setTotalOrderCount(countList.get(0).getOrderCount());
+                        usersModel.setLastOrderTime(countList.get(0).getCreateTime());
+                    }
+
+                });
+            } catch (Exception e) {
+
+            }
+        }
         if (CollectionUtils.isEmpty(agentIds)) {
             return usersModels;
         }
@@ -88,6 +108,7 @@ public class UserService extends BaseService implements IUserService {
         } catch (Exception e) {
             usersModels.forEach(user->user.setTotalBalance(-1L));
         }
+
         return usersModels;
     }
 

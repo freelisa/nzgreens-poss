@@ -44,7 +44,7 @@ public class SettingProductTask extends AbstractScheduleTask {
 	@Value("${images.product.detail.path}")
 	private String detailImagePath;
 
-	@Scheduled(cron = "${SettingProductTask.cron:0 40 16 * * ?}")
+	@Scheduled(cron = "${SettingProductTask.cron:0 0 1 * * ?}")
 	public void handle() {
 		doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
 			@Override

@@ -42,7 +42,7 @@ public class CrawlProductsTask extends AbstractScheduleTask {
     private ThreadPoolExecutor executor = new ThreadPoolExecutor(8,16,3600, TimeUnit.SECONDS,queue);
 
 
-    @Scheduled(cron = "${CrawlProductTask.cron:0 50 14 * * ?}")
+    @Scheduled(cron = "${CrawlProductTask.cron:0 25 20 * * ?}")
     public void handle() {
         doHandle(this.getClass().getSimpleName(), new InvokerCallback() {
             @Override

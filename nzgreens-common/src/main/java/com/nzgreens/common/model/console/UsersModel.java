@@ -35,6 +35,11 @@ public class UsersModel implements Serializable {
     private Long subUserLiabilities;
 
     private Long totalBalance;
+
+    private long totalOrderCount;
+
+    private Date lastOrderTime;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -151,5 +156,21 @@ public class UsersModel implements Serializable {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public long getTotalOrderCount() {
+        return totalOrderCount;
+    }
+
+    public void setTotalOrderCount(long totalOrderCount) {
+        this.totalOrderCount = totalOrderCount;
+    }
+
+    public Date getLastOrderTime() {
+        return lastOrderTime;
+    }
+
+    public void setLastOrderTime(Date lastOrderTime) {
+        this.lastOrderTime = lastOrderTime;
     }
 }
