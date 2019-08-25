@@ -13,6 +13,7 @@ import com.nzgreens.common.utils.BeanMapUtil;
 import com.nzgreens.common.utils.CollectionUtil;
 import com.nzgreens.console.service.BaseService;
 import com.nzgreens.console.service.IUserOrderService;
+import com.nzgreens.console.util.CosUtils;
 import com.nzgreens.console.web.common.UploadTempImageUtil;
 import com.nzgreens.dal.user.example.*;
 import com.nzgreens.dal.user.mapper.*;
@@ -63,6 +64,10 @@ public class UserOrderService extends BaseService implements IUserOrderService {
     private String imageHost;
     @Value("${images.user.order.cert.path}")
     private String imageUserOrderCertPath;
+    @Value("${images.upload.path}")
+    private String imageRoot;
+    @Resource
+    private CosUtils cosUtils;
     private static final BigDecimal HUNDRED = new BigDecimal("100");
 
     @Override
@@ -544,6 +549,7 @@ public class UserOrderService extends BaseService implements IUserOrderService {
             for(int i = 0,len = multiFile.length;i < len;i++){
                 File file = UploadTempImageUtil.processImage(multiFile[i], imagePath);
                 builder.append(file.getName());
+                cosUtils.upload(file.getAbsolutePath(),"/data/upload/"+imagePath+"/"+file.getName());
                 if(i + 1 != len){
                     builder.append(",");
                 }
