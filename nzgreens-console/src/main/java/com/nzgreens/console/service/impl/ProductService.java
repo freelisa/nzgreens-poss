@@ -13,6 +13,7 @@ import com.nzgreens.common.utils.BeanMapUtil;
 import com.nzgreens.common.utils.CurrencyUtil;
 import com.nzgreens.console.service.BaseService;
 import com.nzgreens.console.service.IProductService;
+import com.nzgreens.console.util.CosUtils;
 import com.nzgreens.console.web.common.UploadTempImageUtil;
 import com.nzgreens.dal.user.example.*;
 import com.nzgreens.dal.user.mapper.*;
@@ -53,6 +54,10 @@ public class ProductService extends BaseService implements IProductService {
     private String imageProductDetailPath;
     @Value("${images.product.icon.path}")
     private String imageProductIconPath;
+    @Value("${images.upload.path}")
+    private String imageRoot;
+    @Resource
+    private CosUtils cosUtils;
 
     @Override
     public List<Products> selectProductForPage(ProductForm form) throws Exception {
@@ -265,6 +270,7 @@ public class ProductService extends BaseService implements IProductService {
             File file = UploadTempImageUtil.processImage(multiFile, imagePath);
             // 返回路径
             imagePath = imagePath + "/" + file.getName();
+            cosUtils.upload(file.getAbsolutePath(),"/data/upload/"+imagePath);
             return imageHost + imagePath;
         }
         return "";

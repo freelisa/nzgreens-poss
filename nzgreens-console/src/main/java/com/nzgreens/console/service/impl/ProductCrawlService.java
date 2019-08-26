@@ -15,6 +15,7 @@ import com.nzgreens.console.service.BaseService;
 import com.nzgreens.console.service.IProductCrawlService;
 import com.nzgreens.console.service.IProductService;
 import com.nzgreens.console.util.ConvertUrlToMapUtil;
+import com.nzgreens.console.util.CosUtils;
 import com.nzgreens.console.web.common.UploadTempImageUtil;
 import com.nzgreens.dal.user.example.*;
 import com.nzgreens.dal.user.mapper.*;
@@ -69,7 +70,8 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
     private String detailImagePath;
     @Value("${images.upload.path}")
     private String uploadPath="d:/新西兰直邮/";
-
+    @Resource
+    private CosUtils cosUtils;
 
     @Override
     public List<ProductsCrawl> selectProductForPage(PageSearchForm form) throws Exception {
@@ -282,6 +284,7 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
             imageName = map.get("product_id") + "_0_1" + suff;
             try {
                 downloadImgMain = download(imageSrc, imageProductIconPath, imageName);
+                cosUtils.upload(downloadImgMain);
             } catch (Exception e) {
                 logger.error(e.getMessage(),e);
             }
@@ -373,6 +376,7 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
                     String downloadImg = null;
                     try {
                         downloadImg = download(src, detailImagePath, map.get("product_id") +  "_1_" + detailIndex + suff);
+                        cosUtils.upload(downloadImgMain);
                     } catch (Exception e) {
                         logger.error(e.getMessage(), e );
                     }
