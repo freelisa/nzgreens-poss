@@ -187,20 +187,20 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
             try {
                 loadProduct(product, con2);
             } catch (Exception e) {
-                logger.error("load product error, scan to next. "+JSON.toJSONString(product), e);
+                logger.error("load product error, scan to next. ", e);
             }
         }
     }
 
     @Override
-    public void loadProduct (Element productIter,Connection con2) {
+    public void loadProduct (Element productIter, Connection con2) {
         Element next = productIter;
         Elements link = next.select(".image a");
-        loadProductByLink(con2,link.attr("href"));
-        //logger.info("-----------------------链接：{}", linkHref);
+        logger.info("-----------------------链接：{}", link.attr("href"));
+        loadProductByLink(con2, link.attr("href"), true);
     }
 
-    private void loadProductByLink(Connection con2,String link) {
+    private void loadProductByLink(Connection con2,String link, boolean retry) {
         //商品链接
         String linkHref = link;
 
@@ -257,7 +257,16 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
         //市场价
         String priceOld = priceEle.select(".price-old-live").html();
 
+        Pattern p = Pattern.compile("([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])");        //得到字符串中的数字
 
+        Matcher m = p.matcher(priceOld);
+        Matcher matcher = p.matcher(priceNew);
+        if (m.find()){
+            priceOld = m.group();
+        }
+        if (matcher.find()){
+            priceNew = matcher.group();
+        }
         //添加抓取的商品信息
         Elements detailUl = productContent.select("ul.thumbnails");
         //商品图片属性
@@ -281,24 +290,22 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
         String categoryId = "";
         String categoryName = "";
         Elements categroys = productDetail.select("ul.breadcrumb li");
-        Iterator<Element> cateIterator = categroys.iterator();
-        while (cateIterator.hasNext()) {
-            Element element = cateIterator.next();
+        for (Element element : categroys) {
             String href = element.select("a").attr("href");
             if (href.contains("manufacturer_id")) {
-                String brand = href.substring(href.lastIndexOf("manufacturer_id=")+1);
+                String brand = href.substring(href.lastIndexOf("manufacturer_id=") + 1);
                 if (StringUtils.isNumeric(brand)) {
                     logger.info("当前商品按照--品牌--分类");
                 }
             }
             if (href.contains("path")) {
-                String cate = href.substring(href.lastIndexOf("path=")+1);
+                String cate = href.substring(href.lastIndexOf("path=") + 1);
                 if (StringUtils.isNumeric(cate)) {
                     logger.info("当前商品按照--大分类--分类");
                     categoryParentId = cate;
                 } else {
                     logger.info("当前商品按照--小分类--分类");
-                    cate = href.substring(href.lastIndexOf("path="+cate+"_")+1);
+                    cate = href.substring(href.lastIndexOf("path=" + cate + "_") + 1);
                     if (StringUtils.isNumeric(cate)) {
                         categoryId = cate;
                     }
@@ -324,7 +331,7 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
                 try {
                     crawl.setCostPrice(CurrencyUtil.convertYuanToFensTask(priceOld));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 }
             }else{
                 crawl.setCostPrice(0L);
@@ -333,7 +340,7 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
                 try {
                     crawl.setSellingPrice(CurrencyUtil.convertYuanToFensTask(priceNew));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 }
             }else{
                 crawl.setSellingPrice(0L);
@@ -345,6 +352,14 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
                 weight = weight.substring(5, weight.length() - 2);
             }
             crawl.setWeight(weight);
+            if (crawl.getCostPrice() == 0
+                    || crawl.getSellingPrice() == 0) {
+                if (retry) {
+                    loadProductByLink(con2,"http://gelin.nz/index.php?route=product/product&"+map.get("product_id"), false);
+                    logger.info("当前商品售价为0，重试！-》》"+crawl.getReptileProductId());
+                    return;
+                }
+            }
             StringBuilder buff = new StringBuilder();
             //产品详细图片描述
             Elements detailImgs = productContent.select("div.item-content .tab-content img");
@@ -359,7 +374,7 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
                     try {
                         downloadImg = download(src, detailImagePath, map.get("product_id") +  "_1_" + detailIndex + suff);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        logger.error(e.getMessage(), e );
                     }
                     if(StringUtils.isNotEmpty(downloadImg)){
                         buff.append(downloadImg);
@@ -444,7 +459,7 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
 
     @Override
     public void loadProduct(String productUrl, Connection con2) throws Exception {
-        loadProductByLink(con2, productUrl);
+        loadProductByLink(con2, productUrl, true);
     }
 
 

@@ -70,6 +70,14 @@ public class UserOrderModel implements Serializable {
      */
     private String rebateRemark;
 
+    private Long balance;
+    /**
+     * 子用户总负债
+     */
+    private Long subUserLiabilities;
+
+    private Long totalBalance;
+
     private Date createTime;
 
     private Date updateTime;
@@ -266,5 +274,29 @@ public class UserOrderModel implements Serializable {
 
     public void setRebateRemark(String rebateRemark) {
         this.rebateRemark = rebateRemark;
+    }
+
+    public Long getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Long balance) {
+        this.balance = balance;
+    }
+
+    public Long getSubUserLiabilities() {
+        return subUserLiabilities;
+    }
+
+    public void setSubUserLiabilities(Long subUserLiabilities) {
+        this.subUserLiabilities = subUserLiabilities;
+    }
+
+    public Long getTotalBalance() {
+        return totalBalance;
+    }
+
+    public void setTotalBalance(Long totalBalance) {
+        this.totalBalance = totalBalance;
     }
 }

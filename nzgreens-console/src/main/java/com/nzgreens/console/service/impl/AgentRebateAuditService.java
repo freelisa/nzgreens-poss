@@ -87,10 +87,12 @@ public class AgentRebateAuditService extends BaseService implements IAgentRebate
     }
 
     private void handleRebate(AgentRebateAudit audit,Long rebatePrice) throws Exception{
-        subUserMapper.addBalance(audit.getAgentUserId(),rebatePrice.intValue());
-
         //代理
         Users users = checkUser(audit.getAgentUserId());
+        int userUpdated = subUserMapper.addBalance(audit.getAgentUserId(),rebatePrice.intValue());
+        if (userUpdated < 1) {
+            thrown(ErrorCodes.UPDATE_ERROR);
+        }
         //系统
         Users sysUser = selectSystemUser();
         //代理返佣日志
@@ -105,7 +107,6 @@ public class AgentRebateAuditService extends BaseService implements IAgentRebate
         if(accountLogsMapper.insertSelective(rebateLog) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
         }
-
         //系统减币
         int row = subUserMapper.reduceBalance(sysUser.getId(), rebatePrice.intValue());
         if(row < 1){

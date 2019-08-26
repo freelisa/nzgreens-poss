@@ -134,22 +134,21 @@
                     </div>
                     <label class="col-sm-4 control-label">联系人: </label>
                     <div class="col-sm-8">
-                        <p class="form-control-static">{$T.data.contact}</p>
+                        <p class="form-control-static">{$T.data.contact}{#if $T.data.totalBalance!=null}<{Fen2Yuan($T.data.totalBalance)}>{#/if}</p>
+                        {#if $T.data.balance!=null}<p><b4>当前用户资产：</b4>{Fen2Yuan($T.data.balance)}</p>{#/if}
+                        {#if $T.data.subUserLiabilities!=null}<p><b4>子用户总负债：</b4>{Fen2Yuan($T.data.subUserLiabilities)}</p>{#/if}
                     </div>
                      <label class="col-sm-4 control-label">联系电话: </label>
                     <div class="col-sm-8">
                         <p class="form-control-static">{$T.data.telephone}</p>
                     </div>
-                    <label class="col-sm-4 control-label">订单时间: </label>
+                    <label class="col-sm-4 control-label">用户账号: </label>
                     <div class="col-sm-8">
                         <p class="form-control-static">
-                            {#if $T.data.createTime!=null}{new Date($T.data.createTime).Format('yyyy-MM-dd hh:mm:ss')}{#else}--{#/if}
+                            {$T.data.mobile}
                         </p>
                     </div>
-                    <label class="col-sm-4 control-label">物流订单号: </label>
-                    <div class="col-sm-8">
-                        <p class="form-control-static">{$T.data.logisticsNumber}</p>
-                    </div>
+
                 </div>
             </div>
             <!-- 右边 -->
@@ -183,29 +182,22 @@
                         </#list>
                         </p>
                     </div>
-                    <label class="col-sm-4 control-label">修改时间: </label>
+                   <label class="col-sm-4 control-label">订单时间: </label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static">
+                            {#if $T.data.createTime!=null}{new Date($T.data.createTime).Format('yyyy-MM-dd hh:mm:ss')}{#else}--{#/if}
+                        </p>
+                    </div>
+                   <label class="col-sm-4 control-label">修改时间: </label>
                     <div class="col-sm-8">
                         <p class="form-control-static">
                             {#if $T.data.updateTime!=null}{new Date($T.data.updateTime).Format('yyyy-MM-dd hh:mm:ss')}{#else}--{#/if}
                         </p>
                     </div>
-                    <label class="col-sm-4 control-label"></label>
+                    <label class="col-sm-4 control-label">物流订单号: </label>
                     <div class="col-sm-8">
-                        <p class="form-control-static">
-
-                        </p>
+                        <p class="form-control-static">{$T.data.logisticsNumber}</p>
                     </div>
-                    <div class="col-sm-4">
-                        <button id="btnUserStatusUpdate"  class="btn btn-success" type="button">状态修改</button>
-                    </div>
-                    <div class="col-sm-4">
-                        <button id="btnUploadCert" class="btn btn-success" type="button">上传凭证</button>
-                    </div>
-                    {#if $T.data.rebateStatus == 0}
-                    <div class="col-sm-4">
-                        <button id="btnRebateAudit" class="btn btn-success" type="button">返佣审核</button>
-                    </div>
-                    {#/if}
                 </div>
             </div>
             <div class="col-sm-4">
@@ -256,6 +248,29 @@
                 </div>
             </div>
         </div>
+         <div class="modal-body">
+             <div class="col-sm-1 col-sm-offset-2"></div>
+                  {#if $T.data.status != -1 && $T.data.status!= 2}
+                    <div class="col-sm-1">
+                        <button id="btnUserStatusUpdate"  class="btn btn-success" type="button">状态修改</button>
+                    </div>
+                     {#/if}
+                    {#if $T.data.status != -1}
+                      <div class="col-sm-1">
+                        <button id="btnUploadCert" class="btn btn-success" type="button">上传凭证</button>
+                    </div>
+                    {#/if}
+                    {#if $T.data.rebateStatus == 0}
+                    <div class="col-sm-1">
+                        <button id="btnRebateAudit" class="btn btn-success" type="button">返佣审核</button>
+                    </div>
+                    {#/if}
+                    {#if $T.data.rebateStatus == 0 && $T.data.status == 1}
+                    <div class="col-sm-1">
+                        <button id="oneBtnRebateAudit" class="btn btn-success" type="button">一键返佣</button>
+                    </div>
+                    {#/if}
+            </div>
     </form>
 </textarea>
 <#-- 返佣审核 -->
@@ -415,7 +430,7 @@
 <script src="${ctx}js/plugins/blueimp/jquery.blueimp-gallery.min.js"></script>
 <script src="${ctx}${getVersion('js/page.js')}"></script>
 <@sec.any name="USER_ORDER_UPDATE">
-<script src="${ctx}${getVersion('js/order/user-order-detail.js')}"></script>
+<script src="${ctx}${getVersion('js/order/user-order-detail.js?v=1.0')}"></script>
 </@sec.any>
 </body>
 </html>

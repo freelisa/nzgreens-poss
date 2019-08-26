@@ -122,6 +122,9 @@ public class ProductController extends BaseController {
     public ResultModel searchDetail(Long id) throws Exception{
         ResultModel<ProductAddForm> resultModel = new ResultModel<>();
         ProductAddForm products = productService.selectProductDetail(id);
+        if (products.getSalesVolume() == null) {
+            products.setSalesVolume(0L);
+        }
         resultModel.setData(products);
         return resultModel;
     }

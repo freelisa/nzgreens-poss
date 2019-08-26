@@ -117,10 +117,11 @@
                                     <th>代理用户账号</th>
                                     <th>用户类型</th>
                                     <th>余额</th>
+                                    <th>用户资产</th>
                                     <th>是否有效</th>
                                     <th>备注</th>
-                                    <th>注册时间</th>
-                                    <th>更新时间</th>
+                                    <th>总订单量</th>
+                                    <th>最后下单时间</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -373,14 +374,15 @@
             </#list>
             </td>
             <td>{Fen2Yuan($T.user.balance)}</td>
+            <td>{#if $T.user.totalBalance!=null}{Fen2Yuan($T.user.totalBalance)}{#else}{Fen2Yuan($T.user.balance)}{#/if}</td>
             <td>
             <#list IsValidEnum?values as e>
                 {#if $T.user.isValid == ${e.value}}${e.text}{#/if}
             </#list>
             </td>
             <td>{$T.user.remark}</td>
-            <td>{#if $T.user.createTime!=null}{new Date($T.user.createTime).Format('yyyy-MM-dd hh:mm:ss')}{#else}--{#/if}</td>
-            <td>{#if $T.user.updateTime!=null}{new Date($T.user.updateTime).Format('yyyy-MM-dd hh:mm:ss')}{#else}--{#/if}</td>
+            <td>{$T.user.totalOrderCount}</td>
+            <td>{#if $T.user.lastOrderTime!=null}{new Date($T.user.lastOrderTime).Format('yyyy-MM-dd hh:mm:ss')}{#else}--{#/if}</td>
             <td>
             <@sec.any name="USER_UPDATE">
                 <button type="button" userId="{$T.user.id}" class="btn btn-primary btnUserUpdate">修改</button>

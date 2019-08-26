@@ -17,6 +17,7 @@ $(document).ready(function () {
         rebateAuditUpdate();
     });
 
+
     $("#btnStatusCancel").on("click", function () {
         $("#modalUserStatusModify").modal("hide");
     });
@@ -32,7 +33,7 @@ $(document).ready(function () {
     $(document).on("click",".btnUserCertDel",function () {
         delUserCert($(this).attr("user-order-id"));
     });
-
+    
     initDropz();
 
     $("#addPic").on("click", function () {
@@ -42,7 +43,22 @@ $(document).ready(function () {
         $("input[name='certificateUrl']").remove();
     });
 });
-
+//一键审核
+function confirmAudit() {
+    var orderId =  $("#orderId").val();
+    layer.confirm('确认一键审核？(审核后返佣自动通过，订单已上传凭证)', function(index){
+        layer.close(index);
+        post(_rootPath + "user/order/onceAudit", {"orderId":orderId}, function (result) {
+            if (result.success == true) {
+                swal({title: "", text: "操作成功!", type: 'success'}, function () {
+                    location.reload();
+                });
+            } else {
+                swal({title: "", text: result.errorInfo, type: 'error'});
+            }
+        });
+    });
+}
 //用户详情
 function searchUserDetail(orderId) {
     post(_rootPath + "user/order/search-detail", {"id": orderId}, function (result) {
@@ -64,6 +80,10 @@ function searchUserDetail(orderId) {
             $("#rebateAuditAmount").html($("#userOrderAmount").html());
             $("#rebateAuditPrice").html($("#rebatePriceDetail").html());
             $("#modalRebateAuditModify").modal();
+        });
+
+        $("#oneBtnRebateAudit").on("click", function () {
+            confirmAudit();
         });
 
         $("#status").val(result.data.status);

@@ -31,6 +31,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author:helizheng
@@ -56,6 +57,8 @@ public class UserOrderService extends BaseService implements IUserOrderService {
     private AccountLogsMapper accountLogsMapper;
     @Resource
     private AgentRebateAuditMapper agentRebateAuditMapper;
+    @Resource
+    private UserAgentMapper userAgentMapper;
     @Value("${images.host}")
     private String imageHost;
     @Value("${images.user.order.cert.path}")
@@ -215,6 +218,32 @@ public class UserOrderService extends BaseService implements IUserOrderService {
             orderModel.setRebateCreateTime(audit.getCreateTime());
             orderModel.setRebateUpdateTime(audit.getUpdateTime());
         }
+        Users users = usersMapper.selectByPrimaryKey(userOrder.getUserId());
+        orderModel.setBalance(users.getBalance());
+        orderModel.setTotalBalance(users.getBalance());
+        orderModel.setMobile(users.getTelephone());
+        if (users.getType() == UserTypeEnum._AGENT.getValue()) {
+            UserAgentExample agentExample = new UserAgentExample();
+            agentExample.createCriteria().andAgentUserIdEqualTo(users.getId());
+            List<UserAgent> userAgentList = userAgentMapper.selectByExample(agentExample);
+            if (CollectionUtils.isEmpty(userAgentList)) {
+                return orderModel;
+            }
+            UsersExample usersExample = new UsersExample();
+            usersExample.createCriteria().andIdIn(userAgentList.stream().map(UserAgent::getUserId)
+                    .collect(Collectors.toList())).andBalanceLessThan(0L);
+            List<Users> usersList = usersMapper.selectByExample(usersExample);
+            if (CollectionUtils.isEmpty(usersList)) {
+                return orderModel;
+            }
+            orderModel.setSubUserLiabilities(usersList.stream().map(Users::getBalance).reduce(Long::sum).get());
+            orderModel.setTotalBalance(users.getBalance() + orderModel.getSubUserLiabilities());
+        }
+/*        if (userOrder.getStatus() == UserOrderStatusEnum._PROCESSED.getValue()
+                || userOrder.getStatus() == UserOrderStatusEnum._DONE.getValue()) {
+            Users users = usersMapper.selectByPrimaryKey(userOrder.getUserId());
+            orderModel.setBalance(users.getBalance());
+        }*/
         return orderModel;
     }
 
@@ -229,6 +258,20 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         if(StringUtils.isBlank(orderCertificate.getCertificateUrl())){
             thrown(ErrorCodes.ORDER_CERT_URL_ILLEGAL);
         }
+        UserOrderExample orderExample = new UserOrderExample();
+        orderExample.createCriteria().andOrderNumberEqualTo(orderCertificate.getOrderNumber());
+        List<UserOrder> userOrders = userOrderMapper.selectByExample(orderExample);
+        UserOrder oldUserOrder = null;
+        if(CollectionUtils.isNotEmpty(userOrders)){
+            oldUserOrder = userOrders.get(0);
+        }
+        if(oldUserOrder == null || oldUserOrder.getType() != UserOrderTypeEnum._SYSTEM.getValue()){
+            thrown(ErrorCodes.ORDER_TYPE_ILLEGAL);
+        }
+        if (oldUserOrder.getStatus() == UserOrderStatusEnum._REFUSED.getValue()) {
+            thrown(ErrorCodes.ORDER_STATUS_ILLEGAL);
+        }
+
         String[] certUrl = orderCertificate.getCertificateUrl().split(",");
         for(int i = 0,len = certUrl.length;i < len;i ++){
             orderCertificate.setCertificateUrl(certUrl[i]);
@@ -238,15 +281,7 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         }
 
         //修改订单状态为已上传凭证
-        UserOrderExample orderExample = new UserOrderExample();
-        orderExample.createCriteria().andOrderNumberEqualTo(orderCertificate.getOrderNumber());
-
-        List<UserOrder> userOrders = userOrderMapper.selectByExample(orderExample);
         if(CollectionUtils.isNotEmpty(userOrders)){
-            UserOrder oldUserOrder = userOrders.get(0);
-            if(oldUserOrder.getType() != UserOrderTypeEnum._SYSTEM.getValue()){
-                thrown(ErrorCodes.ORDER_TYPE_ILLEGAL);
-            }
             if (oldUserOrder.getStatus() == UserOrderStatusEnum._PROCESSED.getValue()) {
                 UserOrder userOrder = new UserOrder();
                 userOrder.setId(oldUserOrder.getId());
@@ -288,13 +323,14 @@ public class UserOrderService extends BaseService implements IUserOrderService {
         if(order.getType() != UserOrderTypeEnum._SYSTEM.getValue()){
             thrown(ErrorCodes.ORDER_TYPE_ILLEGAL);
         }
-        if(order.getStatus() == UserOrderStatusEnum._REFUSED.getValue()
-                || order.getStatus() == UserOrderStatusEnum._DONE.getValue()){
+        if (status == UserOrderStatusEnum._DONE.getValue() && order.getStatus() == UserOrderStatusEnum._REFUSED.getValue()) {
             thrown(ErrorCodes.ORDER_STATUS_ILLEGAL);
-        }
+        } else if (status != UserOrderStatusEnum._DONE.getValue() && order.getStatus() != UserOrderStatusEnum._PENDING.getValue()) {
+            thrown(ErrorCodes.ORDER_STATUS_ILLEGAL);
         //已处理->上传凭证，直接修改user_order状态
-        if (order.getStatus() == UserOrderStatusEnum._PROCESSED.getValue()
+        } else if (order.getStatus() == UserOrderStatusEnum._PROCESSED.getValue()
                 && status == UserOrderStatusEnum._DONE.getValue()) {
+            //修改用户订单状态
             updateUserOrder(order,status);
             return;
         }
@@ -307,13 +343,24 @@ public class UserOrderService extends BaseService implements IUserOrderService {
     }
 
     private void updateUserOrder(UserOrder order,Integer status) throws Exception{
+        UserOrderExample example = new UserOrderExample();
+        example.clear();
         UserOrder userOrder = new UserOrder();
         userOrder.setId(order.getId());
         userOrder.setStatus(status.byteValue());
-        if(userOrderMapper.updateByPrimaryKeySelective(userOrder) < 1){
+
+        UserOrderExample.Criteria criteria = example.createCriteria().andIdEqualTo(order.getId());
+        //拒绝、通过订单，只能处理中
+        if (UserOrderStatusEnum._REFUSED.getValue() == status
+                || UserOrderStatusEnum._PROCESSED.getValue() == status) {
+            criteria.andStatusEqualTo((byte) UserOrderStatusEnum._PENDING.getValue());
+        //已上传凭证，只能非拒绝状态
+        } else if (UserOrderStatusEnum._DONE.getValue() == status) {
+            criteria.andStatusNotEqualTo((byte) UserOrderStatusEnum._REFUSED.getValue());
+        }
+        if(userOrderMapper.updateByExampleSelective(userOrder,example) < 1){
             thrown(ErrorCodes.UPDATE_ERROR);
         }
-        UserOrderExample example = new UserOrderExample();
         //拒绝状态，修改合并的订单状态为未处理
         if(status.intValue() == UserOrderStatusEnum._REFUSED.getValue()){
             //合并单处理

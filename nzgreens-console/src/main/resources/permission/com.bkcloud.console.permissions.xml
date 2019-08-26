@@ -54,5 +54,8 @@
         <permission id="500" name="订单管理" code="USER_ORDER_MANAGE" depends=""/>
         <permission id="501" name="订单详情" code="USER_ORDER_UPDATE" depends="" />
         <permission id="502" name="订单导出" code="USER_ORDER_EXPORT_MANAGE" depends="" />
+        <permission id="503" name="修改订单号" code="USER_ORDER_MANAGE_UPDATE_ORDER_NUMBER" depends=""/>
+        <permission id="504" name="订单修改" code="USER_ORDER_MANAGE_UPDATE_ORDER" depends=""/>
+        <permission id="505" name="凭证修改" code="USER_ORDER_MANAGE_UPDATE_CERTIFICATE" depends=""/>
     </permission-group>
 </permissions>

@@ -69,16 +69,16 @@
 		<tx:attributes>
 			<tx:method name="select*" read-only="true"/>
 			<tx:method name="query*" read-only="true"/>
-			<tx:method name="insert*" rollback-for="java.lang.Exception"/>
-			<tx:method name="update*" rollback-for="java.lang.Exception"/>
-			<tx:method name="delete*" rollback-for="java.lang.Exception"/>
+			<tx:method name="insert*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="delete*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
 			<!--<tx:method name="*" propagation="SUPPORTS" />-->
 		</tx:attributes>
 	</tx:advice>
 
 	<aop:config>
 		<!-- 事物加上包名，不给第三方接口service加事物 -->
-		<aop:pointcut id="transactionAop" expression="execution(* com.nzgreens.console.service..*Service.*(..))" />
+		<aop:pointcut id="transactionAop" expression="execution(* com.nzgreens.console.service..*.*(..))" />
 		<aop:advisor pointcut-ref="transactionAop" advice-ref="txAdvice"/>
 	</aop:config>
 

@@ -20,10 +20,12 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Author:helizheng
@@ -44,13 +46,72 @@ public class UserService extends BaseService implements IUserService {
     @Resource
     private UserAgentMapper userAgentMapper;
     @Resource
+    private UserOrderCountMapper userOrderCountMapper;
+    @Resource
     private UserOrderMapper userOrderMapper;
-
     @Override
     public List<UsersModel> selectUserForPage(UserForm form) throws Exception {
         PageHelper.startPage(form.getPageNum(),form.getPageSize());
-        return subUserMapper.selectUserForPage(form);
+        List<UsersModel> usersModels = subUserMapper.selectUserForPage(form);
+        if (CollectionUtils.isEmpty(usersModels)) {
+            return usersModels;
+        }
+        List<Long> agentIds = usersModels.stream().filter(usersModel -> UserTypeEnum._AGENT.getValue() == usersModel.getType())
+                .map(UsersModel::getId).collect(Collectors.toList());
+        UserOrderExample userOrderExample = new UserOrderExample();
+        userOrderExample.createCriteria().andUserIdIn(usersModels.stream().map(UsersModel::getId).collect(Collectors.toList()))
+                .andStatusIn(Arrays.asList(new Byte("0"),new Byte("1"),new Byte("2")));
+        userOrderExample.setOrderByClause("create_time desc");
+        List<UserOrderCount> orderList = userOrderCountMapper.countByExamples(userOrderExample);
+        if (CollectionUtils.isNotEmpty(orderList)) {
+            Map<Long, List<UserOrderCount>> map = orderList.stream().collect(Collectors.groupingBy(UserOrderCount::getUserId));
+            try {
+
+                usersModels.forEach(usersModel -> {
+                    List<UserOrderCount> countList = map.getOrDefault(usersModel.getId(), Collections.emptyList());
+                    if (CollectionUtils.isNotEmpty(countList)) {
+                        usersModel.setTotalOrderCount(countList.get(0).getOrderCount());
+                        usersModel.setLastOrderTime(countList.get(0).getCreateTime());
+                    }
+
+                });
+            } catch (Exception e) {
+
+            }
+        }
+        if (CollectionUtils.isEmpty(agentIds)) {
+            return usersModels;
+        }
+        UserAgentExample agentExample = new UserAgentExample();
+        agentExample.createCriteria().andAgentUserIdIn(agentIds);
+        List<UserAgent> userAgentList = userAgentMapper.selectByExample(agentExample);
+        if (CollectionUtils.isEmpty(userAgentList)) {
+            return usersModels;
+        }
+        UsersExample usersExample = new UsersExample();
+        usersExample.createCriteria().andIdIn(userAgentList.stream().map(UserAgent::getUserId)
+                .collect(Collectors.toList())).andBalanceLessThan(0L);
+        List<Users> usersList = usersMapper.selectByExample(usersExample);
+        if (CollectionUtils.isEmpty(usersList)) {
+            return usersModels;
+        }
+        try {
+            Map<Long, List<UserAgent>> agentMap = userAgentList.stream().collect(Collectors.groupingBy(UserAgent::getAgentUserId, Collectors.toList()));
+            Map<Long, Long> userBalanceMap = usersList.stream().collect(Collectors.groupingBy(Users::getId, Collectors.summingLong(Users::getBalance)));
+            agentMap.forEach((k,v)->{
+                UsersModel usersModel = usersModels.stream().filter(a->a.getId().equals(k)).findFirst().get();
+                Long balance = v.stream().map(user->
+                        userBalanceMap.getOrDefault(user.getUserId(), 0L))
+                        .reduce(0L,(v1,v2)->v1+v2);
+                usersModel.setTotalBalance(usersModel.getBalance() + balance);
+            });
+        } catch (Exception e) {
+            usersModels.forEach(user->user.setTotalBalance(-1L));
+        }
+
+        return usersModels;
     }
+
 
     @Override
     public List<UsersModel> selectAgentUserForPage(UserForm form) throws Exception {
