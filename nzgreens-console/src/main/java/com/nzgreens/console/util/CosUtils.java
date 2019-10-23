@@ -65,6 +65,28 @@ public class CosUtils {
             clientException.printStackTrace();
         }
     }
+
+    public void upload(String filePath, File file){
+        try {
+            // 指定要上传的文件
+            File localFile = file;
+            // 指定要上传到的存储桶
+            String bucketName = "nz-1258464860";
+            // 指定要上传到 COS 上对象键
+            System.out.println("原始路径->"+filePath);
+            LOGGER.info("原始路径->"+filePath);
+            System.out.println("上传KEY->"+filePath.replaceAll("/data/upload", "/statics"));
+            LOGGER.info("上传KEY->"+filePath.replaceAll("/data/upload", "/statics"));
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, filePath.replaceAll("/data/upload", "/statics"), localFile);
+            PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
+            LOGGER.info(JSON.toJSONString(putObjectResult));
+        } catch (CosServiceException serverException) {
+            serverException.printStackTrace();
+        } catch (CosClientException clientException) {
+            clientException.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         // 1 初始化用户身份信息（secretId, secretKey）。
         String secretId = "AKIDL0QaUJIj4965omw63ua4PabTGhz7MtX3";
@@ -76,20 +98,33 @@ public class CosUtils {
         ClientConfig clientConfig = new ClientConfig(region);
         // 3 生成 cos 客户端。
         COSClient cosClient = new COSClient(cred, clientConfig);
-        String filePath = "C:/data/upload/user/2/0b27059e963d41e28fe88699b0a3a3bc.jpeg";
         try {
-            // 指定要上传的文件
-            File localFile = new File(filePath);
-            // 指定要上传到的存储桶
-            String bucketName = "nz-1258464860";
-            // 指定要上传到 COS 上对象键
-            PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, "statics/user/2/0b27059e963d41e28fe88699b0a3a3bc.jpeg", localFile);
-            PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
-            LOGGER.info(JSON.toJSONString(putObjectResult));
+            String path = "/data/upload";		//要遍历的路径
+            File file = new File(path);		//获取其file对象
+            func(file, cosClient);
         } catch (CosServiceException serverException) {
             serverException.printStackTrace();
         } catch (CosClientException clientException) {
             clientException.printStackTrace();
         }
     }
+
+    private  static void func(File file, COSClient cosClient){
+        File[] fs = file.listFiles();
+        for(File f:fs){
+            if(f.isDirectory())	//若是目录，则递归打印该目录下的文件
+                func(f, cosClient);
+            if(f.isFile())		{
+                System.out.println(f.getAbsolutePath());
+                // 指定要上传到的存储桶
+                String bucketName = "nz-1258464860";
+                System.out.println(f.getAbsolutePath().replaceAll("/data/upload", "/statics"));
+                // 指定要上传到 COS 上对象键
+                PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, f.getAbsolutePath().replaceAll("/data/upload", "/statics"), f);
+                PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
+                LOGGER.info(JSON.toJSONString(putObjectResult));
+            }
+        }
+    }
+
 }

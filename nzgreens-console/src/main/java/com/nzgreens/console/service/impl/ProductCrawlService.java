@@ -488,10 +488,9 @@ public class ProductCrawlService extends BaseService implements IProductCrawlSer
         File targetFile = new File(uploadPath + "/" + savePath);
         try {
             // 创建目标文件
-            if (!targetFile.getParentFile().exists()) {
-                targetFile.getParentFile().mkdirs();
+            if(!targetFile.exists()){
+                targetFile.mkdirs();
             }
-
             // 构造URL
             URL url = new URL(urlString.replace(" ", "%20"));
             // 打开连接
